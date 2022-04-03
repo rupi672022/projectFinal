@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>התחבר</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/LOGO.ico">
+
+    <!-- App css -->
+    <link href="../CSS/main.css" rel="stylesheet" />
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("#login").click(login);
+        });
+
+        function login() {//the user want to insert to user
+            let worknumberLogin = $("#worknumberLogin").val();
+            ajaxCall("GET", "../api/Employes?employeNum=" + worknumberLogin, "", getSCB, getECB);
+
+        }
+
+
+        function getSCB(answer) { //get the user with the email
+
+            if (answer.length == 0) {
+                swal("מספר עובד שגוי, נסה שנית");
+                $("#worknumberLogin").val("");
+            }
+
+            else if (answer[0].Role != "מנהל") {
+                swal("עובד לא מורשה");
+                $("#worknumberLogin").val("");
+            }
+
+            else {
+                console.log("good");
+                window.location.href = "main.html";
+            }
+
+        }
+
+        function getECB(err) {
+            console.log(err);
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+    <div class="cont">
+        <div class="form Login">
+            <h2>ברוכים הבאים</h2>
+            <br />
+            <h3>הכנס מספר עובד </h3>
+            <label>
+                <input type="number" id="worknumberLogin" />
+            </label>
+            <button type="button" id="login" class="submit">התחבר</button>
+        </div>
+
+        <div class="sub-cont">
+            <div class="img">
+                <div class="img__text m--up">
+                    <h3>משק יעקבס</h3>
+                    <img src="../img/LOGO.png" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="ph"></div>
+</body>
+</html>

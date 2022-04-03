@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="utf-8" />
+    <title>משק יעקבס</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/LOGO.ico">
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Plugins css-->
+    <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+
+    <style>
+        body {
+            direction: rtl;
+            background-color: #eee;
+            text-align: right
+        }
+
+        .navbar-custom {
+            background-color: #ffe393;
+        }
+
+        h3 {
+            color: black;
+            text-align: center;
+        }
+
+        #BTN {
+            width: 200px;
+            background-color: #FFE587;
+            color: black;
+            border: hidden;
+            padding: 5px;
+            margin-top: 10px;
+            margin-right: 10%;
+        }
+
+    </style>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#BTN").click(textOfAlgo);
+
+        });
+
+        function textOfAlgo() {
+            date = new Date($("#dateJob").val());
+            date = date.toLocaleDateString();
+
+            ajaxCall("GET", "../api/FindingPaths?date="+date, "", success, error);
+        }
+
+        function success(list) {
+            console.log(list);
+        }
+
+        function error(error) {
+            console.log(error);
+        }
+
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <h3 style="margin-top:10px">
+                &nbsp; &nbsp; משק יעקבס
+                <img style=" width: 60px; height: 50px;" src="../img/LOGO.png" />
+            </h3>
+            <!-- LOGO -->
+        </div>
+        <!-- end Topbar -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left-side-menu" style="text-align: center;">
+            <div class="slimscroll-menu">
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <div class="user-box">
+                        <div class="float-left">
+                            <a href="login.html" class="waves-effect">
+                                <i class="mdi mdi-account" style="font-size: 80px; color: black; padding: 50px;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <ul class="metismenu" id="side-menu">
+                        <li>
+                            <a href="main.html" class="waves-effect">
+                                <i class="mdi mdi-calendar"></i>
+                                <span> לוח שנה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="employe.html" class="waves-effect">
+                                <i class=" mdi mdi-account"></i>
+                                <span> עובדים </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-folder-plus"></i>
+                                <span> הזמנה חדשה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a  href="sendOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-calendar"></i>
+                                <span> שילוח הזמנות </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Sidebar -->
+                <div class="clearfix"></div>
+            </div>
+            <!-- Sidebar -left -->
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page" style="margin-right:240px;margin-left:0px;padding:10px;margin-top:30px">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box" style="height:10px">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card-box" style="background-color:#ffff;margin-left:0px;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-6" style=" margin-left: 40%">
+                                            <label for="dateJob">בחר תאריך להוצאת תוכנית עבודה לנהג </label>
+                                            <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
+                                        </div>
+                                        <div>
+                                            <button id="BTN">אישור</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div id="Algo"></div>
+                                    </div>
+
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/app.min.js"></script>
+
+</body>
+</html>

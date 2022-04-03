@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="../CSS/map.css" rel="stylesheet" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <!--//git-->
+    <script>
+        $(document).ready(function () {
+            towns = [];//מכיל את כל הכתובות
+            originArr = [];
+            destinationArr = [];
+            idTowns = [];
+            distancesArr = [];
+            minDistanceLine = 0;
+            DistanceLineArr = [];
+            numline = 0;
+
+
+            ajaxCall("GET", "../api/FindingPaths", "", test, error);//read the series in server
+            ajaxCall("GET", "../api/Companies", "", getAdress, error);//read the series in server
+
+        });
+
+        function test(list) {
+            console.log(list)
+        }
+
+
+        function getAdress(obj) {
+            console.log(obj);
+
+            for (i in obj) {
+                originArr.push(obj[i]["Address"]);
+
+                towns.push(obj[i]);
+                //towns.push(obj[i]["Lng"]);
+                idTowns.push(obj[i]["CompanyNum"]);
+                towns[i].CompanyName;
+                destinationArr.push(obj[i]["Address"]);
+                console.log(towns);
+            }
+
+            console.log(originArr);
+            //validatePath(originArr);
+            initMap(originArr, destinationArr);
+        }
+        
+        function initMap(originArr, destinationArr) {
+            const bounds = new google.maps.LatLngBounds();
+            const markersArray = [];
+            //distancesArr = new Array(math.factorial(originArr - 1));
+            //for (var i = 0; i < distancesArr.length; i++) {
+            //    distancesArr[i] = new Array(math.factorial(originArr - 1));
+            //}
+
+            //console.log(distancesArr);
+             map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 32.063930, lng: 35.045252 },
+                zoom: 7.5,
+             });
+           
+            // Define the LatLng coordinates for the outer path.
+            const north = [
+                { lat: 33.331551, lng: 35.775554 },
+                { lat: 32.941496, lng: 35.886075 },
+                { lat: 32.672009, lng: 35.602323 },
+                { lat: 32.549897, lng: 35.214789 },
+                { lat: 32.590993, lng: 34.916495 },
+                { lat: 32.829944, lng: 34.979568 },
+                { lat: 32.827121, lng: 35.045464 },
+                { lat: 33.094050, lng: 35.104245 },
+                { lat: 33.050365, lng: 35.402740 },
+                { lat: 33.134757, lng: 35.532395 },
+                { lat: 33.288369, lng: 35.567264 },
+
+                // north east
+            ];
+            // Define the LatLng coordinates for an inner path.
+            const central = [
+                { lat: 32.549897, lng: 35.214789 },
+                { lat: 32.454882, lng: 35.070826 },
+                { lat: 32.192718, lng: 34.961457 },
+                { lat: 31.850963, lng: 35.056698 },
+                { lat: 31.894471, lng: 34.680662 },
+                { lat: 32.590993, lng: 34.916495 },
+
+
+
+            ];
+            // Define the LatLng coordinates for another inner path.
+            const south = [
+                { lat: 31.850963, lng: 35.056698 },
+                { lat: 31.601329, lng: 34.806480 },
+                { lat: 31.228083, lng: 34.825869 },
+                { lat: 31.532458, lng: 34.572311 },
+                { lat: 31.638576, lng: 34.526046 },
+                { lat: 31.894471, lng: 34.680662 },
+            ];
+            const jerusalem = [
+                { lat: 31.786453, lng: 35.336044 },
+                { lat: 31.850963, lng: 35.056698 },
+                { lat: 31.752653, lng: 34.965175 },
+                { lat: 31.694328, lng: 35.124644 },
+            ];
+            map.data.add({
+                geometry: new google.maps.Data.Polygon([
+                    north,
+                    central,
+                    south,
+                    jerusalem,
+
+                ]),
+            });
+            // initialize services
+
+            const geocoder = new google.maps.Geocoder();
+            const service = new google.maps.DistanceMatrixService();
+            console.log(originArr);
+            request = calculate(originArr, destinationArr);
+           
+
+            // put request on page
+            document.getElementById("request").innerText = JSON.stringify(
+                request,
+                null,
+                2
+            );
+            // get distance matrix response
+            service.getDistanceMatrix(request).then((response) => {
+                // put response
+                document.getElementById("response").innerText = JSON.stringify(
+                    response,
+                    null,
+                    2
+                );
+
+                // show on map
+                const originList = response.originAddresses;
+                const destinationList = response.destinationAddresses;
+
+                deleteMarkers(markersArray);
+
+                const showGeocodedAddressOnMap = (asDestination) => {
+                    const handler = ({ results }) => {
+                        map.fitBounds(bounds.extend(results[0].geometry.location));
+                        markersArray.push(
+                            new google.maps.Marker({
+                                map,
+                                position: results[0].geometry.location,
+                                label: asDestination ? "D" : "O",
+                            })
+                        );
+                    };
+                    return handler;
+                };
+              
+                
+                for (let i = 0; i < originArr.length; i++) {
+                    
+                    const results = response.rows[i].elements;      
+
+                    geocoder
+                        .geocode({ address: originList[i] })
+                        .then(showGeocodedAddressOnMap(false));
+
+                    for (let j = 0; j < results.length; j++) {
+                        geocoder
+                            .geocode({ address: destinationList[j] })
+                            .then(showGeocodedAddressOnMap(true));
+                        (distancesArr).push(results[j]["distance"]["value"]);
+                    }
+                    console.log(distancesArr);
+                }
+                //until = validatePath(originArr);
+            // until=drawPath(until); 
+                newArr = originArr.slice(1);
+                console.log(generatePermutations(newArr));                                resGenerate = generateCityRoutes(originArr);                console.log(caluclateRoute(resGenerate));                console.log(generateCityRoutes(destinationArr));
+
+            });
+            
+        }
+        function generatePermutations(Arr) {            var permutations = [];            var A = Arr.slice();            function swap(a, b) {                var tmp = A[a];                A[a] = A[b];                A[b] = tmp;            }            function generate(n, A) {                if (n == 1) {                    permutations.push(A.slice());                } else {                    for (var i = 0; i <= n - 1; i++) {                        generate(n - 1, A);                        swap(n % 2 == 0 ? i : 0, n - 1);                    }                }            }            generate(A.length, A);            return permutations        }
+        function generateCityRoutes(originArr) {            var pems = generatePermutations(originArr.slice(1));            for (var i = 0; i < pems.length; i++) {                pems[i].unshift(originArr[0]);                pems[i].push(originArr[0]);                            }            caluclateRoute(pems);                    }
+        function caluclateRoute(pems)
+        {
+            
+           // distancesArr
+            elementInline = 0;
+            row = -1;
+            column = -1;
+            for (var  i= 0; i < pems.length; i++) {
+                for (var t = 0; t < pems.length; t++) {
+                    for (var j = 0; j < originArr.length; j++) {
+
+                        if (pems[elementInline] == originArr[j]) {
+
+                            row = j;
+                        }
+                        if (pems[elementInline+1] == originArr[j]) {
+
+                            column = j;
+                        }
+                        if (column >= 0 && row >= 0) {
+                            minDistanceLine+= distancesArr[i][j];
+                            row = -1;
+                            column = -1;
+                        }
+
+                    }
+                           
+                               
+                }
+                DistanceLineArr.push(minDistanceLine);
+
+                }
+            minElement = DistanceLineArr[0];
+            for (var i = 0; i < DistanceLineArr.length; i++) {
+                if (DistanceLineArr[i] < minElement) {
+                    minElement = DistanceLineArr[i]
+                    minindex = i;
+            }  
+
+            }
+            console.log("The optimal route is" + pems[minindex] + "with" + minElement / 1000 + "km");          
+        }
+        //draws path if possible
+        //function drawPath(until) {
+        //     map = new google.maps.Map(document.getElementById("map"), {
+        //        center: { lat: 32.063930, lng: 35.045252 },
+        //        zoom: 7.5,
+        //    });
+        //    if (until === -1) {
+        //        until = towns.length; //change back to the max
+        //    }
+        //    route={ };
+        //    var route = new Array();
+        //    for (var i = 0; i < until; i++) {
+        //        route[i] =
+        //        {
+        //            lat: towns[(towns[i].CompanyNum) - 7].Lat,
+        //            lng: towns[(towns[i].CompanyNum) - 7].Lng
+        //        };
+        //    } 
+
+        //    console.log(route);
+        //    //const flightPlanCoordinates = [
+        //    //    { lat: 32.45580737303846, lng: 34.905663014371434 },
+        //    //    { lat: 32.308754108563534, lng: 34.8788359744471 },
+              
+        //    //];
+        //    routeLine = new google.maps.Polyline({
+        //        path: route,
+        //        geodesic: true,
+        //        strokeColor: '#FF0000',
+        //        strokeWeight: 2,
+        //        strokeOpacity: 1.0,
+        //        visible: true,
+        //    });
+          
+
+        //    console.log(routeLine);
+        //    routeLine.setMap(map);
+
+        //    linesDrawn = (until > 0);
+        //   /* giveResult((problems.length === 1), until, problems);*/
+
+        //}
+        //function giveResult(valid, until, problems) {
+
+        //     message = "";
+
+        //    if (valid) {
+        //        $(".colorMe").css("background-color", "#34cb3f");//green
+        //        message += "valid route: " + calcDistance(until) + " km";
+        //    } else {
+        //        $(".colorMe").css("background-color", "#f70834");//red
+        //        alert(problems.join("\n"));
+        //        message += "invalid route: " + calcDistance(until) + " km";
+        //    }
+
+
+        //}
+        //function calcDistance(until) {
+
+        //    var dist = 0;
+        //    for (var i = 0; i < until - 1; i++) {
+        //        var adding = distanceBetween(towns[userTowns[i]], towns[userTowns[i + 1]]);
+        //        dist += adding;
+        //    }
+
+        //    return dist;
+        //}
+           
+        //function validatePath(originArr) {
+        //    var problems = new Array(); //error messages for alert box
+        //    var until = -1; //where (if) to stop drawing paths
+        //    var visited = new Array(originArr.length);
+        //    visited[7] = true; //to keep the index matching the towns index
+
+        //    //doesn't return to its origin - ALLOW & CORRECT THIS
+        //    if (originArr[0] != originArr[originArr.length - 1]) {
+        //        originArr.push(originArr[0]);
+        //    }
+
+        //    //check all towns apart from the last
+        //    for (var i = 0; i < towns.length - 1; i++) {
+        //        if (towns[i].CompanyNum < 1 || towns[i].CompanyNum >= towns.length+7) {
+        //            problems.push("Company out of range: " + towns[i].CompanyName);
+        //            if (until === -1) {
+        //                until = i;
+        //            }
+        //        } else {
+        //            if (visited[towns[i].CompanyNum]) {
+        //                problems.push("town " + towns[i].CompanyName + " visited twice");
+        //            } else {
+        //                visited[towns[i].CompanyNum] = true; //mark as visited
+        //            }
+        //        }
+        //    }
+
+        //    //check last number range - this one is allowed to be visited twice
+        //    if (towns[towns.length - 1] < 1 || towns[towns.length - 1] >= towns.length+7) {
+
+        //        //will already be marked as invalid and undrawable
+        //        problems.push("number out of range: " + towns[i].CompanyNum[towns.length - 1]);
+        //        if (until === -1) {
+        //            until = i;
+        //        }
+        //    }
+
+
+        //    //found unvisited town
+        //    for (var i = 7; i < visited.length; i++) {
+        //        if (!visited[i]) {
+        //            problems.push("town " + i + " not visited");
+        //        }
+        //    }
+        //    console.log(problems)
+        //        //finished all checks
+        //  //  drawPath(until,problems); 
+        //    initMap(until,originArr);
+
+        //}
+
+
+
+
+        // build request
+        function calculate(originArr, destinationArr) {
+            console.log(originArr);
+            let request = {
+                origins: originArr,
+                destinations: destinationArr,
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false,
+            };
+            console.log(originArr);
+            return request;
+
+        }
+
+        function deleteMarkers(markersArray) {
+            for (let i = 0; i < markersArray.length; i++) {
+                markersArray[i].setMap(null);
+                console.log(originArr);
+
+            }
+
+            markersArray = [];
+        }
+
+
+
+        function error(err) {
+            console.log(err);
+            console.log(originArr);
+
+        }
+    </script>
+</head>
+<body>
+    <h3>My Google Maps Demo</h3>
+    <div id="container">
+        <div id="map"></div>
+        <div id="sidebar">
+            <h3 style="flex-grow: 0">Request</h3>
+            <pre style="flex-grow: 1" id="request"></pre>
+            <h3 style="flex-grow: 0">Response</h3>
+            <pre style="flex-grow: 1" id="response"></pre>
+        </div>
+    </div>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVrRHMZy0FlyXw9kWLvMbYyzjAaMpo5lQ&callback=initMap&v=weekly"-->
+            <!--async></script>-->
+
+</body>
+</html>
