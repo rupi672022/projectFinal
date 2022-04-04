@@ -186,8 +186,11 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="CSS\employe.css" />
+    <Content Include="CSS\login.css" />
     <Content Include="CSS\main.css" />
     <Content Include="CSS\map.css" />
+    <Content Include="CSS\newOrder.css" />
     <Content Include="dist\assets\css\app-dark.css" />
     <Content Include="dist\assets\css\app-dark.min.css" />
     <Content Include="dist\assets\css\app-rtl.css" />

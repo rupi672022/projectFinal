@@ -32,34 +32,8 @@
 
     <script src="../Scripts/ajaxCalls.js"></script>
 
+    <link href="../CSS/sendOrder.css" rel="stylesheet" />
 
-    <style>
-        body {
-            direction: rtl;
-            background-color: #eee;
-            text-align: right
-        }
-
-        .navbar-custom {
-            background-color: #ffe393;
-        }
-
-        h3 {
-            color: black;
-            text-align: center;
-        }
-
-        #BTN {
-            width: 200px;
-            background-color: #FFE587;
-            color: black;
-            border: hidden;
-            padding: 5px;
-            margin-top: 10px;
-            margin-right: 10%;
-        }
-
-    </style>
     <script>
 
         $(document).ready(function () {
@@ -96,20 +70,20 @@
         <div class="navbar-custom">
             <h3 style="margin-top:10px">
                 &nbsp; &nbsp; משק יעקבס
-                <img style=" width: 60px; height: 50px;" src="../img/LOGO.png" />
+                <img id="imgLogo" src="../img/LOGO.png" />
             </h3>
             <!-- LOGO -->
         </div>
         <!-- end Topbar -->
         <!-- ========== Left Sidebar Start ========== -->
-        <div class="left-side-menu" style="text-align: center;">
+        <div class="left-side-menu" >
             <div class="slimscroll-menu">
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <div class="user-box">
                         <div class="float-left">
                             <a href="login.html" class="waves-effect">
-                                <i class="mdi mdi-account" style="font-size: 80px; color: black; padding: 50px;"></i>
+                                <i class="mdi mdi-account" id="LOgin"></i>
                             </a>
                         </div>
                     </div>
@@ -151,14 +125,14 @@
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
 
-        <div class="content-page" style="margin-right:240px;margin-left:0px;padding:10px;margin-top:30px">
+        <div class="content-page">
             <div class="content">
                 <!-- Start Content-->
                 <div class="container-fluid">
                     <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
-                            <div class="page-title-box" style="height:10px">
+                            <div class="page-title-box" >
                             </div>
                         </div>
                     </div>
@@ -166,7 +140,7 @@
 
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="card-box" style="background-color:#ffff;margin-left:0px;">
+                            <div class="card-box">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="col-lg-6" style=" margin-left: 40%">
