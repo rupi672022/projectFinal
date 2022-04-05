@@ -9,7 +9,7 @@ namespace System.Models.DAL
 {
     public class ProductDataServices
     {
-        public int Insert(Products product) //insert new user to table
+        public int Insert(Products product) //insert new product
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -47,7 +47,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Products> Read()//get the all the employee 
+        public List<Products> Read()//get the all product
         {
 
             SqlConnection con = null;
@@ -93,7 +93,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Products> Read(string name)//get the all the employee 
+        public List<Products> Read(string name)//get info to this product
         {
 
             SqlConnection con = null;
@@ -139,7 +139,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Products> Read(int id)//get the all the employee 
+        public List<Products> Read(int id)//get the products to this order - app
         {
 
             SqlConnection con = null;
@@ -188,7 +188,7 @@ namespace System.Models.DAL
 
         }
 
-        public bool Update(Products product) //insert to table
+        public bool Update(Products product) //update the product - status :  - app
         {
 
             SqlConnection con = null;
@@ -196,7 +196,7 @@ namespace System.Models.DAL
 
             try
             {
-                //C - Connect to the Database - קשר עם הפרויקט 
+                //C - Connect to the Database 
                 con = Connect("ProjDB");
 
                 SqlCommand updatecommand = CreateUpdateCommandStatusProduct(con, product);
@@ -228,7 +228,7 @@ namespace System.Models.DAL
             return con;
         }
 
-        SqlCommand CreateInsertCommand(Products product, SqlConnection con)
+        SqlCommand CreateInsertCommand(Products product, SqlConnection con)//insert new product
         {
             string commandStr = "INSERT INTO Product ([barcod],[productName],[type],[weightperOne],[downfromTotal]) VALUES (@barcod,@productName,@type,@weightperOne,@downfromTotal)";
 
@@ -248,7 +248,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand createSelectCommandProducts(SqlConnection con)
+        SqlCommand createSelectCommandProducts(SqlConnection con)//get all product
         {
 
             string commandStr = "SELECT * FROM Product";
@@ -259,7 +259,7 @@ namespace System.Models.DAL
 
         }
 
-        SqlCommand createSelectCommandproductNAME(SqlConnection con, string name)
+        SqlCommand createSelectCommandproductNAME(SqlConnection con, string name)//get info to this product
         {
 
             string commandStr = "SELECT * FROM Product WHERE productName LIKE @name";
@@ -270,7 +270,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand createSelectCommandproductID(SqlConnection con, int id)
+        SqlCommand createSelectCommandproductID(SqlConnection con, int id)//get the product to this order
         {
 
             string commandStr = "SELECT * FROM Product INNER JOIN ProductOnOrder ON Product.barcod = ProductOnOrder.barcodNum WHERE ProductOnOrder.orderNum LIKE @orderNum";
@@ -282,7 +282,7 @@ namespace System.Models.DAL
         }
 
 
-        SqlCommand CreateUpdateCommandStatusProduct(SqlConnection con, Products product)
+        SqlCommand CreateUpdateCommandStatusProduct(SqlConnection con, Products product)//update product - app
         {
             string commandStr = "UPDATE ProductOnOrder SET status = 0,total='"+product.WeightAll+"' WHERE ProductOnOrder.orderNum ='"+product.Quantity+"' AND ProductOnOrder.barcodNum='"+product.Barcod+"'";
             SqlCommand cmd = createCommand(con, commandStr);

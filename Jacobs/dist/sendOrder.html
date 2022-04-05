@@ -42,7 +42,7 @@
 
         });
 
-        function textOfAlgo() {
+        function textOfAlgo() {//get the path to this date
             date = new Date($("#dateJob").val());
             date = date.toLocaleDateString();
 
@@ -143,7 +143,7 @@
                             <div class="card-box">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="col-lg-6" style=" margin-left: 40%">
+                                        <div class="col-lg-6" style=" margin-left: 40%"><!--choose date to path-->
                                             <label for="dateJob">בחר תאריך להוצאת תוכנית עבודה לנהג </label>
                                             <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
                                         </div>

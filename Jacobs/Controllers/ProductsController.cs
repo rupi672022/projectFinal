@@ -11,20 +11,20 @@ namespace System.Controllers
     public class ProductsController : ApiController
     {
         // GET api/<controller>
-        public List<Products> Get()
+        public List<Products> Get()//get all product
         {
             Products product = new Products();
             return product.Read();
         }
 
         // GET api/<controller>/5
-        public List<Products> Get(string name)
+        public List<Products> Get(string name)//get the info product
         {
             Products product = new Products();
             return product.Read(name);
         }
 
-        public List<Products> Get(int id)
+        public List<Products> Get(int id)//get the product from this order
         {
             Products product = new Products();
             return product.Read(id);
@@ -32,14 +32,14 @@ namespace System.Controllers
 
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody] Products product)
+        public HttpResponseMessage Post([FromBody] Products product)//insert new product
         {
             int id = product.Insert();
             return Request.CreateResponse(HttpStatusCode.OK,"success");
         }
 
         // PUT api/<controller>/5
-        public HttpResponseMessage Put([FromBody] Products product)
+        public HttpResponseMessage Put([FromBody] Products product)//update product - status :  - app
         {
             product.Update();
             return Request.CreateResponse(HttpStatusCode.OK, "success");

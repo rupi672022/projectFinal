@@ -10,7 +10,7 @@ namespace System.Models.DAL
 {
     public class CompanyDataServices
     {
-        public int Insert(Company company) //insert new user to table
+        public int Insert(Company company) //insert new company
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -47,7 +47,7 @@ namespace System.Models.DAL
 
 
         }
-        public List<Company> Read()//get the all the employee 
+        public List<Company> Read()//get the all company
         {
 
             SqlConnection con = null;
@@ -119,7 +119,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Company> Read(string name)//get the all the employee 
+        public List<Company> Read(string name)//get this company
         {
 
             SqlConnection con = null;
@@ -168,7 +168,7 @@ namespace System.Models.DAL
 
         }
 
-        public bool Update(Company company) //insert to table
+        public bool Update(Company company) //update the contact on this company
         {
 
             SqlConnection con = null;
@@ -208,9 +208,8 @@ namespace System.Models.DAL
             return con;
         }
 
-        SqlCommand CreateInsertCommand(Company company, SqlConnection con)
+        SqlCommand CreateInsertCommand(Company company, SqlConnection con)//insert new company
         {
-            //insert to table - Users_2022
             string commandStr = "INSERT INTO Company ([companyName],[address],[openHour],[closeHour],[nameContact],[phoneContact],[lat],[lng],[distributaionArea]) VALUES (@companyName,@address,@openHour,@closeHour,@nameContact,@phoneContact,@lat,@lng,@distributaionArea)";
 
             SqlCommand cmd = createCommand(con, commandStr);
@@ -245,7 +244,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        private SqlCommand createSelectCommandCompany(SqlConnection con)
+        private SqlCommand createSelectCommandCompany(SqlConnection con)//get all company
         {
 
             string commandStr = "SELECT * FROM Company";
@@ -257,7 +256,7 @@ namespace System.Models.DAL
         }
 
 
-        private SqlCommand createSelectCommandCompanyNAME(SqlConnection con, string name)
+        private SqlCommand createSelectCommandCompanyNAME(SqlConnection con, string name)//get this company
         {
 
             string commandStr = "SELECT * FROM Company WHERE companyName LIKE @name";
@@ -268,7 +267,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand createUpdateCommand(SqlConnection con, Company company)
+        SqlCommand createUpdateCommand(SqlConnection con, Company company)//update this company
         {
             string commandStr = "UPDATE Company SET nameContact='" + company.NameContact + "', phoneContact='" + company.PhoneContact + "' WHERE companyNum='" + company.CompanyNum + "' ";
             SqlCommand cmd = createCommand(con, commandStr);

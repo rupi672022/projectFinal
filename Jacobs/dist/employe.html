@@ -16,6 +16,7 @@
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
 
+
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
@@ -48,15 +49,15 @@
     <script src="../Scripts/ajaxCalls.js"></script>
 
     <link href="../CSS/employe.css" rel="stylesheet" />
+
     <script>
 
         $(document).ready(function () {
 
             mode = "";
 
-
-            //get the all name article as id user
-            ajaxCall("GET", "../api/Employes", "", getSCB, error);//read the series in server
+            //get the all employe that Active
+            ajaxCall("GET", "../api/Employes", "", getSCB, error);
 
             $('#myModal').on('shown.bs.modal', function () {
                 if (mode != "update") {
@@ -74,8 +75,8 @@
         });
 
 
-        function getSCB(EmployeList) {//render the name of the series in server as id
-            console.log(EmployeList);
+        function getSCB(EmployeList) {//render the data table - employe
+            //console.log(EmployeList);
 
             try {
                 tbl = $('#employeTable').DataTable({
@@ -111,16 +112,16 @@
         function buttonEvents() {
 
 
-            $(document).on("click", ".updateBtn", function () {
+            $(document).on("click", ".updateBtn", function () {//update employe
                 mode = "update";
                 updateEmploye(this.getAttribute('data-employe'));
             });
 
-            $(document).on("click", ".btn-lg", function () {
+            $(document).on("click", ".btn-lg", function () {//new employe
                 mode = "new";
             });
 
-            $(document).on("click", ".deleteBtn", function () {
+            $(document).on("click", ".deleteBtn", function () {//delete employe
                 id = this.getAttribute('data-employe');
                 console.log(id);
                 swal({ // this will open a dialouge
@@ -142,12 +143,12 @@
 
 
 
-        function updateEmploye(employeNum) {
+        function updateEmploye(employeNum) {//get the info about this employe
             console.log(employeNum);
             ajaxCall("GET", "../api/Employes?employeNum=" + employeNum, "", getUpdatesuccsess, error);
         }
 
-        function getUpdatesuccsess(obj) {
+        function getUpdatesuccsess(obj) {//insert the info 
             obj = obj[0];
             console.log(obj);
             $("#PPname").val(obj.Name);
@@ -160,7 +161,7 @@
         }
 
 
-        function onSubmit() {
+        function onSubmit() {//insert the info about the employe
             let employetoSave = {
                 EmployeNum: $("#PPemployeNum").val(),
                 Name: $("#PPname").val(),
@@ -169,10 +170,10 @@
                 DistributaionArea: $("#PPdistributaionArea").val(),
             }
 
-            if (mode == "update") {
+            if (mode == "update") {//if need to update
                 ajaxCall("PUT", "../api/Employes", JSON.stringify(employetoSave), succsess, error);
             }
-            else
+            else//if its new employe 
                 ajaxCall("POST", "../api/Employes", JSON.stringify(employetoSave), succsess, error);
             return false;
 
@@ -184,10 +185,8 @@
         }
 
 
-        function deleteEmploye(employeNum) {
-            //update status to 0
-            console.log(employeNum)
-
+        function deleteEmploye(employeNum) {//update status to 0 - delete the employe
+            //console.log(employeNum)
             listUpdate = {
                 employeNum: employeNum
             }
@@ -198,7 +197,7 @@
 
         function succsess() {
             console.log("succses");
-            renderName();//RENSER AGAIN ALL THE ARTICLE WITH STATUS 1
+            renderName();//RENSER AGAIN ALL THE employe WITH STATUS 1
 
         }
 
@@ -207,11 +206,10 @@
             renderName();
         }
 
-        function renderName() {//article of the series
+        function renderName() {//get the all employe that Active
             ajaxCall("GET", "../api/Employes", "", getSCB, error);//read the Employes in server
         }
 
-        // this function is activated in case of a failure
         function error(err) {
             swal("Error: " + err);
         }
@@ -296,17 +294,18 @@
                     </div>
                     <!-- end page title -->
 
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box" >
                                 <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-12"> <!--new employe-->
                                         <button type="button" id="BTN" class="btn-lg btn btn-info" data-toggle="modal" data-target="#myModal">
                                             הוסף עובד חדש
                                         </button>
                                     </div>
                                     <div class="col-lg-12">
-                                        <form id="pForm" >
+                                        <form id="pForm" ><!--data table-->
                                             <table id="employeTable" class="display" style="width:70%; margin-top:20px;">
                                                 <thead>
                                                     <tr>
@@ -326,7 +325,7 @@
                             </div>
 
                             <div class="container">
-                                <!-- Modal -->
+                                <!-- Modal --><!--new employe-->
                                 <div class="modal fade" id="myModal" role="dialog">
                                     <div class="modal-dialog">
                                         <!-- Modal content-->

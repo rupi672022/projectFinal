@@ -10,7 +10,7 @@ namespace System.Models.DAL
     public class OrderDataServices
     {
 
-        public int Insert(Orders order) //insert new user to table
+        public int Insert(Orders order) //insert new company
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -20,7 +20,7 @@ namespace System.Models.DAL
                 //C - Connect to the Database
                 con = Connect("ProjDB");
 
-                //C Create the Insert SqlCommand - נבדוק אם המאמר נמצא בטבלת מאמרים 
+                //C Create the Insert SqlCommand - check if the order in table [Order] 
                 SqlCommand insertCommand = CreateInsertCommandCheck(order, con);
 
 
@@ -28,20 +28,21 @@ namespace System.Models.DAL
                 SqlDataReader dataReader = insertCommand.ExecuteReader();
 
 
-                if (dataReader.Read())
+                if (dataReader.Read())//if yes insert product on order in table [ProductOnOrder]
                 {
                     dataReader.Close();
                     SqlCommand insertCommandProduct = CreateInsertCommandProductOrder(order, con);
                     //E Execute
                     numEffected = insertCommandProduct.ExecuteNonQuery();
                 }
-                else
+                else//if not
                 {
                     dataReader.Close();
-                    //C Create the Insert SqlCommand
+                    //C Create the Insert SqlCommand insert order int table [Order]
                     SqlCommand insertCommandOrder = CreateInsertCommandOrder(order, con);
                     numEffected = insertCommandOrder.ExecuteNonQuery();
 
+                    //insert compant on order in table[CompanyOnOrder]
                     SqlCommand insertCommandCompany = CreateInsertCommandCompanyOrder(order, con);
                     //E Execute
                     numEffected = insertCommandCompany.ExecuteNonQuery();
@@ -70,7 +71,7 @@ namespace System.Models.DAL
         }
 
 
-        public List<Orders> Read(int idOrder)//get the employe 
+        public List<Orders> Read(int idOrder)//get the product on order
         {
 
             SqlConnection con = null;
@@ -118,7 +119,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Orders> ReadgetImage(int idOrder)//get the employe 
+        public List<Orders> ReadgetImage(int idOrder)//get the imant in this order 
         {
 
             SqlConnection con = null;
@@ -167,7 +168,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Orders> Read(string preparationDate,int id)//get the employe 
+        public List<Orders> Read(string preparationDate,int id)//get the order with this date - app
         {
 
             SqlConnection con = null;
@@ -214,7 +215,7 @@ namespace System.Models.DAL
 
         }
 
-        public bool Update(Orders order) //insert to table
+        public bool Update(Orders order) //updae the order - status + image - app
         {
 
             SqlConnection con = null;
@@ -222,7 +223,7 @@ namespace System.Models.DAL
 
             try
             {
-                //C - Connect to the Database - קשר עם הפרויקט 
+                //C - Connect to the Database 
                 con = Connect("ProjDB");
 
                 SqlCommand updatecommand = CreateUpdateCommandStatusOrder(con, order);
@@ -246,7 +247,7 @@ namespace System.Models.DAL
             return true;
         }
 
-        public List<Orders> Delete(int id, int Norder) //מחיקה מוצר מהרשימה
+        public List<Orders> Delete(int id, int Norder) //delepe product from table
         {
 
             SqlConnection con = null;
@@ -254,7 +255,7 @@ namespace System.Models.DAL
 
             try
             {
-                //C - Connect to the Database - קשר עם הפרויקט 
+                //C - Connect to the Database 
                 con = Connect("ProjDB");
 
                 SqlCommand deletecommand = createDeleteCommand(con, id, Norder);
@@ -292,9 +293,8 @@ namespace System.Models.DAL
             return con;
         }
 
-        SqlCommand CreateInsertCommandCheck(Orders order, SqlConnection con)
+        SqlCommand CreateInsertCommandCheck(Orders order, SqlConnection con)//check if this order in the table
         {
-            //check in the table Article_2022 have this article
             string artstr = "SELECT * FROM [Order] WHERE orderNum = '" + order.OrderNum + "'";
 
 
@@ -304,9 +304,8 @@ namespace System.Models.DAL
 
         }
 
-        SqlCommand CreateInsertCommandOrder(Orders order, SqlConnection con)
+        SqlCommand CreateInsertCommandOrder(Orders order, SqlConnection con)//insert order
         {
-            //insert to table - Users_2022
             string commandStr = "INSERT INTO [Order] ([orderNum]) VALUES (@orderNum)";
 
             SqlCommand cmd = createCommand(con, commandStr);
@@ -317,7 +316,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand CreateInsertCommandCompanyOrder(Orders order, SqlConnection con)
+        SqlCommand CreateInsertCommandCompanyOrder(Orders order, SqlConnection con)//insert company on order
         {
 
             string commandStr = "INSERT INTO CompanyOnOrder ([companyNum],[orderNum],[startDate],[dateArrivel]) VALUES (@companyNum,@orderNum,@startDate,@dateArrivel)";
@@ -336,7 +335,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand CreateInsertCommandProductOrder(Orders order, SqlConnection con)
+        SqlCommand CreateInsertCommandProductOrder(Orders order, SqlConnection con)//insert product on order
         {
 
             string commandStr = "INSERT INTO ProductOnOrder ([barcodNum],[orderNum],[weight],[quantity],[total]) VALUES (@barcodNum,@orderNum,@weight,@quantity,@total)";
@@ -357,7 +356,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand CreateSelectCommandOrder(SqlConnection con, int idOrder)
+        SqlCommand CreateSelectCommandOrder(SqlConnection con, int idOrder)//get the prodct in this order
         {
 
             string commandStr = "SELECT * FROM ProductOnOrder WHERE orderNum="+ idOrder;
@@ -368,7 +367,7 @@ namespace System.Models.DAL
 
         }
 
-        SqlCommand CreateSelectCommandOrderImage(SqlConnection con, int idOrder)
+        SqlCommand CreateSelectCommandOrderImage(SqlConnection con, int idOrder)//get employe with this order - app
         {
 
             string commandStr = "SELECT * FROM EmployeeOnOrder WHERE orderNum=" + idOrder;
@@ -379,7 +378,7 @@ namespace System.Models.DAL
 
         }
 
-        SqlCommand CreateSelectCommandEmployeOrder(SqlConnection con, string preparationDate,int id)
+        SqlCommand CreateSelectCommandEmployeOrder(SqlConnection con, string preparationDate,int id)//get the order with the date - app
         {
 
             string commandStr = "SELECT * FROM EmployeeOnOrder WHERE preparationDate LIKE @preparationDate AND employNum=" + id;
@@ -392,7 +391,7 @@ namespace System.Models.DAL
 
         }
 
-        SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)
+        SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image - app
         {
             string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "' WHERE orderNum='" + order.OrderNum + "' ";
             SqlCommand cmd = createCommand(con, commandStr);
@@ -400,7 +399,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand createDeleteCommand(SqlConnection con, int id, int Norder)
+        SqlCommand createDeleteCommand(SqlConnection con, int id, int Norder)//delete product from order
         {
             string commandStr = "DELETE from [ProductOnOrder] WHERE orderNum='" + Norder + "' And barcodNum='"+id+"' ";
             SqlCommand cmd = createCommand(con, commandStr);

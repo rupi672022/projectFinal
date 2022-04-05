@@ -12,35 +12,34 @@ namespace System.Controllers
     {
         // GET api/<controller>
 
-        public List<Employees> Get()
+        public List<Employees> Get()//get all the employes that Active
         {
             Employees employe = new Employees();
             return employe.Read();
         }
 
-        public List<Employees> Get(int employeNum)
+        public List<Employees> Get(int employeNum)//get the the employe with this number employe
         {
             Employees employe = new Employees();
             return employe.Read(employeNum);
         }
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody] Employees employe) //go to class Article 
+        public HttpResponseMessage Post([FromBody] Employees employe) //go to class Article //insert new employe
         {
             int id = employe.Insert();
             return Request.CreateResponse(HttpStatusCode.OK,"success");
         }
 
         // PUT api/<controller>/5
-        // PUT api/<controller>/5
-        public HttpResponseMessage Put([FromBody] Employees employe)
+        public HttpResponseMessage Put([FromBody] Employees employe)//update the info on employe
         {
             employe.Update();
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
 
         // DELETE api/<controller>/5
-        public List<Employees> Delete(int id)
+        public List<Employees> Delete(int id)//delete this employe - just to update to 0
         {
             Employees employe = new Employees();
             return employe.Delete(id);

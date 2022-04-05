@@ -37,24 +37,24 @@
     <script>
 
         $(document).ready(function () {
-            ajaxCall("GET", "../api/Companies", "", getCSCB, error);//read the series in server
+            ajaxCall("GET", "../api/Companies", "", getCSCB, error);//get all the compamies
 
-            $("#companyForm").submit(submitToOrderCompany);//בחירת בית עסק להזמנה
-            $("#productForm").submit(submitToOrderProduct);//בחירת מוצר להזמנה
-            $("#newcompanyForm").submit(submitToCom);// הוספת בית עסק חדש
-            $("#newproductForm").submit(submitToPro);//הוספת מוצר חדש
+            $("#companyForm").submit(submitToOrderCompany);//choose company to order
+            $("#productForm").submit(submitToOrderProduct);//choose product to order
+            $("#newcompanyForm").submit(submitToCom);//add new company
+            $("#newproductForm").submit(submitToPro);//add new product
 
-            $('#myModal').on('shown.bs.modal', function () {//POPUP לבית עסק ולמוצר
+            $('#myModal').on('shown.bs.modal', function () {//POPUP  to company / product
                 $('#myModalCompany').trigger('focus')
                 $('#myModalProduct').trigger('focus')
                 $('#myModalAddProduct').trigger('focus')
             });
 
             $('.btn-product').click(function () {
-                ajaxCall("GET", "../api/Products", "", getPSCB, error)
-            });//read the series in server});
+                ajaxCall("GET", "../api/Products", "", getPSCB, error)//get all the product
+            });
 
-            $('.updateContact').click(function () {
+            $('.updateContact').click(function () {//update contact in company
                 console.log($("#num").val())
                 newContact = {
                     CompanyNum: $("#num").val(),
@@ -63,9 +63,9 @@
                 }
 
                 ajaxCall("PUT", "../api/Companies", JSON.stringify(newContact), getPSCB, error)
-            });//read the series in server});
+            });
 
-            $(document).on("click", ".deleteBtn", function () {
+            $(document).on("click", ".deleteBtn", function () {//delete product frop order
                 id = this.id;
                 console.log(id);
                 swal({ // this will open a dialouge
@@ -90,7 +90,7 @@
         });
 
 
-        function submitToCom() {
+        function submitToCom() {//add new company
 
             newCompany = {
                 CompanyName: $("#Cname").val(),
@@ -102,7 +102,6 @@
                 DistributaionArea: $("#CdisArrea").val()
             }
             console.log(newCompany);
-            //alert(newCompany)
 
             ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsses, error);
 
@@ -110,9 +109,9 @@
 
         }
 
-        function submitToPro() {
+        function submitToPro() {//add new product
 
-            if ($("downfromTotal").checked == true)
+            if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram
                 downfromTotal = 0.1;
             else
                 downfromTotal = 0;
@@ -125,7 +124,6 @@
                 DownfromTotal: downfromTotal
             }
             console.log(newProduct);
-            //alert(newCompany)
 
             ajaxCall("POST", "../api/Products", JSON.stringify(newProduct), postSucsses, error);
 
@@ -138,7 +136,7 @@
 
         }
 
-        function getCSCB(list) {//render the name of the series in server
+        function getCSCB(list) {//render the name of the companies in server
             console.log(list);
 
             listname = [];
@@ -165,7 +163,7 @@
 
         }
 
-        function renderCompany() {
+        function renderCompany() {//get the info about this company
 
             name_company = document.getElementById("companyName").value;//the series choose
             console.log(name_company);
@@ -173,7 +171,7 @@
                 ajaxCall("GET", "../api/Companies?name=" + name_company, "", getNCSCB, error);
         }
 
-        function getNCSCB(list) {
+        function getNCSCB(list) {//insert the unfo to input
             obj = list[0];
 
             date = new Date();
@@ -192,7 +190,7 @@
 
         }
 
-        function submitToOrderCompany() {
+        function submitToOrderCompany() {//insert the num order , the date to need to sent the company and the num company
 
             date = new Date($("#dateArrivel").val());
 
@@ -206,7 +204,7 @@
             return false;
         }
 
-        function getPSCB(list) {
+        function getPSCB(list) {//get all the product
             console.log(list);
 
             listname = [];
@@ -229,7 +227,7 @@
             document.getElementById("selectProduct").innerHTML = str;
         }
 
-        function renderProduct() {
+        function renderProduct() {//get the info about the product
 
             name_product = document.getElementById("productName").value;//the series choose
             console.log(name_product);
@@ -237,26 +235,26 @@
                 ajaxCall("GET", "../api/Products?name=" + name_product, "", getNPSCB, error);
         }
 
-        function getNPSCB(list) {
+        function getNPSCB(list) {//insert the info to the input
             obj = list[0];
 
             $("#Pbarcod").val(obj.Barcod);
             $("#Ptype").val(obj.Type);
 
             ST = "";
-            if (obj.Type == "קשה" || obj.Type == "חצי קשה") {
+            if (obj.Type == "קשה" || obj.Type == "חצי קשה") {//if the type of product hard need to insert weight
                 ST += "<label for='Pweight'>משקל המוצר בסך הכול</label>";
                 ST += "<input type = 'number' class='form-control' id = 'Pweight' placeholder = 'הכנס את משקל המוצר' >";
             }
             else {
-                ST += "<label for='Pquantity'>כמות</label>";
+                ST += "<label for='Pquantity'>כמות</label>";//if not need to insert quantity
                 ST += "<input type='number' class='form-control' id='Pquantity' placeholder=' הכנס את כמות המוצר '>";
             }
 
             document.getElementById("change").innerHTML = ST;
         }
 
-        function submitToOrderProduct() {
+        function submitToOrderProduct() {//insert product to order
 
             addProduct = {
                 OrderNum: $("#orderNum").val(),
@@ -280,7 +278,7 @@
 
         }
 
-        function deleteProduct(id) {
+        function deleteProduct(id) {//delete product from order
             console.log(id);
             Norder = $("#orderNum").val();
             ajaxCall("DELETE", "../api/Orders?id=" + id + "&Norder=" + Norder, "", deleteSuccess, error);
@@ -291,12 +289,12 @@
             renderCompany();
         }
 
-        function postProductSucsses() {
+        function postProductSucsses() {//fget all the product in this order
             console.log("sucsses");
             ajaxCall("GET", "../api/Orders?idOrder=" + $("#orderNum").val(), "", getProdcut, error);
         }
 
-        function getProdcut(list) {
+        function getProdcut(list) {//render the product
             console.log(list);
 
             str = "<ul>";
@@ -451,14 +449,17 @@
                                         <div>
                                             <button type="button" id="BTN" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalCompany">
                                                 הוסף בית עסק חדש
+                                                <!--new company-->
                                             </button>
                                             <button type="button" id="BTN" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalProduct">
                                                 הוסף מוצר חדש
+                                                <!--new product-->
                                             </button>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <!-- הכנסת חברה להזמנה -->
+
+                                        <!-- הinsert company to order -->
                                         <div id="companyDiv" class="card">
                                             <form id="companyForm">
                                                 <div class="form-group row">
@@ -537,7 +538,7 @@
                                     </div>
 
                                     <div class="col-lg-12">
-                                        <!-- הכנסת מוצרים להזמנה -->
+                                        <!-- insert product to order -->
                                         <div id="productDiv" class="card">
                                             <button type="button" id="BTN" class="btn-product" data-toggle="modal" data-target="#myModalAddProduct">
                                                 הוסף מוצר להזמנה
@@ -551,7 +552,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- מוצר חדש -->
+
+                                    <!-- new product - pop up -->
                                     <div class="container">
                                         <!-- Modal -->
                                         <div class="modal fade" id="myModalProduct" role="dialog">
@@ -604,7 +606,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- חברה חדש -->
+
+                                    <!-- new company - pop up -->
                                     <div class="container">
                                         <!-- Modal -->
                                         <div class="modal fade" id="myModalCompany" role="dialog">
@@ -677,7 +680,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- פופ אפ עבור מוצר להזמנה -->
+
+                                    <!---product to order - pop up -->
                                     <div class="container">
                                         <!-- Modal -->
                                         <div class="modal fade" id="myModalAddProduct" role="dialog">
@@ -735,6 +739,7 @@
 
         </div>
     </div>
+
     <!-- Vendor js -->
     <script src="assets/js/vendor.min.js"></script>
 

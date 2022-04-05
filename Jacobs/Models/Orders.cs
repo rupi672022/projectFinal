@@ -67,28 +67,28 @@ namespace System.Models
         public int Status { get => status; set => status = value; }
         public string Image { get => image; set => image = value; }
 
-        public int Insert()//insert user
+        public int Insert()//insert new order
         {
             OrderDataServices ds = new OrderDataServices();
             int status = ds.Insert(this);
             return status;
         }
 
-        public List<Orders> Read(int idOrder)
+        public List<Orders> Read(int idOrder)//get the product on order
         {
             OrderDataServices ds = new OrderDataServices();
             List<Orders> listOrder = ds.Read(idOrder);
             return listOrder;
         }
 
-        public List<Orders> ReadgetImage(int idOrder)
+        public List<Orders> ReadgetImage(int idOrder)//get image on this order - APP
         {
             OrderDataServices ds = new OrderDataServices();
             List<Orders> listOrder = ds.ReadgetImage(idOrder);
             return listOrder;
         }
 
-        public List<Orders> Read(string preparationDate,int id)
+        public List<Orders> Read(string preparationDate,int id)//get order with the date  - APP
         {
             OrderDataServices ds = new OrderDataServices();
             List<Orders> listOrder = ds.Read(preparationDate,id);
@@ -96,14 +96,14 @@ namespace System.Models
         }
 
 
-        public bool Update()//insert the article to the table
+        public bool Update()//update the order - status + image
         {
             OrderDataServices ds = new OrderDataServices();
             return ds.Update(this);
 
         }
 
-        public List<Orders> Delete(int id, int Norder)
+        public List<Orders> Delete(int id, int Norder)//delete product frop order
         {
             OrderDataServices ds = new OrderDataServices();
             return ds.Delete(id, Norder);

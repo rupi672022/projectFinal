@@ -66,28 +66,28 @@ namespace System.Models
         public double Lat { get => lat; set => lat = value; }
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
 
-        public int Insert()//insert user
+        public int Insert()//insert new company
         {
             CompanyDataServices ds = new CompanyDataServices();
             int status = ds.Insert(this);
             return status;
         }
 
-        public List<Company> Read()
+        public List<Company> Read()//get the all company
         {
             CompanyDataServices ds = new CompanyDataServices();
             List<Company> Companieslist = ds.Read();
             return Companieslist;
         }
 
-        public List<Company> Read(string name)
+        public List<Company> Read(string name)//get the info about this company
         {
             CompanyDataServices ds = new CompanyDataServices();
             List<Company> Companieslist = ds.Read(name);
             return Companieslist;
         }
 
-        public bool Update()//insert the article to the table
+        public bool Update()//update this company
         {
             CompanyDataServices ds = new CompanyDataServices();
             return ds.Update(this);

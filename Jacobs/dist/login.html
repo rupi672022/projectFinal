@@ -15,6 +15,7 @@
     <!-- App css -->
     <link href="../CSS/login.css" rel="stylesheet" />
 
+    <!--Script-->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -30,21 +31,21 @@
             $("#login").click(login);
         });
 
-        function login() {//the user want to insert to user
+        function login() {//get employe with this num employe
             let worknumberLogin = $("#worknumberLogin").val();
             ajaxCall("GET", "../api/Employes?employeNum=" + worknumberLogin, "", getSCB, getECB);
 
         }
 
 
-        function getSCB(answer) { //get the user with the email
+        function getSCB(answer) { //check the num employe
 
-            if (answer.length == 0) {
+            if (answer.length == 0) {// if not exist
                 swal("מספר עובד שגוי, נסה שנית");
                 $("#worknumberLogin").val("");
             }
 
-            else if (answer[0].Role != "מנהל") {
+            else if (answer[0].Role != "מנהל") {//if not manager
                 swal("עובד לא מורשה");
                 $("#worknumberLogin").val("");
             }

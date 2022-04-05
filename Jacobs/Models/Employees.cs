@@ -30,14 +30,14 @@ namespace System.Models
         public string Role { get => role; set => role = value; }
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
 
-        public List<Employees> Read()
+        public List<Employees> Read()//read all the employe that Active
         {
             EmployeeDataServices ds = new EmployeeDataServices();
             List<Employees> listEmployes = ds.Read();
             return listEmployes;
         }
 
-        public List<Employees> Read(int employeNum)
+        public List<Employees> Read(int employeNum)//read only this employe 
         {
             EmployeeDataServices ds = new EmployeeDataServices();
             List<Employees> listEmployes = ds.Read(employeNum);
@@ -45,21 +45,21 @@ namespace System.Models
         }
 
 
-        public int Insert()//insert the article to the table
+        public int Insert()//insert new employe
         {
             EmployeeDataServices ds = new EmployeeDataServices();
             int status = ds.Insert(this);
             return status;
         }
 
-        public bool Update()//insert the article to the table
+        public bool Update()//update the employe
         {
             EmployeeDataServices ds = new EmployeeDataServices();
             return ds.Update(this);
 
         }
 
-        public List<Employees> Delete(int id)
+        public List<Employees> Delete(int id)//delete this employe - only update to 0
         {
             EmployeeDataServices ds = new EmployeeDataServices();
             return ds.Delete(id);

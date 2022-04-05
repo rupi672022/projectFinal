@@ -47,35 +47,35 @@ namespace System.Models
         public double WeightAll { get => weightAll; set => weightAll = value; }
         public int Status { get => status; set => status = value; }
 
-        public int Insert()
+        public int Insert()//insert new product
         {
             ProductDataServices ds = new ProductDataServices();
             int status = ds.Insert(this);
             return status;
         }
 
-        public List<Products> Read()
+        public List<Products> Read()//get all the product
         {
             ProductDataServices ds = new ProductDataServices();
             List<Products> productslist = ds.Read();
             return productslist;
         }
 
-        public List<Products> Read(string name)
+        public List<Products> Read(string name)//get the info to this product
         {
             ProductDataServices ds = new ProductDataServices();
             List<Products> productslist = ds.Read(name);
             return productslist;
         }
 
-        public List<Products> Read(int id)
+        public List<Products> Read(int id)//get the product to this order
         {
             ProductDataServices ds = new ProductDataServices();
             List<Products> productslist = ds.Read(id);
             return productslist;
         }
 
-        public bool Update()//insert the article to the table
+        public bool Update()//update prosuct - status - app
         {
             ProductDataServices ds = new ProductDataServices();
             return ds.Update(this);

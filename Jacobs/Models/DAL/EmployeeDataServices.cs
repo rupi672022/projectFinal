@@ -11,7 +11,7 @@ namespace System.Models.DAL
     public class EmployeeDataServices
     {
 
-        public int Insert(Employees employe) //insert new user to table
+        public int Insert(Employees employe) //insert new employe
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -49,7 +49,7 @@ namespace System.Models.DAL
 
         }
 
-        public List<Employees> Read(int employeNum)//get the employe 
+        public List<Employees> Read(int employeNum)//get this employe 
         {
 
             SqlConnection con = null;
@@ -66,7 +66,7 @@ namespace System.Models.DAL
                 SqlDataReader dataReader = selectCommand.ExecuteReader();
 
                 List<Employees> listEmployes = new List<Employees>();
-                while (dataReader.Read())//if user on table
+                while (dataReader.Read())
                 {
                     Employees employe = new Employees();
                     employe.EmployeNum = Convert.ToInt32(dataReader["employeNum"]);
@@ -100,7 +100,7 @@ namespace System.Models.DAL
         }
 
 
-        public List<Employees> Read()//get the all the employee 
+        public List<Employees> Read()//get the all the employee that Active
         {
 
             SqlConnection con = null;
@@ -150,7 +150,7 @@ namespace System.Models.DAL
 
         }
 
-        public bool Update(Employees employe) //insert to table
+        public bool Update(Employees employe) //update the employe
         {
 
             SqlConnection con = null;
@@ -158,7 +158,7 @@ namespace System.Models.DAL
 
             try
             {
-                //C - Connect to the Database - קשר עם הפרויקט 
+                //C - Connect to the Database
                 con = Connect("ProjDB");
 
                 SqlCommand updatecommand = createUpdateCommand(con, employe);
@@ -182,7 +182,7 @@ namespace System.Models.DAL
             return true;
         }
 
-        public List<Employees> Delete(int id) //insert to table
+        public List<Employees> Delete(int id) //delete this employe - update this employe to 0
         {
 
             SqlConnection con = null;
@@ -190,7 +190,7 @@ namespace System.Models.DAL
 
             try
             {
-                //C - Connect to the Database - קשר עם הפרויקט 
+                //C - Connect to the Database 
                 con = Connect("ProjDB");
 
                 SqlCommand deletecommand = createDeleteCommandStatus(con, id);
@@ -228,9 +228,8 @@ namespace System.Models.DAL
             return con;
         }
 
-        SqlCommand CreateInsertCommand(Employees employe, SqlConnection con)
+        SqlCommand CreateInsertCommand(Employees employe, SqlConnection con)//inset to table new employe
         {
-            //insert to table - Users_2022
             string commandStr = "INSERT INTO Employes ([employeNum],[name],[phone],[role],[distributaionArea]) VALUES (@employeNum,@name,@phone,@role,@diArea)";
 
             SqlCommand cmd = createCommand(con, commandStr);
@@ -254,7 +253,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        private SqlCommand createSelectCommand(SqlConnection con,int employeNum)
+        private SqlCommand createSelectCommand(SqlConnection con,int employeNum)//get this employe
         {
 
             string commandStr = "SELECT * FROM Employes WHERE employeNum ="+employeNum;
@@ -265,7 +264,7 @@ namespace System.Models.DAL
 
         }
 
-        private SqlCommand createSelectCommandEmploye(SqlConnection con)
+        private SqlCommand createSelectCommandEmploye(SqlConnection con)//get all the employe that Active
         {
 
             string commandStr = "SELECT * FROM Employes WHERE Employes.status=1";
@@ -277,7 +276,7 @@ namespace System.Models.DAL
         }
 
 
-        SqlCommand createUpdateCommand(SqlConnection con, Employees employe)
+        SqlCommand createUpdateCommand(SqlConnection con, Employees employe)//update this employe
         {
             string commandStr = "UPDATE Employes SET phone='"+employe.Phone+"', role='"+employe.Role+ "', distributaionArea='"+employe.DistributaionArea+"' WHERE Employes.employeNum='" + employe.EmployeNum + "' ";
             SqlCommand cmd = createCommand(con, commandStr);
@@ -285,7 +284,7 @@ namespace System.Models.DAL
             return cmd;
         }
 
-        SqlCommand createDeleteCommandStatus(SqlConnection con, int id)
+        SqlCommand createDeleteCommandStatus(SqlConnection con, int id)//delete this employe - change the status to 0 
         {
             string commandStr = "UPDATE Employes SET status=0 WHERE Employes.employeNum='" + id + "' ";
             SqlCommand cmd = createCommand(con, commandStr);
