@@ -66,8 +66,7 @@ namespace System.Models
 
             foreach (FindingPaths obj in list)
             {
-                if (obj.DateArrivel == date)
-                {
+               
                     if (obj.DistributaionArea == "צפון")
                     {
                         areasArr[0].Add(obj.Address);
@@ -88,7 +87,7 @@ namespace System.Models
                         areasArr[3].Add(obj.Address);
                     }
 
-                }
+                
             }
 
             for (int i = 0; i < areasArr.Length; i++)
