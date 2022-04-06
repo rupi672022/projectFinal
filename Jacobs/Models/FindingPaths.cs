@@ -100,16 +100,16 @@ namespace System.Models
                     List<String> newarr = new List<string>();
                     newarr.Insert(0, "גשר העץ 27,עמק חפר");
                     newarr.AddRange(areasArr[i]);
-                    //List<String> dicArr = new List<string>();
                     string[] listToDicArr = newarr.ToArray();
                     string[] listToArr = areasArr[i].ToArray();
                     var resultDic = new Dictionary<string, int>();
                     resultDic = func.Dic(listToDicArr);
                     func.prnPermut(listToArr, 0, listToArr.Length - 1, result);
                     Console.Write("\n\n");
-                    selectedPath=  func.Dis(resultDic, result,list);
+                  
+                        selectedPath = func.Dis(resultDic, result, list);
                     
-                    
+
                 }
                
             }
