@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     marginRight:80,
     padding: 10,
     textAlign: 'center',
-    marginBottom:-50
+    marginBottom:-40
   },
   buttonOvarlay: {
     fontSize:30,
