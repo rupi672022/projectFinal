@@ -52,7 +52,7 @@ export default function Boxes(props) {
         return <View />;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return <Text>אין גישה למצלמה</Text>;
     }
 
 

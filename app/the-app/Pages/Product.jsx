@@ -92,10 +92,10 @@ export default function Product(props) {
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting for camera permission</Text>;
+        return <Text>אפשר להתחבר עם מצלמה</Text>;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return <Text>אין גישה למצלמה</Text>;
     }
 
     const updateProduct = () => {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 
-namespace System.Models.DAL
+namespace Jacobs.Models.DAL
 {
     public class CompanyDataServices
     {

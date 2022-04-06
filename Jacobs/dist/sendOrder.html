@@ -32,46 +32,18 @@
 
     <script src="../Scripts/ajaxCalls.js"></script>
 
+    <link href="../CSS/sendOrder.css" rel="stylesheet" />
 
-    <style>
-        body {
-            direction: rtl;
-            background-color: #eee;
-            text-align: right;
-            
-            
-        }
 
-        .navbar-custom {
-            background-color: #ffe393;
-        }
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfhF1QgJJhmhVU6A1yhWZgOnfrJh1VtMk&callback=initMap&v=weekly"async></script>
 
-        h3 {
-            color: black;
-            text-align: center;
-        }
-
-        #BTN {
-            width: 200px;
-            background-color: #FFE587;
-            color: black;
-            border: hidden;
-            padding: 5px;
-            margin-top: 10px;
-            margin-right: 10%;
-        }
-
-        #map {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
     <script>
 
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
+
             initMap();
         });
 
@@ -85,7 +57,7 @@
 
         function success(list) {
             console.log(list);
-            
+
 
         }
 
@@ -277,12 +249,8 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div id="Algo">בלבלבלה</div>
-                                        <div id="map"></div>
 
-                                        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfhF1QgJJhmhVU6A1yhWZgOnfrJh1VtMk&callback=initMap&v=weekly"
-                                                async></script>
+                                        <div id="map"></div>
                                     </div>
 
                                 </div>

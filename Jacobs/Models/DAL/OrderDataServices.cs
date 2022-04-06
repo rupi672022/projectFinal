@@ -4,8 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 
-namespace System.Models.DAL
+namespace Jacobs.Models.DAL
 {
     public class OrderDataServices
     {
@@ -287,7 +288,7 @@ namespace System.Models.DAL
         SqlConnection Connect(string connectionStringName)
         {
 
-            string connectionString = Web.Configuration.WebConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            string connectionString =WebConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
             SqlConnection con = new SqlConnection(connectionString); // מתחבר אל הנתונים
             con.Open(); // סטטוס - פתוח 
             return con;

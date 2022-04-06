@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using System.Models.DAL;
+using Jacobs.Models.DAL;
 
-namespace System.Models
+namespace Jacobs.Models
 {
     public class FindingPaths
     {
@@ -94,7 +94,7 @@ namespace System.Models
             {
                 if (areasArr[i].Count == 3)
                 {
-                    var func = new fullfunc();
+                    fullfunc func = new fullfunc();
                     int factRes = func.factorial(areasArr[i].Count);
                     string[,] result = new string[factRes, (areasArr[i].Count) + 2];
                     List<String> newarr = new List<string>();
@@ -106,9 +106,10 @@ namespace System.Models
                     resultDic = func.Dic(listToDicArr);
                     func.prnPermut(listToArr, 0, listToArr.Length - 1, result);
                     Console.Write("\n\n");
-                  
-                        selectedPath = func.Dis(resultDic, result, list);
-                    
+
+                     var obj=func.Dis(resultDic, result, list);
+  
+
 
                 }
                

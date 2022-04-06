@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Models.DAL;
+using Jacobs.Models.DAL;
 
-namespace System.Models
+namespace Jacobs.Models
 {
     public class Employees
     {
