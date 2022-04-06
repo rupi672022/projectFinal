@@ -92,7 +92,7 @@ namespace System.Models
 
             for (int i = 0; i < areasArr.Length; i++)
             {
-                if (areasArr[i].Count == 4)
+                if (areasArr[i].Count == 3)
                 {
                     var func = new fullfunc();
                     int factRes = func.factorial(areasArr[i].Count);
@@ -105,12 +105,13 @@ namespace System.Models
                     string[] listToArr = areasArr[i].ToArray();
                     var resultDic = new Dictionary<string, int>();
                     resultDic = func.Dic(listToDicArr);
-                    Console.Write("\nAll the combination are: \n", listToArr.Length);
                     func.prnPermut(listToArr, 0, listToArr.Length - 1, result);
                     Console.Write("\n\n");
-                    selectedPath = func.Dis(resultDic, result);
-
+                    selectedPath=  func.Dis(resultDic, result,list);
+                    
+                    
                 }
+               
             }
             return selectedPath;
         }
@@ -133,13 +134,13 @@ namespace System.Models
                 return capitals;
             }
 
-            public List<FindingPaths> Dis(Dictionary<string, int> capitals, string[,] result)///להפוך לרשימה
+            public List<FindingPaths> Dis(Dictionary<string, int> capitals, string[,] result, List<FindingPaths> list)///להפוך לרשימה
             {
                 List<FindingPaths> selectedCombintion = new List<FindingPaths>();
                 int indexWinner = 0;
                 int winner = 0;
                 int count = 0, sumline = 0;
-                int[,] arrayDis = new int[,] { { 0, 5, 5, 4, 5 }, { 0, 5, 5, 4, 5 }, { 0, 5, 5, 4, 5 }, { 0, 5, 5, 4, 5 }, { 0, 5, 5, 4, 5 } };
+                int[,] arrayDis = new int[,] {  { 0, 2, 9, 4 }, {3, 0,1 , 5 }, {  5, 5, 0, 5 }, { 5, 3, 3, 0 } };
                 List<int> termsList = new List<int>();
                 for (int i = 0; i < result.GetLength(0); i++)
                 {
@@ -178,14 +179,11 @@ namespace System.Models
                 Console.Write("The selected path is: ");
                 for (int j = 0; j < result.GetLength(1); j++)
                 {
-                    foreach (FindingPaths obj in selectedCombintion)
-                    {
-                        if (result[indexWinner, j] == obj.Address)
-                        {
-                            selectedCombintion.Add(new FindingPaths(obj.Address, obj.Lng, obj.Lat, obj.DistributaionArea, obj.DateArrivel, obj.CompanyNum));
-                        }
 
-                    }
+
+                    selectedCombintion.Add(new FindingPaths(result[indexWinner, j], 0, 0, "", "", 0));
+
+                    
                 }
                 return selectedCombintion;
 
