@@ -70,7 +70,7 @@ export default function OpenOrders(props) {
             <TouchableOpacity onPress={() => { btngetproduct(item.OrderNum) }}>
               <Text style={{
                 flexDirection: 'row',
-                marginLeft: 90,
+                marginLeft: 40,
                 fontSize: 25,
                 borderColor: item.Status == '1' ? '#efefef' : '#98FB98',
               }}>
@@ -138,8 +138,7 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: -100,
     marginBottom: 10,
-    marginLeft: 150,
-    marginLeft: 130,
+    marginLeft: 60,
     marginRight: 40,
     padding: 10,
     textAlign: 'center',
@@ -165,11 +164,11 @@ const styles = StyleSheet.create({
     color: 'black',
     borderWidth: 2,
     borderRadius: 20,
-    marginLeft: 90,
-    marginTop: -100,
-    marginRight: 190,
+    marginLeft: 110,
+    marginRight:80,
     padding: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom:-50
   },
   buttonOvarlay: {
     fontSize:30,

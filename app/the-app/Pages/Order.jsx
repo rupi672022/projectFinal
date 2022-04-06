@@ -75,12 +75,12 @@ export default function Order(props) {
                 fontSize: 20,
                 padding: 5,
                 borderWidth: 1,
-                marginLeft: 170,
+                marginLeft: 110,
                 width: '50%',
                 borderColor: item.Status == '1' ? '#e4e4e4' : '#98FB98',
                 textAlign: 'center',
-                backgroundColor: item.Status == '1' ? '#e4e4e4' : '#98FB98'
-              }}>{item.NameProduct} </Text>
+                backgroundColor: item.Status == '1' ? '#e4e4e4' : '#98FB98',
+                }}>{item.NameProduct} </Text>
             </TouchableOpacity>
           </View>
 
@@ -139,23 +139,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     color: 'black',
-    marginTop: -100,
+    marginTop: -110,
     marginBottom: 10,
 
   },
   tuchtext: {
-    padding: 5,
-  },
-  listText: {
-    fontSize: 20,
-    padding: 5,
-    borderWidth: 1,
-    marginLeft: 170,
-    width: '50%',
-    borderColor: '#e4e4e4',
-    backgroundColor: '#e4e4e4',
-    textAlign: 'center',
-
+    padding: 3,
+    marginTop:10,
   },
   buttonText: {
     fontSize: 30,
@@ -163,11 +153,13 @@ const styles = StyleSheet.create({
     color: 'black',
     borderWidth: 2,
     borderRadius: 20,
-    marginLeft: 180,
-    marginTop: -100,
-    marginRight: 20,
+    marginLeft: 110,
+    marginTop: -50,
+    marginRight: 75,
     padding: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom:-20,
+    backgroundColor:'#fff'
   },
   buttonOvarlay: {
     fontSize: 20,

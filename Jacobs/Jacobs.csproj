@@ -499,7 +499,6 @@
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <Content Include="js-calendar-main.zip" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
