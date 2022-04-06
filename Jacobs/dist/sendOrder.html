@@ -32,8 +32,33 @@
 
     <script src="../Scripts/ajaxCalls.js"></script>
 
-    <link href="../CSS/sendOrder.css" rel="stylesheet" />
 
+    <style>
+        body {
+            direction: rtl;
+            background-color: #eee;
+            text-align: right
+        }
+
+        .navbar-custom {
+            background-color: #ffe393;
+        }
+
+        h3 {
+            color: black;
+            text-align: center;
+        }
+
+        #BTN {
+            width: 200px;
+            background-color: #FFE587;
+            color: black;
+            border: hidden;
+            padding: 5px;
+            margin-top: 10px;
+            margin-right: 10%;
+        }
+    </style>
     <script>
 
         $(document).ready(function () {
@@ -42,21 +67,82 @@
 
         });
 
-        function textOfAlgo() {//get the path to this date
+        function textOfAlgo() {
             date = new Date($("#dateJob").val());
             date = date.toLocaleDateString();
 
-            ajaxCall("GET", "../api/FindingPaths?date="+date, "", success, error);
+            ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
         }
+
 
         function success(list) {
             console.log(list);
+            initMap();
+
         }
 
         function error(error) {
             console.log(error);
         }
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 32.063930, lng: 35.045252 },
+                zoom: 7.5,
+            });
+            // Define the LatLng coordinates for the outer path.
+            const north = [
+                { lat: 33.331551, lng: 35.775554 },
+                { lat: 32.941496, lng: 35.886075 },
+                { lat: 32.672009, lng: 35.602323 },
+                { lat: 32.549897, lng: 35.214789 },
+                { lat: 32.590993, lng: 34.916495 },
+                { lat: 32.829944, lng: 34.979568 },
+                { lat: 32.827121, lng: 35.045464 },
+                { lat: 33.094050, lng: 35.104245 },
+                { lat: 33.050365, lng: 35.402740 },
+                { lat: 33.134757, lng: 35.532395 },
+                { lat: 33.288369, lng: 35.567264 },
 
+                // north east
+            ];
+            // Define the LatLng coordinates for an inner path.
+            const central = [
+                { lat: 32.549897, lng: 35.214789 },
+                { lat: 32.454882, lng: 35.070826 },
+                { lat: 32.192718, lng: 34.961457 },
+                { lat: 31.850963, lng: 35.056698 },
+                { lat: 31.894471, lng: 34.680662 },
+                { lat: 32.590993, lng: 34.916495 },
+
+
+
+            ];
+            // Define the LatLng coordinates for another inner path.
+            const south = [
+                { lat: 31.850963, lng: 35.056698 },
+                { lat: 31.601329, lng: 34.806480 },
+                { lat: 31.228083, lng: 34.825869 },
+                { lat: 31.532458, lng: 34.572311 },
+                { lat: 31.638576, lng: 34.526046 },
+                { lat: 31.894471, lng: 34.680662 },
+            ];
+            const jerusalem = [
+                { lat: 31.786453, lng: 35.336044 },
+                { lat: 31.850963, lng: 35.056698 },
+                { lat: 31.752653, lng: 34.965175 },
+                { lat: 31.694328, lng: 35.124644 },
+            ];
+            const bermudaTriangle = new google.maps.Polygon({
+                paths: [north, central, south, jerusalem],
+                strokeColor: "#FFC107",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FFC107",
+                fillOpacity: 0.35,
+            });
+
+            bermudaTriangle.setMap(map);
+        }
 
     </script>
 
@@ -70,20 +156,20 @@
         <div class="navbar-custom">
             <h3 style="margin-top:10px">
                 &nbsp; &nbsp; משק יעקבס
-                <img id="imgLogo" src="../img/LOGO.png" />
+                <img style=" width: 60px; height: 50px;" src="../img/LOGO.png" />
             </h3>
             <!-- LOGO -->
         </div>
         <!-- end Topbar -->
         <!-- ========== Left Sidebar Start ========== -->
-        <div class="left-side-menu" >
+        <div class="left-side-menu" style="text-align: center;">
             <div class="slimscroll-menu">
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <div class="user-box">
                         <div class="float-left">
                             <a href="login.html" class="waves-effect">
-                                <i class="mdi mdi-account" id="LOgin"></i>
+                                <i class="mdi mdi-account" style="font-size: 80px; color: black; padding: 50px;"></i>
                             </a>
                         </div>
                     </div>
@@ -108,7 +194,7 @@
                             </a>
                         </li>
                         <li>
-                            <a  href="sendOrder.html" class="waves-effect">
+                            <a href="sendOrder.html" class="waves-effect">
                                 <i class=" mdi mdi-calendar"></i>
                                 <span> שילוח הזמנות </span>
                             </a>
@@ -125,14 +211,14 @@
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
 
-        <div class="content-page">
+        <div class="content-page" style="margin-right:240px;margin-left:0px;padding:10px;margin-top:30px">
             <div class="content">
                 <!-- Start Content-->
                 <div class="container-fluid">
                     <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
-                            <div class="page-title-box" >
+                            <div class="page-title-box" style="height:10px">
                             </div>
                         </div>
                     </div>
@@ -140,10 +226,10 @@
 
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="card-box">
+                            <div class="card-box" style="background-color:#ffff;margin-left:0px;">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="col-lg-6" style=" margin-left: 40%"><!--choose date to path-->
+                                        <div class="col-lg-6" style=" margin-left: 40%">
                                             <label for="dateJob">בחר תאריך להוצאת תוכנית עבודה לנהג </label>
                                             <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
                                         </div>
@@ -156,7 +242,7 @@
                                     </div>
 
                                 </div>
-                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,6 +251,8 @@
         </div>
     </div>
     <!-- Vendor js -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGgI2ltKw_RP_ctaCiSB8c3kyxVG5m4ug&callback=initMap&v=weekly"
+            async></script>
     <script src="assets/js/vendor.min.js"></script>
 
     <!-- App js -->
