@@ -37,7 +37,9 @@
         body {
             direction: rtl;
             background-color: #eee;
-            text-align: right
+            text-align: right;
+            
+            
         }
 
         .navbar-custom {
@@ -58,13 +60,19 @@
             margin-top: 10px;
             margin-right: 10%;
         }
+
+        #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
     <script>
 
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
-
+            initMap();
         });
 
         function textOfAlgo() {
@@ -77,19 +85,20 @@
 
         function success(list) {
             console.log(list);
-            initMap();
+            
 
         }
 
         function error(error) {
             console.log(error);
         }
+
         function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 8.5,
                 center: { lat: 32.063930, lng: 35.045252 },
-                zoom: 7.5,
+                mapTypeId: "terrain",
             });
-            // Define the LatLng coordinates for the outer path.
             const north = [
                 { lat: 33.331551, lng: 35.775554 },
                 { lat: 32.941496, lng: 35.886075 },
@@ -102,10 +111,7 @@
                 { lat: 33.050365, lng: 35.402740 },
                 { lat: 33.134757, lng: 35.532395 },
                 { lat: 33.288369, lng: 35.567264 },
-
-                // north east
             ];
-            // Define the LatLng coordinates for an inner path.
             const central = [
                 { lat: 32.549897, lng: 35.214789 },
                 { lat: 32.454882, lng: 35.070826 },
@@ -113,11 +119,7 @@
                 { lat: 31.850963, lng: 35.056698 },
                 { lat: 31.894471, lng: 34.680662 },
                 { lat: 32.590993, lng: 34.916495 },
-
-
-
             ];
-            // Define the LatLng coordinates for another inner path.
             const south = [
                 { lat: 31.850963, lng: 35.056698 },
                 { lat: 31.601329, lng: 34.806480 },
@@ -132,18 +134,55 @@
                 { lat: 31.752653, lng: 34.965175 },
                 { lat: 31.694328, lng: 35.124644 },
             ];
-            const bermudaTriangle = new google.maps.Polygon({
-                paths: [north, central, south, jerusalem],
-                strokeColor: "#FFC107",
+
+            new google.maps.Polygon({
+                map,
+                paths: north,
+                strokeColor: "#FF0000",
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
-                fillColor: "#FFC107",
+                fillColor: "#FF0000",
                 fillOpacity: 0.35,
+                draggable: true,
+
             });
 
-            bermudaTriangle.setMap(map);
-        }
+            new google.maps.Polygon({
+                map,
+                paths: central,
+                strokeColor: "#0000FF",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#0000FF",
+                fillOpacity: 0.35,
+                draggable: true,
 
+            });
+
+            new google.maps.Polygon({
+                map,
+                paths: south,
+                strokeColor: "#00FF00",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#00FF00",
+                fillOpacity: 0.35,
+                draggable: true,
+
+            });
+
+            new google.maps.Polygon({
+                map,
+                paths: jerusalem,
+                strokeColor: "#FF00FF",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF00FF",
+                fillOpacity: 0.35,
+                draggable: true,
+
+            });
+        }
     </script>
 
 </head>
@@ -238,22 +277,25 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div id="Algo"></div>
+                                        <div id="Algo">בלבלבלה</div>
+                                        <div id="map"></div>
+
+                                        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfhF1QgJJhmhVU6A1yhWZgOnfrJh1VtMk&callback=initMap&v=weekly"
+                                                async></script>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+                   
                 </div>
             </div>
 
         </div>
     </div>
-    <!-- Vendor js -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGgI2ltKw_RP_ctaCiSB8c3kyxVG5m4ug&callback=initMap&v=weekly"
-            async></script>
-    <script src="assets/js/vendor.min.js"></script>
+
 
     <!-- App js -->
     <script src="assets/js/app.min.js"></script>
