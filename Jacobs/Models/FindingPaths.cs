@@ -107,10 +107,12 @@ namespace Jacobs.Models
                     func.prnPermut(listToArr, 0, listToArr.Length - 1, result);
                     Console.Write("\n\n");
 
-                     var obj=func.Dis(resultDic, result, list);
-  
-
-
+                    var listAlgo = func.Dis(resultDic, result, list);
+                    foreach (FindingPaths ans in listAlgo)
+                    {
+                        selectedPath.Add(ans);
+                    }
+ 
                 }
                
             }
