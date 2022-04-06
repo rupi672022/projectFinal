@@ -36,15 +36,15 @@
 
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfhF1QgJJhmhVU6A1yhWZgOnfrJh1VtMk&callback=initMap&v=weekly"async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdwIqGFYZ6J2bZS8WzG-In3F_jWaMLM08&callback=initMap&v=weekly"async></script>
 
     <script>
 
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
-
-            initMap();
+           
+            
         });
 
         function textOfAlgo() {
@@ -57,7 +57,7 @@
 
         function success(list) {
             console.log(list);
-
+            initMap();
 
         }
 
@@ -66,8 +66,9 @@
         }
 
         function initMap() {
+            listExample = { lat: 33.331551, lng: 35.775554 };
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 8.5,
+                zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
                 mapTypeId: "terrain",
             });
@@ -154,6 +155,38 @@
                 draggable: true,
 
             });
+
+            new google.maps.Marker({
+                position: listExample,
+                map,
+                title: "Hello World!",
+            });
+            markerOnMap(listExample);
+        }
+      
+        function markerOnMap(listExample) {
+            const showGeocodedAddressOnMap = (asDestination) => {
+                const handler = ({ listExample }) => {
+                    map.fitBounds(bounds.extend(listExample[0].geometry.location));
+                    markersArray.push(
+                        new google.maps.Marker({
+                            map,
+                            position: listExample[0].geometry.location,
+                            label: asDestination ? "D" : "O",
+                        })
+                    );
+                };
+                return handler;
+
+            };
+
+
+            for (var i = 0; i < listExample.length; i++) {
+
+                geocoder
+                    .geocode({ address: listExample[i] })
+                    .then(showGeocodedAddressOnMap(true));
+            }
         }
     </script>
 
