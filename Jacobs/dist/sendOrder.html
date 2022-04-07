@@ -57,14 +57,18 @@
 
         function success(list) {
             console.log(list);
+<<<<<<< Updated upstream
             initMap();
+=======
+            console.log(list.lat);
+>>>>>>> Stashed changes
 
         }
 
         function error(error) {
             console.log(error);
         }
-
+        //create map with distrbution area
         function initMap() {
             listExample = { lat: 33.331551, lng: 35.775554 };
             const map = new google.maps.Map(document.getElementById("map"), {
@@ -240,7 +244,7 @@
                         <li>
                             <a href="sendOrder.html" class="waves-effect">
                                 <i class=" mdi mdi-calendar"></i>
-                                <span> שילוח הזמנות </span>
+                                <span> הפצת הזמנות </span>
                             </a>
                         </li>
                     </ul>

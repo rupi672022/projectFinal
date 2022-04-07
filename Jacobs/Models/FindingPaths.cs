@@ -50,14 +50,15 @@ namespace Jacobs.Models
 
         public List<FindingPaths> Algo(List<FindingPaths> list, string date)
         {
+            
             List<FindingPaths> selectedPath = new List<FindingPaths>();
+            //lists with distrebiution area
+            List<FindingPaths> north = new List<FindingPaths>();
+            List<FindingPaths> south = new List<FindingPaths>();
+            List<FindingPaths> center = new List<FindingPaths>();
+            List<FindingPaths> jerusalem = new List<FindingPaths>();
 
-            List<String> north = new List<string>();
-            List<String> south = new List<string>();
-            List<String> center = new List<string>();
-            List<String> jerusalem = new List<string>();
-
-            List<String>[] areasArr = new List<string>[4];
+            List<FindingPaths>[] areasArr = new List<FindingPaths>[4];
 
             areasArr[0] = north;
             areasArr[1] = south;
@@ -66,25 +67,26 @@ namespace Jacobs.Models
 
             foreach (FindingPaths obj in list)
             {
+                //add address to lists
                
                     if (obj.DistributaionArea == "צפון")
                     {
-                        areasArr[0].Add(obj.Address);
+                        areasArr[0].Add(obj);
                     }
 
                     else if (obj.DistributaionArea == "מרכז")
                     {
-                        areasArr[1].Add(obj.Address);
+                        areasArr[1].Add(obj);
                     }
 
                     else if (obj.DistributaionArea == "דרום")
                     {
-                        areasArr[2].Add(obj.Address);
+                        areasArr[2].Add(obj);
                     }
 
                     else //optin in jerusalem
                     {
-                        areasArr[3].Add(obj.Address);
+                        areasArr[3].Add(obj);
                     }
 
                 
@@ -95,17 +97,30 @@ namespace Jacobs.Models
                 if (areasArr[i].Count == 3)
                 {
                     fullfunc func = new fullfunc();
+                   //function factorial calculate how much comabination has
                     int factRes = func.factorial(areasArr[i].Count);
+                    //add +2 to save place to origin and destnation
                     string[,] result = new string[factRes, (areasArr[i].Count) + 2];
-                    List<String> newarr = new List<string>();
-                    newarr.Insert(0, "גשר העץ 27,עמק חפר");
-                    newarr.AddRange(areasArr[i]);
-                    string[] listToDicArr = newarr.ToArray();
-                    string[] listToArr = areasArr[i].ToArray();
+
+                    List<String> listIncludeJacobs = new List<string>();
+                    List<String> addressList = new List<string>();
+                    listIncludeJacobs.Insert(0, "גשר העץ 27,עמק חפר");
+
+                    foreach(FindingPaths ans in areasArr[i])
+                    {
+                        addressList.Add(ans.Address);
+                    }
+
+                    listIncludeJacobs.AddRange(addressList);
+                    string[] listToDicArr = listIncludeJacobs.ToArray();
+                    string[] listToArr = addressList.ToArray();
                     var resultDic = new Dictionary<string, int>();
+                    //function dic is a Dictionary for all the index in adress array
                     resultDic = func.Dic(listToDicArr);
+                    //prnPermut functaion return all the combination of routes 
                     func.prnPermut(listToArr, 0, listToArr.Length - 1, result);
                     Console.Write("\n\n");
+
 
                     var listAlgo = func.Dis(resultDic, result, list);
                     foreach (FindingPaths ans in listAlgo)
@@ -139,6 +154,7 @@ namespace Jacobs.Models
 
             public List<FindingPaths> Dis(Dictionary<string, int> capitals, string[,] result, List<FindingPaths> list)///להפוך לרשימה
             {
+                //dis function calculate for us the sum of all route between each 2 address
                 List<FindingPaths> selectedCombintion = new List<FindingPaths>();
                 int indexWinner = 0;
                 int winner = 0;
@@ -150,11 +166,16 @@ namespace Jacobs.Models
                     for (int j = 0; j < result.GetLength(1); j++)
                     {
                         termsList.Add(capitals[result[i, j]]);
+                        //if we have 2 address we can calculate distance between them
+
                         if (count == 2)
                         {
+                            //we need to sum from adress in place 0 to 1
+                            //and from place 1 to 2
                             sumline += arrayDis[termsList[j - 2], termsList[j - 1]];
                             sumline += arrayDis[termsList[j - 1], termsList[j]];
                         }
+
                         if (count > 2 || (result.Length == j + 1))
                         {
                             sumline += arrayDis[termsList[j - 1], termsList[j]];
@@ -165,11 +186,13 @@ namespace Jacobs.Models
                     }
                     if (sumline < winner || winner == 0)
                     {
+                        //how is the shortes route between 2 combinations
                         winner = sumline;
                         sumline = 0;
                         count = 0;
                         termsList.Clear();
                         indexWinner = i;
+                        //save the index of the winner
                     }
                     else
                     {
@@ -178,12 +201,12 @@ namespace Jacobs.Models
                         termsList.Clear();
                     }
                 }
-                Console.WriteLine("The row number of the selected option: " + (indexWinner + 1));
-                Console.Write("The selected path is: ");
+           
                 for (int j = 0; j < result.GetLength(1); j++)
                 {
 
 
+                    //save the shortes combination in list object
                     selectedCombintion.Add(new FindingPaths(result[indexWinner, j], 0, 0, "", "", 0));
 
                     
@@ -191,7 +214,7 @@ namespace Jacobs.Models
                 return selectedCombintion;
 
             }
-            public int factorial(int num)
+            public int factorial(int num)//ATZERT
             {
                 int fact = 1;
                 for (int i = 1; i <= num; i++)
@@ -205,7 +228,7 @@ namespace Jacobs.Models
                 int i;
                 int Z = 1;
                 int count = 0;
-
+                //if the address is the same,we find the combination
                 if (list[k] == list[m])
                 {
                     for (int j = 0; j < Z; j++)
@@ -214,22 +237,26 @@ namespace Jacobs.Models
                         {
                             if (i == 0)
                             {
+                                // in the first place add our origin to start
+                                //push the other address in the next cell
                                 result[currRow, i] = "גשר העץ 27,עמק חפר";
-                                Console.Write(result[currRow, i]);
+                            
                                 result[currRow, i + 1] = list[i];
-                                Console.Write(result[currRow, i + 1]);
+                               
                                 i++;
                             }
                             else
                             {
+                                //insert the next address to list
+
                                 result[currRow, i + 1] = list[i];
-                                Console.Write(result[currRow, i + 1]);
+                               
                                 i++;
                             }
                         }
                         i++;
+                        //add the our company for make a circle
                         result[currRow, i] = "גשר העץ 27,עמק חפר";
-                        Console.WriteLine(result[currRow, i]);
                         count++;
                         currRow++;
                     }
@@ -239,6 +266,7 @@ namespace Jacobs.Models
                     string[] listToArr = list.ToArray();
                     for (i = k; i <= m; i++)
                     {
+
                         SwapTwostring(ref listToArr[k], ref listToArr[i]);
                         prnPermut(list, k + 1, m, result);
                         SwapTwostring(ref listToArr[k], ref listToArr[i]);
@@ -247,6 +275,7 @@ namespace Jacobs.Models
             }
             public void SwapTwostring(ref string a, ref string b)
             {
+                //swap between 2 address to make combination
                 string temp = a;
                 a = b;
                 b = temp;
