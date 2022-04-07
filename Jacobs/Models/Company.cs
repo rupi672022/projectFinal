@@ -18,6 +18,7 @@ namespace Jacobs.Models
         string distributaionArea;
         double lng;
         double lat;
+        
 
 
 
@@ -79,6 +80,9 @@ namespace Jacobs.Models
             List<Company> Companieslist = ds.Read();
             return Companieslist;
         }
+     
+
+
 
         public List<Company> Read(string name)//get the info about this company
         {
