@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-paper';
 import image from '../Images/logo.jpg';
 import imagelogo from '../Images/yakobs.png';
 
-export default function Main({ navigation }) {
+export default function Main(props) {
 
   //date
   var today = new Date(),
@@ -60,7 +60,7 @@ export default function Main({ navigation }) {
       })
       .then(
         (result) => {
-          navigation.navigate('OpenOrders', { orderArr: result, workerNum: workerNum });
+          props.navigation.navigate('OpenOrders', { orderArr: result, workerNum: workerNum });
         },
         (error) => {
           console.log("err post=", error);
