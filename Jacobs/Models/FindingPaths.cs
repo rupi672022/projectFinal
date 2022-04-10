@@ -335,30 +335,4 @@ namespace Jacobs.Models
     }
 }
 
-<<<<<<< Updated upstream
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-=======
-    }
-
-}
->>>>>>> Stashed changes
 
