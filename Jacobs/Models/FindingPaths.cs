@@ -336,23 +336,3 @@ namespace Jacobs.Models
 }
 
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
