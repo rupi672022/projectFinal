@@ -44,30 +44,37 @@
 
             $("#BTN").click(textOfAlgo);
            
-            
+
         });
 
         function textOfAlgo() {
             date = new Date($("#dateJob").val());
             date = date.toLocaleDateString();
 
-            ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+         ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+            //ajaxCall("GET", "../api/FindingPaths", "", successMatrix, error);
+
+
         }
 
 
         function success(list) {
             console.log(list);
+
            
             initMap();
 
+
         }
+        //function successMatrix() {
+        //    console.log("you got it")
+        //}
 
         function error(error) {
             console.log(error);
         }
         //create map with distrbution area
         function initMap() {
-            listExample = { lat: 33.331551, lng: 35.775554 };
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
@@ -157,38 +164,11 @@
 
             });
 
-            new google.maps.Marker({
-                position: listExample,
-                map,
-                title: "Hello World!",
-            });
-            markerOnMap(listExample);
+          
         }
       
-        function markerOnMap(listExample) {
-            const showGeocodedAddressOnMap = (asDestination) => {
-                const handler = ({ listExample }) => {
-                    map.fitBounds(bounds.extend(listExample[0].geometry.location));
-                    markersArray.push(
-                        new google.maps.Marker({
-                            map,
-                            position: listExample[0].geometry.location,
-                            label: asDestination ? "D" : "O",
-                        })
-                    );
-                };
-                return handler;
-
-            };
-
-
-            for (var i = 0; i < listExample.length; i++) {
-
-                geocoder
-                    .geocode({ address: listExample[i] })
-                    .then(showGeocodedAddressOnMap(true));
-            }
-        }
+        
+        
     </script>
 
 </head>
