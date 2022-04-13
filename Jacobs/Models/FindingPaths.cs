@@ -134,7 +134,7 @@ namespace Jacobs.Models
                     if (whichArea == 0)
                     {
                         arrayDis = arrayDis0;
-
+                        whichArea++;
                     }
                     //whichare include the number of select area
                     else if (whichArea == 1)
