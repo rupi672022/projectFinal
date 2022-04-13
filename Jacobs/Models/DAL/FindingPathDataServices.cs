@@ -34,7 +34,8 @@ namespace Jacobs.Models.DAL
                 while (dataReader.Read())//if user on table
                 {
                     FindingPaths findingPath = new FindingPaths();
-                    findingPath.CompanyNum = (int)dataReader["companyNum"];
+                    findingPath.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
+                    findingPath.CompanyName = (string)dataReader["companyName"];
                     findingPath.Address = (string)(dataReader["address"]);
                     findingPath.DateArrivel=(string)(dataReader["dateArrivel"]);
                     findingPath.DistributaionArea=(string)(dataReader["distributaionArea"]);
@@ -134,7 +135,7 @@ namespace Jacobs.Models.DAL
         private SqlCommand createSelectCommandFindingFath(SqlConnection con,string date)
         {
 
-            string commandStr = "select Company.companyNum,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date ";
+            string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date ";
 
             SqlCommand cmd = createCommand(con, commandStr);
 

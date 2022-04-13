@@ -43,8 +43,10 @@
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
-            $("#algo").hide()
-           
+            $("#north").hide();
+            $("#south").hide();
+            $("#center").hide();
+            $("#jerusalem").hide();
 
         });
 
@@ -60,7 +62,6 @@
 
 
         function success(list) {
-            $("#algo").show()
             initMap();
            
             algoNorth = [];
@@ -90,34 +91,43 @@
             }
 
 
-            console.log(algoNorth)
-            console.log(algoSouth)
-            console.log(algoCenter)
-            console.log(algoJerusalem)
+            //console.log(algoNorth)
+            //console.log(algoSouth)
+            //console.log(algoCenter)
+            //console.log(algoJerusalem)
 
             strNorth = "";
             strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
             for (obj in algoNorth) {
-                strNorth += "<p>" + algoNorth[obj]["Address"] + "</p>";
+                strNorth += "<p>" + algoNorth[obj]["CompanyName"]+" - "+ algoNorth[obj]["Address"] + "</p>";
             }
 
             strSouth = "";
             strSouth += "<h5>מסלול נסיעה - אזור דרום : </h5>";
             for (obj in algoSouth) {
-                strSouth += "<p>" + algoSouth[obj]["Address"] + "</p>";
+                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - "+ algoSouth[obj]["Address"] + "</p>";
             }
 
             strCenter = "";
             strCenter += "<h5>מסלול נסיעה - אזור מרכז : </h5>";
             for (obj in algoCenter) {
-                strCenter += "<p>" + algoCenter[obj]["Address"] + "</p>";
+                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - "+algoCenter[obj]["Address"] + "</p>";
             }
 
             strJerusalem = "";
             strJerusalem += "<h5>מסלול נסיעה - אזור ירושלים : </h5>";
             for (obj in algoJerusalem) {
-                strJerusalem += "<p>" + algoJerusalem[obj]["Address"] + "</p>";
+                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - "+ algoJerusalem[obj]["Address"] + "</p>";
             }
+
+            if (algoNorth.length != 0)
+                $("#north").show();
+            if (algoSouth.length!=0)
+                $("#south").show();
+            if (algoCenter.length!=0)
+                $("#center").show();
+            if (algoJerusalem.length!=0)
+                $("#jerusalem").show();
 
 
             

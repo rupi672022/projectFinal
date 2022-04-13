@@ -19,13 +19,14 @@ namespace Jacobs.Models
         string distributaionArea;
         string dateArrivel;
         int companyNum;
+        string companyName;
 
 
 
 
         public FindingPaths() { }
 
-        public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum)
+        public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum,string companyName)
         {
             this.address = address;
             this.lng = lng;
@@ -33,6 +34,7 @@ namespace Jacobs.Models
             this.distributaionArea = distributaionArea;
             this.dateArrivel = dateArrivel;
             this.companyNum = companyNum;
+            this.companyName = companyName;
 
 
         }
@@ -43,6 +45,7 @@ namespace Jacobs.Models
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
         public string DateArrivel { get => dateArrivel; set => dateArrivel = value; }
         public int CompanyNum { get => companyNum; set => companyNum = value; }
+        public string CompanyName { get => companyName; set => companyName = value; }
 
         public List<FindingPaths> Read(string date)
         {
@@ -200,7 +203,7 @@ namespace Jacobs.Models
             double winner = 0;
 
             
-            list.Add(new FindingPaths(result[0, 0], 0, 0, "", "", 0));
+            list.Add(new FindingPaths(result[0, 0], 0, 0, "", "", 0,""));
             double sumline = 0;
 
             List<int> termsList = new List<int>();
@@ -261,7 +264,7 @@ namespace Jacobs.Models
                 {
                     if(result[indexWinner,j]==list[x].Address)
                         //save the shortes combination in list object
-                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum));
+                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum,list[x].CompanyName));
                 }
 
 
