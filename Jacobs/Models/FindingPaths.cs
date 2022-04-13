@@ -256,12 +256,12 @@ namespace Jacobs.Models
 
             for (int j = 0; j < result.GetLength(1); j++)
             {
-
+                
 
                 //save the shortes combination in list object
-                selectedCombintion.Add(new FindingPaths(result[indexWinner, j], 0, 0, "", "", 0));
+                selectedCombintion.Add(new FindingPaths(result[indexWinner, j], 0, 0,"" , "", 0));
 
-
+               
             }
 
             return selectedCombintion;
