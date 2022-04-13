@@ -53,6 +53,11 @@ export default function OpenOrders(props) {
     }
   }
 
+  const btnBack=()=>{
+    toggleOverlay();
+    props.navigation.navigate('Main');
+  }
+
   return (
     <View style={styles.view}>
       <ImageBackground source={image} resizeMode="cover" style={styles.imageback}>
@@ -91,9 +96,8 @@ export default function OpenOrders(props) {
         </TouchableOpacity>
 
         <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-          <Icon name='check' color='#98FB98' size={40}  />
           <Text style={{ textAlign: 'center', fontSize: 30 }}>יום העבודה הסתיים בהצלחה!!!</Text>
-          <TouchableOpacity onPress={toggleOverlay}>
+          <TouchableOpacity onPress={btnBack}>
             <Text style={styles.buttonOvarlay}>אישור</Text>
           </TouchableOpacity>
         </Overlay>

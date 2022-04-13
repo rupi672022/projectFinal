@@ -84,7 +84,7 @@ export default function Product(props) {
         setData(data);
         setScanned(true);
         toggleOverlay2()
-        if ('7290106291089' == data) {
+        if (product.Barcod == data) {
             Alert.alert(
                 "המוצר נסרק בהצלחה !"
             );
@@ -137,7 +137,7 @@ export default function Product(props) {
                         <Icon
                             name='check-circle'
                             size={30}
-                            color={'7290106291089' == data ? 'green' : '#efefef'}
+                            color={product.Barcod == data ? 'green' : '#efefef'}
                             style={{ marginTop: 10, marginLeft: 50 }}
                         />
                     </TouchableOpacity>

@@ -32,7 +32,7 @@ namespace Jacobs.Models.DAL
             {
 
                 // this code needs to write the error to a log file
-                throw new Exception("Failed to insert a order", ex);
+                throw new Exception("Failed to insert a company", ex);
             }
 
             finally
