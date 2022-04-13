@@ -198,8 +198,9 @@ namespace Jacobs.Models
             List<FindingPaths> selectedCombintion = new List<FindingPaths>();
             int indexWinner = 0;
             double winner = 0;
-          
+
             
+            list.Add(new FindingPaths(result[0, 0], 0, 0, "", "", 0));
             double sumline = 0;
 
             List<int> termsList = new List<int>();
@@ -256,10 +257,13 @@ namespace Jacobs.Models
 
             for (int j = 0; j < result.GetLength(1); j++)
             {
-                
+                for(int x = 0; x < list.Count; x++)
+                {
+                    if(result[indexWinner,j]==list[x].Address)
+                        //save the shortes combination in list object
+                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum));
+                }
 
-                //save the shortes combination in list object
-                selectedCombintion.Add(new FindingPaths(result[indexWinner, j], 0, 0,"" , "", 0));
 
                
             }

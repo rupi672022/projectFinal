@@ -59,23 +59,65 @@
 
 
         function success(list) {
-            console.log(list);
-
-
 
             initMap();
            
+            algoNorth = [];
+            algoSouth = [];
+            algoCenter = [];
+            algoJerusalem = [];
 
-            str = "";
 
             for (obj in list) {
-                    str += "<h5> תחנה :"+(obj) +" " +list[obj]["Address"] + "</h5>";   
-             
-               
+                if (list[obj]["Address"] != "גשר העץ 27,עמק חפר") {
+
+
+                    if (list[obj]["DistributaionArea"] == "צפון")
+                        algoNorth[algoNorth.length] = list[obj]
+
+                    if (list[obj]["DistributaionArea"] == "דרום")
+                        algoSouth[algoSouth.length] = list[obj]
+
+                    if (list[obj]["DistributaionArea"] == "מרכז")
+                        algoCenter[algoCenter.length] = list[obj]
+
+                    if (list[obj]["DistributaionArea"] == "ירושלים")
+                        algoJerusalem[algoJerusalem.length] = list[obj]
+
+                }
+
             }
+
+
+            console.log(algoNorth)
+            console.log(algoSouth)
+            console.log(algoCenter)
+            console.log(algoJerusalem)
+
+            str = "<div class=container>";
+            str += "<div class=card>";
+            for (obj in algoNorth) {
+                str += "<p>" + algoNorth[obj]["Address"] + "</p>";
+            }
+            str += "</div>";
+            str += "<div class=card>";
+            for (obj in algoSouth) {
+                str += "<p>" + algoSouth[obj]["Address"] + "</p>";
+            }
+            str += "</div>";
+            str += "<div class=card>";
+            for (obj in algoCenter) {
+                str += "<p>" + algoCenter[obj]["Address"] + "</p>";
+            }
+            str += "</div>";
+            str += "<div class=card>";
+            for (obj in algoJerusalem) {
+                str += "<p>" + algoJerusalem[obj]["Address"] + "</p>";
+            }
+            str += "</div>";
+            str += "</div>";
+
             
-            
-            console.log(str);
            document.getElementById("ph").innerHTML = str;
             
 
