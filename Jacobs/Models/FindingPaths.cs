@@ -9,6 +9,8 @@ namespace Jacobs.Models
 {
     public class FindingPaths
     {
+       
+      
         double[,] arrayDis;
         int whichArea = 0;
         string address;
@@ -103,7 +105,7 @@ namespace Jacobs.Models
 
                 }
 
-
+                //לעבור לדיקשנרי
             }
 
             for (int i = 0; i < areasArr.Length; i++)
@@ -115,7 +117,7 @@ namespace Jacobs.Models
                     int factRes = func.factorial(areasArr[i].Count);
                     //add +2 to save place to origin and destnation
                     string[,] result = new string[factRes, (areasArr[i].Count) + 2];
-                    int[,]combMatrixdis=new int[factRes, (areasArr[i].Count) + 2];
+                    int colMatrix = areasArr[i].Count;
                     List<String> listIncludeJacobs = new List<string>();
                     List<String> addressList = new List<string>();
                     listIncludeJacobs.Insert(0, "גשר העץ 27,עמק חפר");
@@ -172,7 +174,7 @@ namespace Jacobs.Models
     }
     class fullfunc
     {
-       
+     
         int currRow = 0;
 
         
@@ -190,29 +192,34 @@ namespace Jacobs.Models
 
         public List<FindingPaths> Dis(Dictionary<string, int> capitals, string[,] result, List<FindingPaths> list, double[,] arrayDis)///להפוך לרשימה
         {
+            double[] allComres = new double[50];
             int[,] combonationMatrix = new int[result.GetLength(0), result.GetLength(1)];
             //dis function calculate for us the sum of all route between each 2 address
             List<FindingPaths> selectedCombintion = new List<FindingPaths>();
             int indexWinner = 0;
             double winner = 0;
+          
             
             double sumline = 0;
 
             List<int> termsList = new List<int>();
-
-            for (int i = 0; i < result.GetLength(0); i++)
-            {
-                for (int j = 0; j < result.GetLength(1); j++)
+           
+                for (int i = 0; i < result.GetLength(0); i++)
                 {
-                    foreach (var item in capitals)
+
+                    for (int j = 0; j < result.GetLength(1); j++)
                     {
-                        if (result[i, j] ==item.Key )
+                    
+                        if (capitals.ContainsKey(result[i, j]))
                         {
-                            combonationMatrix[i, j] = item.Value;
+                            combonationMatrix[i, j] = capitals[result[i, j]];
+
                         }
+
+
                     }
 
-                }
+                
             }
             for (int i = 0; i < combonationMatrix.GetLength(0); i++)
             {
@@ -229,6 +236,7 @@ namespace Jacobs.Models
                 }
                 if (sumline < winner || winner == 0)
                 {
+                    allComres[i] = sumline;
                     //how is the shortes route between 2 combinations
                     winner = sumline;
                     sumline = 0;
@@ -238,6 +246,7 @@ namespace Jacobs.Models
                 }
                 else
                 {
+                    allComres[i] = sumline;
                     sumline = 0;
                     termsList.Clear();
                 }
@@ -254,6 +263,7 @@ namespace Jacobs.Models
 
 
             }
+
             return selectedCombintion;
 
         }
@@ -273,8 +283,9 @@ namespace Jacobs.Models
             }
             return fact;
         }
-        public void prnPermut(string[] list, int k, int m, string[,] result)
+        public void prnPermut(string[] list, int k, int m, string[,]  resultComb)
         {
+            //string [,] resultComb= new string[factRes, col+2];
             int i;
             int Z = 1;
             int count = 0;
@@ -289,9 +300,10 @@ namespace Jacobs.Models
                         {
                             // in the first place add our origin to start
                             //push the other address in the next cell
-                            result[currRow, i] = "גשר העץ 27,עמק חפר";
+                            resultComb[currRow, i] = "גשר העץ 27,עמק חפר";
 
-                            result[currRow, i + 1] = list[i];
+
+                            resultComb[currRow, i + 1] = list[i];
 
                             i++;
                         }
@@ -299,35 +311,33 @@ namespace Jacobs.Models
                         {
                             //insert the next address to list
 
-                            result[currRow, i + 1] = list[i];
+                            resultComb[currRow, i + 1] = list[i];
 
                             i++;
                         }
                     }
                     i++;
                     //add the our company for make a circle
-                    result[currRow, i] = "גשר העץ 27,עמק חפר";
+                    resultComb[currRow, i] = "גשר העץ 27,עמק חפר";
                     count++;
                     currRow++;
                 }
             }
             else
             {
-                string[] listToArr = list.ToArray();
+               
                 for (i = k; i <= m; i++)
                 {
 
-                    SwapTwostring(ref listToArr[k], ref listToArr[i]);
-                    prnPermut(list, k + 1, m, result);
-                    SwapTwostring(ref listToArr[k], ref listToArr[i]);
+                    SwapTwostring(ref list[k], ref list[i]);
+                    prnPermut(list, k + 1, m, resultComb);
+                    SwapTwostring(ref list[k], ref list[i]);
                 }
-            }
 
-           
+            } 
         }
         public void SwapTwostring(ref string a, ref string b)
         {
-            //swap between 2 address to make combination
             string temp = a;
             a = b;
             b = temp;
