@@ -43,6 +43,7 @@
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
+            $("#algo").hide()
            
 
         });
@@ -59,7 +60,7 @@
 
 
         function success(list) {
-
+            $("#algo").show()
             initMap();
            
             algoNorth = [];
@@ -94,32 +95,37 @@
             console.log(algoCenter)
             console.log(algoJerusalem)
 
-            str = "<div class=container>";
-            str += "<div class=card>";
+            strNorth = "";
+            strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
             for (obj in algoNorth) {
-                str += "<p>" + algoNorth[obj]["Address"] + "</p>";
+                strNorth += "<p>" + algoNorth[obj]["Address"] + "</p>";
             }
-            str += "</div>";
-            str += "<div class=card>";
+
+            strSouth = "";
+            strSouth += "<h5>מסלול נסיעה - אזור דרום : </h5>";
             for (obj in algoSouth) {
-                str += "<p>" + algoSouth[obj]["Address"] + "</p>";
+                strSouth += "<p>" + algoSouth[obj]["Address"] + "</p>";
             }
-            str += "</div>";
-            str += "<div class=card>";
+
+            strCenter = "";
+            strCenter += "<h5>מסלול נסיעה - אזור מרכז : </h5>";
             for (obj in algoCenter) {
-                str += "<p>" + algoCenter[obj]["Address"] + "</p>";
+                strCenter += "<p>" + algoCenter[obj]["Address"] + "</p>";
             }
-            str += "</div>";
-            str += "<div class=card>";
+
+            strJerusalem = "";
+            strJerusalem += "<h5>מסלול נסיעה - אזור ירושלים : </h5>";
             for (obj in algoJerusalem) {
-                str += "<p>" + algoJerusalem[obj]["Address"] + "</p>";
+                strJerusalem += "<p>" + algoJerusalem[obj]["Address"] + "</p>";
             }
-            str += "</div>";
-            str += "</div>";
+
 
             
-           document.getElementById("ph").innerHTML = str;
-            
+            document.getElementById("north").innerHTML = strNorth;
+            document.getElementById("south").innerHTML = strSouth;
+            document.getElementById("center").innerHTML = strCenter;
+            document.getElementById("jerusalem").innerHTML = strJerusalem;
+
 
         }
         //function successMatrix() {
@@ -322,9 +328,23 @@
 
                                         <div id="map"></div>
                                     </div>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-12" id="algo">
+                                        <div class="card" id="north">
 
-                                        <div id="ph"></div>
+                                        </div>
+                                    
+                                        <div class="card" id="south">
+
+                                        </div>
+                                  
+                                        <div class="card" id="center">
+
+                                        </div>
+                                 
+                                        <div class="card" id="jerusalem">
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
