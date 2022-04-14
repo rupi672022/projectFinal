@@ -11,7 +11,7 @@ namespace Jacobs.Models.DAL
     public class OrderDataServices
     {
 
-        public int Insert(Orders order) //insert new company
+        public int Insert(Orders order) //insert new order
         {
             SqlConnection con = null;
             int numEffected = 0;

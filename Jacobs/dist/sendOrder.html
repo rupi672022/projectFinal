@@ -62,7 +62,7 @@
 
 
         function success(list) {
-            initMap();
+            
 
            
             algoNorth = [];
@@ -86,7 +86,7 @@
 
                     if (list[obj]["DistributaionArea"] == "ירושלים")
                         algoJerusalem[algoJerusalem.length] = list[obj]
-
+                    initMap(algoNorth, algoSouth, algoCenter, algoJerusalem);
                 }
 
             }
@@ -147,7 +147,7 @@
             console.log(error);
         }
         //create map with distrbution area
-        function initMap( list) {
+        function initMap() {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
@@ -236,15 +236,8 @@
                 draggable: true,
 
             });
-            var line = new google.maps.Polyline({
-                path: list,
-                geodesic: true,
-                strokeColor: '#FF0000',
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-            });
-
-            line.setMap(map);
+        
+           
 
             
         }

@@ -8,7 +8,7 @@ namespace Jacobs.Models
 {
     public class Employees
     {
-        //hi
+        
         int employeNum;
         string name;
         string phone;

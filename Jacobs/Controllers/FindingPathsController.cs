@@ -16,20 +16,7 @@ namespace Jacobs.Controllers
             FindingPaths findingPath = new FindingPaths();
             return findingPath.Read(date);
         }
-        //[HttpGet]
-        //[Route("api/FindingPaths")]
-        //public List<FindingPaths> getMatrix()
-        //{
-        //    FindingPaths findingPath = new FindingPaths();
-        //    return findingPath.readMatrix();
-        //}
-        // GET api/<controller>/5
-        //public List<FindingFaths> Get(string name)
-        //{
-        //    FindingFaths findingFath = new FindingFaths();
-        //    return findingFath.Read(name);
-        //}
-
+       
 
         // POST api/<controller>
         public void Post([FromBody] string value)
