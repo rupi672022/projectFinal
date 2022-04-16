@@ -1,0 +1,32 @@
+﻿body {
+    direction: rtl
+}
+
+.navbar-custom {
+    background-color: #ffe393;
+}
+
+h3 {
+    color: black;
+    text-align: center;
+}
+
+img {
+    width: 60px;
+    height: 50px;
+}
+
+.left-side-menu {
+    text-align: center;
+}
+
+#LOgin {
+    font-size: 80px;
+    color: black;
+    padding: 50px;
+}
+
+.content-page {
+    margin-right: 240px;
+    margin-left: 0px;
+}

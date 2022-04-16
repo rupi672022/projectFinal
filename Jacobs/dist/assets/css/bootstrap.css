@@ -3430,7 +3430,7 @@ input[type="button"].btn-block {
   .custom-file-input[disabled] ~ .custom-file-label,
   .custom-file-input:disabled ~ .custom-file-label {
     background-color: #f3f3f3; }
-  .custom-file-input:lang(en) ~ .custom-file-label::after {
+  .custom-file-input:lang(he) ~ .custom-file-label::after {
     content: "Browse"; }
   .custom-file-input ~ .custom-file-label[data-browse]::after {
     content: attr(data-browse); }

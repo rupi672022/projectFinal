@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="utf-8" />
+    <title>משק יעקבס</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/LOGO.ico">
+
+    <!-- App css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" />
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous">
+    </script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <link href="../CSS/employe.css" rel="stylesheet" />
+
+    <script>
+
+        $(document).ready(function () {
+
+            mode = "";
+
+            //get the all employe that Active
+            ajaxCall("GET", "../api/Employes", "", getSCB, error);
+
+            $('#myModal').on('shown.bs.modal', function () {
+                if (mode != "update") {
+                    $("#PPemployeNum").val('');
+                    $("#PPname").val('');
+                    $("#PPphone").val('');
+                    $("#PProle").val('');
+                    $("#PPdistributaionArea").val('');
+                }
+                $('#myInput').trigger('focus')
+            })
+
+            $("#newEmploye").submit(onSubmit);
+
+        });
+
+
+        function getSCB(EmployeList) {//render the data table - employe
+            //console.log(EmployeList);
+
+            try {
+                tbl = $('#employeTable').DataTable({
+                    data: EmployeList,
+                    destroy: true,
+                    pageLength: 10,
+                    columns: [
+                        { data: "EmployeNum" },
+                        { data: "Name" },
+                        { data: "Phone" },
+                        { data: "Role" },
+                        { data: "DistributaionArea" },
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataEmploye = "data-employe='" + row.EmployeNum + "'";
+                                updateBtn = "<button type='button' class = 'updateBtn btn btn-info' " + dataEmploye + " data-toggle='modal' data-target='#myModal'> <img src='../img/UPFATE.png' /> </button>";
+                                deleteBtn = "<button type='button' class = 'deleteBtn btn btn-info' " + dataEmploye + "> <img src='../img/Delete.png' />  </button>";
+
+                                return updateBtn + deleteBtn;
+                            }
+                        },
+                    ],
+                });
+                buttonEvents();
+            }
+
+            catch (err) {
+                alert(err);
+            }
+
+        }
+
+        function buttonEvents() {
+
+
+            $(document).on("click", ".updateBtn", function () {//update employe
+                mode = "update";
+                updateEmploye(this.getAttribute('data-employe'));
+            });
+
+            $(document).on("click", ".btn-lg", function () {//new employe
+                mode = "new";
+            });
+
+            $(document).on("click", ".deleteBtn", function () {//delete employe
+                id = this.getAttribute('data-employe');
+                console.log(id);
+                swal({ // this will open a dialouge
+                    title: "את/ה בטוח/ה ??",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then(function (willDelete) {
+                        if (willDelete) deleteEmploye(id);
+                        else {
+                            swal("לא נמחק!");
+
+                        };
+                    });
+            });
+        }
+
+
+
+        function updateEmploye(employeNum) {//get the info about this employe
+            console.log(employeNum);
+            ajaxCall("GET", "../api/Employes?employeNum=" + employeNum, "", getUpdatesuccsess, error);
+        }
+
+        function getUpdatesuccsess(obj) {//insert the info 
+            obj = obj[0];
+            console.log(obj);
+            $("#PPname").val(obj.Name);
+            $("#PPemployeNum").val(obj.EmployeNum);
+            $("#PPphone").val(obj.Phone);
+            $("#PProle").val(obj.Role);
+            $("#PPdistributaionArea").val(obj.DistributaionArea);
+
+
+        }
+
+
+        function onSubmit() {//insert the info about the employe
+            let employetoSave = {
+                EmployeNum: $("#PPemployeNum").val(),
+                Name: $("#PPname").val(),
+                Phone: $("#PPphone").val(),
+                Role: $("#PProle").val(),
+                DistributaionArea: $("#PPdistributaionArea").val(),
+            }
+
+            if (mode == "update") {//if need to update
+                ajaxCall("PUT", "../api/Employes", JSON.stringify(employetoSave), succsess, error);
+            }
+            else//if its new employe 
+                ajaxCall("POST", "../api/Employes", JSON.stringify(employetoSave), succsess, error);
+            return false;
+
+            $("#PPemployeNum").val('');
+            $("#PPname").val('');
+            $("#PPphone").val('');
+            $("#PProle").val('');
+            $("#PPdistributaionArea").val('');
+        }
+
+
+        function deleteEmploye(employeNum) {//update status to 0 - delete the employe
+            //console.log(employeNum)
+            listUpdate = {
+                employeNum: employeNum
+            }
+            console.log(listUpdate);
+
+            ajaxCall("DELETE", "../api/Employes/" + employeNum, "", deleteSuccess, error);
+        }
+
+        function succsess() {
+            console.log("succses");
+            renderName();//RENSER AGAIN ALL THE employe WITH STATUS 1
+
+        }
+
+        function deleteSuccess() {
+            swal("נמחק בהצלחה");
+            renderName();
+        }
+
+        function renderName() {//get the all employe that Active
+            ajaxCall("GET", "../api/Employes", "", getSCB, error);//read the Employes in server
+        }
+
+        function error(err) {
+            swal("Error: " + err);
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <h3 style="margin-top:10px">
+                &nbsp; &nbsp; משק יעקבס
+                <img id="imgLogo" src="../img/LOGO.png" />
+            </h3>
+            <!-- LOGO -->
+        </div>
+        <!-- end Topbar -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left-side-menu" >
+            <div class="slimscroll-menu">
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <div class="user-box">
+                        <div class="float-left">
+                            <a href="login.html" class="waves-effect">
+                                <i class="mdi mdi-account" id="LOgin"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <ul class="metismenu" id="side-menu">
+                        <li>
+                            <a href="main.html" class="waves-effect">
+                                <i class="mdi mdi-calendar"></i>
+                                <span> לוח שנה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="employe.html" class="waves-effect">
+                                <i class=" mdi mdi-account"></i>
+                                <span> עובדים </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-folder-plus"></i>
+                                <span> הזמנה חדשה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a  href="sendOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-calendar"></i>
+                                <span> הפצת הזמנות </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Sidebar -->
+                <div class="clearfix"></div>
+            </div>
+            <!-- Sidebar -left -->
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+
+        <div class="content-page">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card-box" >
+                                <div class="row">
+                                    <div class="col-lg-12"> <!--new employe-->
+                                        <button type="button" id="BTN" class="btn-lg btn btn-info" data-toggle="modal" data-target="#myModal">
+                                            הוסף עובד חדש
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <form id="pForm" ><!--data table-->
+                                            <table id="employeTable" class="display" style="width:70%; margin-top:20px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>מספר עובד</th>
+                                                        <th>שם עובד</th>
+                                                        <th>טלפון</th>
+                                                        <th>תפקיד</th>
+                                                        <th>אזור חלוקה</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container">
+                                <!-- Modal --><!--new employe-->
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="newEmploye">
+                                                    <div class="form-group col-sm-4">
+                                                        <label for="PPphone">טלפון של עובד</label>
+                                                        <input type="text" class="form-control" id="PPphone" placeholder="הכנס מספר הטלפון" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-4">
+                                                        <label for="PPemployeNum">מספר עובד</label>
+                                                        <input type="number" class="form-control" id="PPemployeNum" placeholder="הכנס מספר עובד" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-4">
+                                                        <label for="PPname">שם עובד</label>
+                                                        <input type="text" class="form-control" id="PPname" placeholder="הכנס שם עובד" required>
+                                                    </div>
+
+
+                                                    <div class="form-group col-sm-12">
+                                                        <label for="PProle">תפקיד העובד</label>
+                                                        <select id="PProle" class="form-control" required>
+                                                            <option value="">בחר תפקיד</option>
+                                                            <option value="מנהל">מנהל</option>
+                                                            <option value="מלקט">מלקט</option>
+                                                            <option value="נהג">נהג</option>
+                                                        </select>
+                                                    </div>
+
+
+                                                    <div class="form-group col-sm-12">
+                                                        <h4>אם העובד הוא נהג : </h4>
+                                                        <label for="PPdistributaionArea">אזור חלוקה</label>
+                                                        <select id="PPdistributaionArea" class="form-control">
+                                                            <option value="">בחר אזור חלוקה</option>
+                                                            <option value="צפון">צפון</option>
+                                                            <option value="דרום">דרום</option>
+                                                            <option value="מרכז">מרכז</option>
+                                                            <option value="ירושלים">ירושלים</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div>
+                                                        <button data-toggle="modal" data-target="#myModal" id="BTN">שמור</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="BTN" class="btn btn-default" data-dismiss="modal">סגור</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END wrapper -->
+
+
+</body>
+</html>
+
+
+

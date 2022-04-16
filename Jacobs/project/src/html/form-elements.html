@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>General elements | Moltran - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Responsive bootstrap 4 admin template" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html')
+            
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">General elements</h4>
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb p-0 m-0">
+                                            <li class="breadcrumb-item"><a href="#">Moltran</a></li>
+                                            <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                                            <li class="breadcrumb-item active">General elements</li>
+                                        </ol>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <!-- Basic example -->
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Basic example</h3></div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email address</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Password</label>
+                                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="checkbox1" type="checkbox">
+                                                    <label for="checkbox1">
+                                                        Remember me
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-purple waves-effect waves-light">Submit</button>
+                                        </form>
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col-->
+
+                            <!-- Horizontal form -->
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Horizontal form</h3></div>
+                                    <div class="card-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group row">
+                                                <label for="inputEmail3" class="col-sm-3 control-label">Email</label>
+                                                <div class="col-sm-9">
+                                                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword3" class="col-sm-3 control-label">Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="inputPassword4" class="col-sm-3 control-label">Re Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="inputPassword4" placeholder="Retype Password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="offset-sm-3 col-sm-9">
+                                                    <div class="checkbox checkbox-primary">
+                                                        <input id="checkbox2" type="checkbox">
+                                                        <label for="checkbox2">
+                                                            Check me out !
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <div class="offset-sm-3 col-sm-9">
+                                                    <button type="submit" class="btn btn-info waves-effect waves-light">Sign in</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+
+                        </div>
+                        <!-- End row -->
+
+                        <!-- Inline Form -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Inline Form</h3></div>
+                                    <div class="card-body">
+
+                                        <form class="form-inline">
+                                            <div class="form-group">
+                                                <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+                                            </div>
+
+                                            <div class="form-group ml-2">
+                                                <label class="sr-only" for="exampleInputPassword2">Password</label>
+                                                <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+                                            </div>
+                                            <div class="form-group ml-2">
+                                                <div class="checkbox checkbox-primary">
+                                                    <input id="checkbox3" type="checkbox">
+                                                    <label for="checkbox3">
+                                                        Remember me
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-success waves-effect waves-light ml-2">Sign in</button>
+                                        </form>
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+                        </div>
+                        <!-- End row -->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Form elements</h3></div>
+                                    <div class="card-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label" for="example-text-input">Text</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control" value="Some text value..." id="example-text-input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label" for="example-email">Email</label>
+                                                <div class="col-md-10">
+                                                    <input type="email" id="example-email" name="example-email" class="form-control" placeholder="Email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label" for="example-password-input">Password</label>
+                                                <div class="col-md-10">
+                                                    <input type="password" class="form-control" value="password" id="example-password-input">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label">Readonly</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control" readonly="readonly" value="Readonly value">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label">Disabled</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control" disabled="disabled" value="Disabled value">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label">Placeholder</label>
+                                                <div class="col-md-10">
+                                                    <input type="text" class="form-control" placeholder="placeholder">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label" for="example-textarea-input">Text area</label>
+                                                <div class="col-md-10">
+                                                    <textarea class="form-control" rows="5" id="example-textarea-input"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row mb-0">
+                                                <label class="col-md-2 col-form-label">Static control</label>
+                                                <div class="col-md-10">
+                                                    <p class="form-control-static">email@example.com</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-md-2 col-form-label">Helping text</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" class="form-control" placeholder="Helping text">
+                                                    <span class="help-block"><small>A block of help text that breaks onto a new line and may extend beyond one line.</small></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row mb-0">
+                                                <label class="col-md-2 col-form-label">Input Select</label>
+                                                <div class="col-md-10">
+                                                    <select class="form-control">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                    <h6>Multiple select</h6>
+                                                    <select multiple="multiple" class="form-control">
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                        <option>5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+                        </div>
+                        <!-- End row -->
+
+                        <div class="row">
+
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Input Sizes</h3></div>
+                                    <div class="card-body">
+
+                                        <form class="form-horizontal">
+                                            <div class="row form-group">
+                                                <label class="col-sm-3 col-form-label" for="example-input-small">Small</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" id="example-input-small" name="example-input-small" class="form-control input-sm" placeholder=".input-sm">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <label class="col-sm-3 col-form-label" for="example-input-normal">Normal</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" id="example-input-normal" name="example-input-normal" class="form-control" placeholder="Normal">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <label class="col-sm-3 col-form-label" for="example-input-large">Large</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" id="example-input-large" name="example-input-large" class="form-control input-lg" placeholder=".input-lg">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <label class="col-sm-3 col-form-label">Grid Sizes</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" placeholder=".col-sm-4">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-sm-5 offset-sm-3">
+                                                    <input type="text" class="form-control" placeholder=".col-sm-5">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-sm-6 offset-sm-3">
+                                                    <input type="text" class="form-control" placeholder=".col-sm-6">
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group mb-0">
+                                                <div class="col-sm-9 offset-sm-3">
+                                                    <input type="text" class="form-control" placeholder=".col-sm-9">
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Input groups</h3></div>
+                                    <div class="card-body">
+
+                                        <form class="form-horizontal">
+                                            <div class="form-group row">
+
+                                                <label class="col-md-2 control-label" for="example-input1-group1">Static</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                                        </div>
+                                                        <input type="text" id="example-input1-group1" name="example-input1-group1" class="form-control" placeholder="Username">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-10 offset-md-2">
+                                                    <div class="input-group mt-3">
+                                                        <input type="email" id="example-input2-group1" name="example-input2-group1" class="form-control" placeholder="Email">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-10 offset-md-2">
+                                                    <div class="input-group mt-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                        </div>
+                                                        <input type="text" id="example-input3-group1" name="example-input3-group1" class="form-control" placeholder="..">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">.00</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- form-group -->
+
+                                            <div class="form-group row">
+                                                <label class="col-md-2 control-label" for="example-input1-group2">Buttons</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-group">
+                                                        <span class="input-group-prepend">
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary"><i class="fa fa-search"></i></button>
+                                                            </span>
+                                                        <input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Search">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-10 offset-md-2">
+                                                    <div class="input-group mt-3">
+                                                        <input type="email" id="example-input2-group2" name="example-input2-group2" class="form-control" placeholder="Email">
+                                                        <span class="input-group-append">
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary">Submit</button>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-10 offset-md-2">
+                                                    <div class="input-group mt-3">
+                                                        <span class="input-group-prepend">
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary"><i class="fab fa-facebook-f"></i></button>
+                                                            </span>
+                                                        <input type="text" id="example-input3-group2" name="example-input3-group2" class="form-control" placeholder="Search">
+                                                        <span class="input-group-append">
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary"><i class="fab fa-twitter"></i></button>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- form-group -->
+
+                                            <div class="form-group row mb-0">
+                                                <label class="col-md-2 control-label" for="example-input1-group3">Dropdowns</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn waves-effect waves-light btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <i class="mdi mdi-chevron-down"></i></button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Action</a></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Another action</a></li>
+                                                                <li class="dropdown-divider"></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Separated link</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <input type="text" id="example-input1-group3" name="example-input1-group3" class="form-control" placeholder="Username">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-10 offset-md-2">
+                                                    <div class="input-group mt-3">
+                                                        <input type="email" id="example-input2-group3" name="example-input2-group3" class="form-control" placeholder="Email">
+                                                        <div class="input-group-append">
+                                                            <button class="btn waves-effect waves-light btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="overflow: hidden; position: relative">Action <i class="mdi mdi-chevron-down"></i></button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Action</a></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Another action</a></li>
+                                                                <li class="dropdown-divider"></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Separated link</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-10 offset-md-2">
+                                                    <div class="input-group mt-3">
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary">Action</button>
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="mdi mdi-chevron-down"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Action</a></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Another action</a></li>
+                                                                <li class="dropdown-divider"></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Separated link</a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <input type="text" id="example-input3-group3" name="example-input3-group3" class="form-control" placeholder="..">
+                                                        <div class="input-group-append">
+                                                            <button type="button" class="btn waves-effect waves-light btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="mdi mdi-chevron-down"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Action</a></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Another action</a></li>
+                                                                <li class="dropdown-divider"></li>
+                                                                <li><a href="javascript:void(0)" class="dropdown-item">Separated link</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- form-group -->
+
+                                        </form>
+
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+                        </div>
+                        <!-- End row -->
+
+                    </div>
+                    <!-- end container-fluid -->
+
+                </div>
+                <!-- end content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+
+    </body>
+</html>

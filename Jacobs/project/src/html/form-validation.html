@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Form Validation | Moltran - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Responsive bootstrap 4 admin template" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html')
+            
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">Form Validation</h4>
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb p-0 m-0">
+                                            <li class="breadcrumb-item"><a href="#">Moltran</a></li>
+                                            <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                                            <li class="breadcrumb-item active">Form Validation</li>
+                                        </ol>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Form validations</h3></div>
+                                    <div class="card-body">
+                                        <div class="form">
+                                            <form class="cmxform form-horizontal tasi-form" id="commentForm" method="get" action="#" novalidate="novalidate">
+                                                <div class="form-group row">
+                                                    <label for="cname" class="col-form-label col-lg-2">Name (required)</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="cname" name="name" type="text" required="" aria-required="true">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="cemail" class="col-form-label col-lg-2">E-Mail (required)</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="cemail" type="email" name="email" required="" aria-required="true">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="curl" class="col-form-label col-lg-2">URL (optional)</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="curl" type="url" name="url">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="ccomment" class="col-form-label col-lg-2">Your Comment (required)</label>
+                                                    <div class="col-lg-10">
+                                                        <textarea class="form-control" id="ccomment" name="comment" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mb-0">
+                                                    <div class="offset-lg-2 col-lg-10">
+                                                        <button class="btn btn-success waves-effect waves-light mr-1" type="submit">Save</button>
+                                                        <button class="btn btn-secondary waves-effect" type="button">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- .form -->
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+
+                        </div>
+                        <!-- End row -->
+
+                        <!-- Form-validation -->
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Form validations</h3></div>
+                                    <div class="card-body">
+                                        <div class="form">
+                                            <form class="cmxform form-horizontal tasi-form" id="signupForm" method="get" action="#" novalidate="novalidate">
+                                                <div class="form-group row">
+                                                    <label for="firstname" class="col-form-label col-lg-2">Firstname *</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="firstname" name="firstname" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="lastname" class="col-form-label col-lg-2">Lastname *</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="lastname" name="lastname" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="username" class="col-form-label col-lg-2">Username *</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="username" name="username" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="password" class="col-form-label col-lg-2">Password *</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="password" name="password" type="password">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="confirm_password" class="col-form-label col-lg-2">Confirm Password *</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="confirm_password" name="confirm_password" type="password">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="email" class="col-form-label col-lg-2">Email *</label>
+                                                    <div class="col-lg-10">
+                                                        <input class="form-control" id="email" name="email" type="email">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="agree" class="col-form-label col-lg-2 col-sm-3">Agree to Our Policy *</label>
+                                                    <div class="col-lg-10 col-sm-9">
+                                                        <div class="p-2">
+                                                            <input type="checkbox" style="width: 16px" id="agree" name="agree">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="newsletter" class="col-form-label col-lg-2 col-sm-3">Receive the Newsletter</label>
+                                                    <div class="col-lg-10 col-sm-9">
+                                                        <div class="p-2">
+                                                            <input type="checkbox" style="width: 16px" id="newsletter" name="newsletter">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row mb-0">
+                                                    <div class="offset-lg-2 col-lg-10">
+                                                        <button class="btn btn-success waves-effect waves-light mr-1" type="submit">Save</button>
+                                                        <button class="btn btn-secondary waves-effect" type="button">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- .form -->
+
+                                    </div>
+                                    <!-- card-body -->
+                                </div>
+                                <!-- card -->
+                            </div>
+                            <!-- col -->
+
+                        </div>
+                        <!-- End row -->
+
+                    </div>
+                    <!-- end container-fluid -->
+
+                </div>
+                <!-- end content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <script src="assets/libs/jquery-validation/jquery.validate.min.js"></script>
+
+        <!-- Validation init js-->
+        <script src="assets/js/pages/form-validation.init.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+
+    </body>
+</html>

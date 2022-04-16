@@ -29,4 +29,18 @@ img {
 .content-page {
     margin-right: 240px;
     margin-left: 0px;
+    padding: 10px;
+    margin-top: 30px
 }
+
+#calendar {
+    max-width: 990px;
+    max-height: 550px;
+}
+
+.fc .fc-button-primary {
+    background-color: #ffe393;
+    border-color: #ffe393;
+    color: black;
+}
+
