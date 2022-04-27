@@ -124,13 +124,13 @@ namespace Jacobs.Models
                  
                     List<String> listIncludeJacobs = new List<string>();
                     List<String> addressList = new List<string>();
-                    listIncludeJacobs.Insert(0, "גשר העץ 27,עמק חפר");
+                   
 
                     foreach (FindingPaths ans in areasArr[i])
                     {
                         addressList.Add(ans.Address);
                     }
-
+                    listIncludeJacobs.Insert(0, "גשר העץ 27,עמק חפר");
                     listIncludeJacobs.AddRange(addressList);
                    string[] arrIncludeJacobs = listIncludeJacobs.ToArray();
                     string[] addressToArr = addressList.ToArray();

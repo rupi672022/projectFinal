@@ -27,7 +27,6 @@ namespace Jacobs.Controllers
         // POST api/<controller>
         public HttpResponseMessage Post([FromBody] Employees employe)  //insert new employe
         {
-            int id = employe.Insert();
             return Request.CreateResponse(HttpStatusCode.OK,"success");
         }
 

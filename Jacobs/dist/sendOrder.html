@@ -55,7 +55,7 @@
             date = date.toLocaleDateString();
 
          ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
-            //ajaxCall("GET", "../api/FindingPaths", "", successMatrix, error);
+
 
 
         }
@@ -64,11 +64,12 @@
         function success(list) {
             
 
-           
+            console.log(list);
             algoNorth = [];
             algoSouth = [];
             algoCenter = [];
             algoJerusalem = [];
+           
 
 
             for (obj in list) {
@@ -86,16 +87,14 @@
 
                     if (list[obj]["DistributaionArea"] == "ירושלים")
                         algoJerusalem[algoJerusalem.length] = list[obj]
-                    initMap(algoNorth, algoSouth, algoCenter, algoJerusalem);
+            
+                    initMap(list);
                 }
 
             }
 
-
-            //console.log(algoNorth)
-            //console.log(algoSouth)
-            //console.log(algoCenter)
-            //console.log(algoJerusalem)
+           
+       
 
             strNorth = "";
             strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
@@ -129,7 +128,7 @@
                 $("#center").show();
             if (algoJerusalem.length!=0)
                 $("#jerusalem").show();
-
+           
 
             
             document.getElementById("north").innerHTML = strNorth;
@@ -139,15 +138,12 @@
 
 
         }
-        //function successMatrix() {
-        //    console.log("you got it")
-        //}
-
+  
         function error(error) {
             console.log(error);
         }
         //create map with distrbution area
-        function initMap() {
+        function initMap(list) {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
@@ -197,7 +193,7 @@
                 strokeWeight: 2,
                 fillColor: "#FF0000",
                 fillOpacity: 0.35,
-                draggable: true,
+                
 
             });
 
@@ -209,7 +205,7 @@
                 strokeWeight: 2,
                 fillColor: "#0000FF",
                 fillOpacity: 0.35,
-                draggable: true,
+         
 
             });
 
@@ -221,7 +217,7 @@
                 strokeWeight: 2,
                 fillColor: "#00FF00",
                 fillOpacity: 0.35,
-                draggable: true,
+         
 
             });
 
@@ -233,14 +229,78 @@
                 strokeWeight: 2,
                 fillColor: "#FF00FF",
                 fillOpacity: 0.35,
-                draggable: true,
+             
 
             });
-        
            
+            var markers = [];
+
+            for (let i = 1; i < list.length; i++) {
+                var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+                markers[i] = new google.maps.Marker({
+                    position: pos,
+                    map:map,
+                    title: list[i]["Address"]
+                });
+            }
+            const image = {
+                url:
+                    "../img/LOGO.png",
+                scaledSize: new google.maps.Size(45, 45), // scaled size
+              
+            };
 
             
-        }
+               
+            const beachMarker = new google.maps.Marker({
+                position: { lat: 32.405410127264439, lng: 34.895175832114731 },
+                map,
+                icon: image,
+            });
+            route = {};
+            var route = new Array();
+            route[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+            for (let i = 0; i < algoNorth.length ; i++) {
+               
+                    route[i+1] =
+                    {
+                        lat: algoNorth[i].Lat,
+
+                        lng: algoNorth[i].Lng
+                    };
+                
+            }
+         
+            route[algoNorth.length+1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+                polygons = new google.maps.Polyline({
+                    path: route,
+                    geodesic: true,
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2
+                 
+
+
+                });
+            polygons.setMap(map);
+            }
+            
+          
+           
+        
+               
+
+            
+        
       
         
         
