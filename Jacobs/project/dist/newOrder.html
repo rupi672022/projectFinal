@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="utf-8" />
+    <title>משק יעקבס</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/LOGO.ico">
+
+    <!-- App css -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Plugins css-->
+    <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+
+    <link href="../CSS/newOrder.css" rel="stylesheet" />
+ 
+    <script>
+
+        $(document).ready(function () {
+            ajaxCall("GET", "../api/Companies", "", getCSCB, error);//get all the compamies
+
+            $("#companyForm").submit(submitToOrderCompany);//choose company to order
+            $("#productForm").submit(submitToOrderProduct);//choose product to order
+            $("#newcompanyForm").submit(submitToCom);//add new company
+            $("#newproductForm").submit(submitToPro);//add new product
+
+            $('#myModal').on('shown.bs.modal', function () {//POPUP  to company / product
+                $('#myModalCompany').trigger('focus')
+                $('#myModalProduct').trigger('focus')
+                $('#myModalAddProduct').trigger('focus')
+            });
+
+            $('.btn-product').click(function () {
+                ajaxCall("GET", "../api/Products", "", getPSCB, error)//get all the product
+            });
+
+            $('.updateContact').click(function () {//update contact in company
+                console.log($("#num").val())
+                newContact = {
+                    CompanyNum: $("#num").val(),
+                    NameContact: $("#nameContact").val(),
+                    PhoneContact: $("#phoneContact").val()
+                }
+
+                ajaxCall("PUT", "../api/Companies", JSON.stringify(newContact), getPSCB, error)
+            });
+
+            $(document).on("click", ".deleteBtn", function () {//delete product frop order
+                id = this.id;
+                console.log(id);
+                swal({ // this will open a dialouge
+                    title: "האם את/ה בטוח ??",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then(function (willDelete) {
+                        if (willDelete) deleteProduct(id);
+                        else {
+                            swal("לא נמחק!");
+
+                        };
+                    });
+            });
+
+            $("#productDiv").hide()
+
+
+        });
+
+
+        function submitToCom() {//add new company
+
+            newCompany = {
+                CompanyName: $("#Cname").val(),
+                Address: $("#Caddress").val(),
+                OpenHour: $("#CopenHour").val(),
+                CloseHour: $("#CcloseHour").val(),
+                NameContact: $("#CnameContact").val(),
+                PhoneContact: $("#CphoneContact").val(),
+                DistributaionArea: $("#CdisArrea").val()
+            }
+            console.log(newCompany);
+
+            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsses, error);
+
+            return false;
+
+        }
+
+        function submitToPro() {//add new product
+
+            if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram
+                downfromTotal = 0.1;
+            else
+                downfromTotal = 0;
+
+            newProduct = {
+                Barcod: $("#barcod").val(),
+                NameProduct: $("#nameproduct").val(),
+                Type: $("#type").val(),
+                WeightperOne: $("weightperOne").val(),
+                DownfromTotal: downfromTotal
+            }
+            console.log(newProduct);
+
+            ajaxCall("POST", "../api/Products", JSON.stringify(newProduct), postSucsses, error);
+
+            $("#barcod").val('')
+            $("#type").val('');
+            $("#nameproduct").val('');
+            $("#weight").val('');
+
+            return false;
+
+        }
+
+        function getCSCB(list) {//render the name of the companies in server
+            console.log(list);
+
+            listname = [];
+            for (obj in list) {
+                if (list[obj].CompanyName != 'משק יעקבס') {
+                    listname.push(list[obj].CompanyName)
+                }
+            }
+            listname = [...new Set(listname)];//הסרת כפילויות
+            console.log(listname);
+
+            str = " <select id='companyName' class='form - control' onchange='renderCompany()' required>";
+            str += "<option>בחר בית עסק</option>";
+            listname.forEach(function (value) {
+                str += "<option>";
+                str += value;
+                str += "</option>";
+            })
+            str += "</select>";
+            str += "<br/><br/>";
+
+
+            document.getElementById("select").innerHTML = str;
+
+        }
+
+        function renderCompany() {//get the info about this company
+
+            name_company = document.getElementById("companyName").value;//the series choose
+            console.log(name_company);
+            if (name_company != "בחר בית עסק")
+                ajaxCall("GET", "../api/Companies?name=" + name_company, "", getNCSCB, error);
+        }
+
+        function getNCSCB(list) {//insert the unfo to input
+            obj = list[0];
+
+            date = new Date();
+            year = date.getFullYear();
+            month = date.getMonth() + 1;
+            day = date.getDate();
+
+            $("#num").val(obj.CompanyNum)
+            $("#address").val(obj.Address);
+            $("#disArea").val(obj.DistributaionArea);
+            $("#nameContact").val(obj.NameContact);
+            $("#phoneContact").val(obj.PhoneContact)
+            $("#dateStart").val(day + "/" + month + "/" + year)
+            $("#openHour").val(obj.OpenHour);
+            $("#closeHour").val(obj.CloseHour)
+
+        }
+
+        function submitToOrderCompany() {//insert the num order , the date to need to sent the company and the num company
+
+            date = new Date($("#dateArrivel").val());
+
+            newOrder = {
+                OrderNum: $("#orderNum").val(),
+                StartDate: $("#dateStart").val(),
+                DateArrival: date.toLocaleDateString(),
+                Companynum: $("#num").val()
+            }
+            ajaxCall("POST", "../api/Orders", JSON.stringify(newOrder), postSaveSucsses, errorOrder);
+            return false;
+        }
+
+        function getPSCB(list) {//get all the product
+            console.log(list);
+
+            listname = [];
+            for (obj in list) {
+                listname.push(list[obj].NameProduct)
+            }
+            console.log(listname);
+
+            str = " <select id='productName' class='form - control' onchange='renderProduct()' required>";
+            str += "<option>בחר מוצר</option>";
+            listname.forEach(function (value) {
+                str += "<option>";
+                str += value;
+                str += "</option>";
+            })
+            str += "</select>";
+            str += "<br/><br/>";
+
+
+            document.getElementById("selectProduct").innerHTML = str;
+        }
+
+        function renderProduct() {//get the info about the product
+
+            name_product = document.getElementById("productName").value;//the series choose
+            console.log(name_product);
+            if (name_product != "בחר מוצר")
+                ajaxCall("GET", "../api/Products?name=" + name_product, "", getNPSCB, error);
+        }
+
+        function getNPSCB(list) {//insert the info to the input
+            obj = list[0];
+
+            $("#Pbarcod").val(obj.Barcod);
+            $("#Ptype").val(obj.Type);
+
+            ST = "";
+            if (obj.Type == "קשה" || obj.Type == "חצי קשה") {//if the type of product hard need to insert weight
+                ST += "<label for='Pweight'>משקל המוצר בסך הכול בק'ג</label>";
+                ST += "<input type = 'number' class='form-control' id = 'Pweight' placeholder = 'הכנס את משקל המוצר' >";
+            }
+            else {
+                ST += "<label for='Pquantity'>כמות</label>";//if not need to insert quantity
+                ST += "<input type='number' class='form-control' id='Pquantity' placeholder=' הכנס את כמות המוצר '>";
+            }
+
+            document.getElementById("change").innerHTML = ST;
+        }
+
+        function submitToOrderProduct() {//insert product to order
+
+            addProduct = {
+                OrderNum: $("#orderNum").val(),
+                StartDate: $("#dateStart").val(),
+                DateArrival: $("#dateArrivel").val(),
+                Productnum: $("#Pbarcod").val(),
+                Weight: $("#Pweight").val(),
+                Quantity: $("#Pquantity").val()
+            }
+
+            ajaxCall("POST", "../api/Orders", JSON.stringify(addProduct), postProductSucsses, error);
+
+
+            $("#Pbarcod").val('')
+            $("#Ptype").val('');
+            $("#Pweight").val('');
+            $("#Pquantity").val('');
+
+
+            return false;
+
+        }
+
+        function deleteProduct(id) {//delete product from order
+            console.log(id);
+            Norder = $("#orderNum").val();
+            ajaxCall("DELETE", "../api/Orders?id=" + id + "&Norder=" + Norder, "", deleteSuccess, error);
+        }
+
+        function postSucsses() {
+            console.log("sucsses");
+            renderCompany();
+        }
+
+        function postProductSucsses() {//fget all the product in this order
+            console.log("sucsses");
+            ajaxCall("GET", "../api/Orders?idOrder=" + $("#orderNum").val(), "", getProdcut, error);
+        }
+
+        function getProdcut(list) {//render the product
+            console.log(list);
+
+            str = "<ul>";
+
+            for (obj in list) {
+
+                if (list[obj].Weight == '0' && list[obj].Quantity != '0') {
+                    str += "<li>";
+                    str += "<h5> ברקוד מוצר :" + list[obj].Productnum + "       כמות :  " + list[obj].Quantity;
+                    str += "<button class = 'deleteBtn btn btn-info' id=" + list[obj].Productnum + "> <img src='../img/Delete.png' />  </button></h5 >";
+                    str += "</li>";
+                }
+
+                else if (list[obj].Weight != '0' && list[obj].Quantity == '0') {
+                    str += "<li>";
+                    str += "<h5> ברקוד מוצר :" + list[obj].Productnum + "     משקל מוצר ליחידה :  " + list[obj].Weight;
+                    str += "<button class = 'deleteBtn btn btn-info' id=" + list[obj].Productnum + "> <img src='../img/Delete.png' />  </button></h5>";
+                    str += "</li>";
+                }
+            }
+            str += "</ul>";
+            document.getElementById("product").innerHTML = str;
+
+        }
+
+        function deleteSuccess() {
+            swal("נמחק בהצלחה");
+            postProductSucsses();
+        }
+
+        function postSaveSucsses() {
+            swal("נשמר בהצלחה!!!");
+            $("#productDiv").show()
+
+        }
+
+        function SaveSucsses() {
+            swal("נשמר בהצלחה!!!");
+            document.getElementById("product").innerHTML = '';
+            $("#productDiv").hide()
+            $("#select").val('');
+            $("#name").val('');
+            $("#address").val('');
+            $("#disArea").val('');
+            $("#openHour").val('');
+            $("#closeHour").val('');
+            $("#nameContact").val('');
+            $("#phoneContact").val('');
+            $("#dateArrivel").val('');
+            $("#dateStart").val('');
+            $("#orderNum").val('');
+
+        }
+
+        function errorOrder(err) {
+            console.log(err);
+            if (err.status == '500') {
+                swal("הזמנה זו קיימת, אנא הקש מספר אחר");
+                $("#orderNum").val('');
+            }
+        }
+
+        function error(err) {
+            console.log(err);
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <h3 style="margin-top:10px">
+                &nbsp; &nbsp; משק יעקבס
+                <img id="imgLogo" src="../img/LOGO.png" />
+            </h3>
+            <!-- LOGO -->
+        </div>
+        <!-- end Topbar -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left-side-menu">
+            <div class="slimscroll-menu">
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <div class="user-box">
+                        <div class="float-left">
+                            <a href="login.html" class="waves-effect">
+                                <i class="mdi mdi-account" id="LOgin"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <ul class="metismenu" id="side-menu">
+                        <li>
+                            <a href="main.html" class="waves-effect">
+                                <i class="mdi mdi-calendar"></i>
+                                <span> לוח שנה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="employe.html" class="waves-effect">
+                                <i class=" mdi mdi-account"></i>
+                                <span> עובדים </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-folder-plus"></i>
+                                <span> הזמנה חדשה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a   href="sendOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-calendar"></i>
+                                <span> הפצת הזמנות </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Sidebar -->
+                <div class="clearfix"></div>
+            </div>
+            <!-- Sidebar -left -->
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card-box">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div>
+                                            <button type="button" id="BTN" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalCompany">
+                                                הוסף בית עסק חדש
+                                                <!--new company-->
+                                            </button>
+                                            <button type="button" id="BTN" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModalProduct">
+                                                הוסף מוצר חדש
+                                                <!--new product-->
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+
+                                        <!-- הinsert company to order -->
+                                        <div id="companyDiv" class="card">
+                                            <form id="companyForm">
+                                                <div class="form-group row">
+
+                                                    <div class="form-group col-sm-3">
+                                                        <div class="form-group col-sm-12" id="select">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="num">מספר בית העסק</label>
+                                                        <input type="number" class="form-control" id="num" placeholder="הכנס מספר בית עסק" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="address">כתובת בית העסק</label>
+                                                        <input type="text" class="form-control" id="address" placeholder="הכנס כתובת" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="disArea">אזור חלוקה</label>
+                                                        <input type="text" class="form-control" id="disArea" placeholder="הכנס אזור חלוקה" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="nameContact">איש קשר</label>
+                                                        <input type="text" class="form-control" id="nameContact" placeholder=" הכנס איש קשר" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="phoneContact">טלפון איש הקשר </label>
+                                                        <input type="text" class="form-control" id="phoneContact" placeholder=" הכנס טלפון" required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-6">
+                                                        <button id="BTN" class="updateContact">עדכן איש קשר</button>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="openHour">שעות פתיחה </label>
+                                                        <input type="text" class="form-control" id="openHour" placeholder=" הכנס שעות פתיחה " required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="closeHour">שעות סגירה </label>
+                                                        <input type="text" class="form-control" id="closeHour" placeholder=" הכנס שעות סגירה " required>
+                                                    </div>
+
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="dateStart">תאריך פתיחת הזמנה </label>
+                                                        <input type="text" class="form-control" id="dateStart">
+                                                    </div>
+
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="dateArrivel">תאריך הגעת ההזמנה לבית העסק </label>
+                                                        <input type="date" class="form-control" id="dateArrivel" placeholder=" הכנס תאריך ההזמנה " required>
+                                                    </div>
+
+                                                    <br /><br />
+
+                                                    <div class="form-group col-sm-3" id="col">
+                                                        <label for="orderNum">מספר הזמנה </label>
+                                                        <input type="number" class="form-control" id="orderNum" placeholder=" הכנס מספר הזמנה" required>
+                                                    </div>
+
+
+                                                    <br /><br />
+
+                                                </div>
+
+                                                <div>
+                                                    <button id='BTN'>שמור</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <!-- insert product to order -->
+                                        <div id="productDiv" class="card">
+                                            <button type="button" id="BTN" class="btn-product" data-toggle="modal" data-target="#myModalAddProduct">
+                                                הוסף מוצר להזמנה
+                                            </button>
+                                            <br /><br />
+                                            <div id="product"></div>
+
+
+                                            <div>
+                                                <button id='BTN' onclick="SaveSucsses()">שמור</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- new product - pop up -->
+                                    <div class="container">
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModalProduct" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="newproductForm">
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="barcod">ברקוד המוצר</label>
+                                                                <input type="number" class="form-control" id="barcod" placeholder="הכנס ברקוד" required>
+                                                            </div>
+
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="nameproduct">שם המוצר</label>
+                                                                <input type="text" class="form-control" id="nameproduct" placeholder="הכנס את שם המוצר" required>
+                                                            </div>
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="weightperOne"> משקל ליחידה </label>
+                                                                <input type="number" class="form-control" id="weightperOne" placeholder=" הכנס את משקל המוצר ליחידה ">
+                                                            </div>
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="type"> גבינה קשה / רכה / מארז </label>
+                                                                <input type="text" class="form-control" id="type" placeholder=" הכנס את סוג המוצר " required>
+                                                            </div>
+
+                                                            <div class="form-group col-sm-12">
+                                                                <label for="downfromTotal">האם להוריד 100 גרם מהמוצר ? </label>
+                                                                <input type="checkbox" class="form-control" id="downfromTotal">
+                                                            </div>
+
+                                                            <div>
+                                                                <button id="BTN" data-toggle="modal" data-target="#myModalProduct">שמור</button>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="BTN" class="btn btn-default" data-dismiss="modal">סגור</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- new company - pop up -->
+                                    <div class="container">
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModalCompany" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="newcompanyForm">
+
+                                                            <div class="form-group col-sm-5">
+                                                                <label for="Caddress">כתובת בית העסק</label>
+                                                                <input type="text" class="form-control" id="Caddress" placeholder="הכנס כתובת" required>
+                                                            </div>
+
+
+                                                            <div class="form-group col-sm-5">
+                                                                <label for="Cname">שם בית העסק</label>
+                                                                <input type="text" class="form-control" id="Cname" placeholder="הכנס את שם בית העסק" required>
+                                                            </div>
+
+
+                                                            <div class="form-group col-sm-5">
+                                                                <label for="CcloseHour">שעות סגירה </label>
+                                                                <input type="text" class="form-control" id="CcloseHour" placeholder=" הכנס שעות סגירה " required>
+                                                            </div>
+
+
+                                                            <div class="form-group col-sm-5">
+                                                                <label for="CopenHour">שעות פתיחה </label>
+                                                                <input type="text" class="form-control" id="CopenHour" placeholder=" הכנס שעות פתיחה " required>
+                                                            </div>
+
+
+
+                                                            <div class="form-group col-sm-5">
+                                                                <label for="CphoneContact">טלפון איש הקשר </label>
+                                                                <input type="text" class="form-control" id="CphoneContact" pattern="[0-9]{3}-[0-9]{7}" placeholder=" הכנס טלפון" required>
+                                                            </div>
+
+                                                            <div class="form-group col-sm-5">
+                                                                <label for="CnameContact">איש קשר</label>
+                                                                <input type="text" class="form-control" id="CnameContact" placeholder=" הכנס איש קשר" required>
+                                                            </div>
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="CdisArrea">אזור חלוקה</label>
+                                                                <select id="CdisArrea" class="form-control" required>
+                                                                    <option value=""></option>
+                                                                    <option value="צפון">צפון</option>
+                                                                    <option value="דרום">דרום</option>
+                                                                    <option value="מרכז">מרכז</option>
+                                                                    <option value="ירושלים">ירושלים</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div>
+                                                                <button id="BTN" data-toggle="modal" data-target="#myModalCompany">שמור</button>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="BTN" class="btn btn-default" data-dismiss="modal">סגור</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!---product to order - pop up -->
+                                    <div class="container">
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModalAddProduct" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="productForm">
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="Pbarcod">ברקוד המוצר</label>
+                                                                <input type="text" class="form-control" id="Pbarcod" placeholder="הכנס את ברקוד המוצר">
+                                                            </div>
+
+                                                            <div class="form-group col-sm-6">
+                                                                <div class="form-group col-sm-12" id="selectProduct">
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group col-sm-6">
+                                                                <label for="Ptype">סוג המוצר</label>
+                                                                <input type="text" class="form-control" id="Ptype" placeholder="הכנס את סוג המוצר">
+                                                            </div>
+
+
+                                                            <div class="form-group col-sm-8" id="change">
+
+                                                            </div>
+
+                                                            <div>
+                                                                <button id="BTN" data-toggle="modal" data-target="#myModalAddProduct">שמור</button>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" id="BTN" class="btn btn-default" data-dismiss="modal">סגור</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
+
+    <!-- App js -->
+   <script src="assets/js/app.min.js"></script>
+
+</body>
+</html>

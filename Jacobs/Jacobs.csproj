@@ -402,8 +402,8 @@
     <Content Include="dist\assets\libs\toastr\toastr.min.js" />
     <Content Include="dist\assets\libs\x-editable\bootstrap-editable.css" />
     <Content Include="dist\assets\libs\x-editable\bootstrap-editable.min.js" />
-    <Content Include="dist\newOrder.html" />
     <Content Include="dist\main.html" />
+    <Content Include="dist\newOrder.html" />
     <Content Include="dist\pages-blank.html" />
     <Content Include="dist\pages-invoice.html" />
     <Content Include="dist\pages-lock-screen.html" />
@@ -417,6 +417,8 @@
     <Content Include="dist\sendOrder.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fullcalendar\Calendar.css" />
+    <Content Include="fullcalendar\Calendar.js" />
     <Content Include="Global.asax" />
     <Content Include="gulpfile.js" />
     <Content Include="img\Delete.png" />

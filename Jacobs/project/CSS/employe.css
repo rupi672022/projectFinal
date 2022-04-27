@@ -1,0 +1,108 @@
+﻿body {
+    direction: rtl;
+    background-color: #eee;
+    text-align: center
+}
+
+.navbar-custom {
+    background-color: #ffe393;
+}
+
+h3 {
+    color: black;
+    text-align: center;
+}
+
+
+.btn-info:hover {
+    background-color: #FFE587;
+}
+
+.logout-button, .main-button, .deleteBtn, .Series-button, .updateBtn, .viewBtn {
+    background-color: #FFE587;
+    color: black;
+    border: hidden;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+#BTN {
+    width: 200px;
+    background-color: #FFE587;
+    color: black;
+    border: hidden;
+    padding: 5px;
+    margin-top: 20px;
+}
+
+img {
+    width: 20px;
+    height: 25px;
+}
+
+#imgLogo {
+    width: 60px;
+    height: 50px;
+}
+
+#updateDiv {
+    direction: rtl;
+    margin-right: 25%;
+    width: 450px;
+}
+
+.cancelBTN {
+    margin-right: 50%;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0);
+    transition: 0.3s;
+    width: 200px;
+    direction: rtl;
+    margin-right: 50%;
+    padding: 20px;
+    border-color: #FFE587;
+}
+
+.card-box {
+    background-color: #fff;
+    padding: 1.25rem;
+    -webkit-box-shadow: 0 1px 2px 0 rgb(33 37 41 / 10%);
+    box-shadow: 0 1px 2px 0 rgb(33 37 41 / 10%);
+    margin-bottom: 24px;
+    border-radius: 0.25rem;
+}
+
+
+.left-side-menu {
+    text-align: center;
+}
+
+#LOgin {
+    font-size: 80px;
+    color: black;
+    padding: 50px;
+    margin-right: 20px;
+}
+
+.content-page {
+    margin-right: 240px;
+    margin-left: 0px;
+    padding: 10px;
+    margin-top: 30px
+}
+
+.page-title-box {
+    height:10px
+}
+
+.card-box {
+    background-color: #ffff;
+    margin-left: 0px;
+}
+
+#pForm {
+    padding: 20px
+}

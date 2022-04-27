@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Morris Chart | Moltran - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Responsive bootstrap 4 admin template" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html')
+            
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">Morris Chart</h4>
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb p-0 m-0">
+                                            <li class="breadcrumb-item"><a href="#">Moltran</a></li>
+                                            <li class="breadcrumb-item"><a href="#">Charts</a></li>
+                                            <li class="breadcrumb-item active">Morris Chart</li>
+                                        </ol>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <!-- BAR Chart -->
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Bar Chart</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="morris-bar-example" class="morris-charts" style="height: 300px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col -->
+
+                            <!--  Line Chart -->
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Line Chart</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="morris-line-example" class="morris-charts" style="height: 300px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col -->
+                        </div>
+                        <!-- End row-->
+
+                        <div class="row">
+
+                            <!-- Area Chart -->
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Area Chart</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="morris-area-example" class="morris-charts" style="height: 300px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col -->
+
+                            <!-- Donut Chart -->
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Donut Chart</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="morris-donut-example" class="morris-charts" style="height: 300px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col -->
+                        </div>
+                        <!-- End row-->
+
+                    </div>
+                    <!-- end container-fluid -->
+
+                </div>
+                <!-- end content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <!--Morris Chart-->
+        <script src="assets/libs/morris-js/morris.min.js"></script>
+        <script src="assets/libs/raphael/raphael.min.js"></script>
+
+        <!-- Init js -->
+        <script src="assets/js/pages/morris.init.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+
+    </body>
+
+</html>

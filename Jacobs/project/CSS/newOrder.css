@@ -1,0 +1,100 @@
+﻿body {
+    direction: rtl;
+    background-color: #eee;
+    text-align: right
+}
+
+.navbar-custom {
+    background-color: #ffe393;
+}
+
+h3 {
+    color: black;
+    text-align: center;
+}
+
+#BTN {
+    width: 200px;
+    background-color: #FFE587;
+    color: black;
+    border: hidden;
+    padding: 5px;
+    margin-top: 10px;
+    margin-right: 10%;
+}
+
+.logout-button, .employe-button, .main-button {
+    background-color: #FFE587;
+    color: black;
+    border: hidden;
+    padding: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    direction: rtl;
+    margin: 15px;
+    padding: 8px;
+    border-color: #FFE587;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+#col {
+    margin-left: 40%;
+}
+
+img {
+    width: 20px;
+    height: 25px;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.btn-info:hover {
+    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+#imgLogo {
+    width: 60px;
+    height: 50px;
+}
+
+.left-side-menu {
+    text-align: center;
+}
+
+#LOgin {
+    font-size: 80px;
+    color: black;
+    padding: 50px;
+}
+
+.content-page {
+    margin-right: 240px;
+    margin-left: 0px;
+    padding: 10px;
+    margin-top: 30px
+}
+
+.page-title-box {
+    height: 10px
+}
+
+.card-box {
+    background-color: #ffff;
+    margin-left: 0px;
+}
+
+    

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Flot Charts | Moltran - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="Responsive bootstrap 4 admin template" name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+        <!-- App css -->
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+
+    </head>
+
+    <body>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            @@include('./partials/topbar.html')
+            
+            @@include('./partials/left-sidebar.html')
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">Flot Charts</h4>
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb p-0 m-0">
+                                            <li class="breadcrumb-item"><a href="#">Moltran</a></li>
+                                            <li class="breadcrumb-item"><a href="#">Charts</a></li>
+                                            <li class="breadcrumb-item active">Flot Charts</li>
+                                        </ol>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Multiple Statistics</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="website-stats" style="height: 320px" class="flot-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Realtime Statistics</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="flotRealTime" style="height: 320px" class="flot-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Donut Pie</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="donut-chart">
+                                            <div id="donut-chart-container" class="flot-chart" style="height: 320px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">pie Chart</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="pie-chart">
+                                            <div id="pie-chart-container" class="flot-chart" style="height: 320px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card card-border card-primary">
+                                    <div class="card-header border-primary bg-transparent pb-0">
+                                        <h3 class="card-title text-primary">Combine Statistics</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="combine-chart">
+                                            <div id="combine-chart-container" class="flot-chart" style="height: 320px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- end container-fluid -->
+
+                </div>
+                <!-- end content -->
+
+                @@include('./partials/footer.html')
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+        </div>
+        <!-- END wrapper -->
+
+        @@include('./partials/right-sidebar.html')
+
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
+
+        <!-- flot chart -->
+        <script src="assets/libs/flot-charts/jquery.flot.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.time.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.tooltip.min.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.resize.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.pie.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.selection.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.stack.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.crosshair.js"></script>
+
+        <!-- init js -->
+        <script src="assets/js/pages/flot.init.js"></script>
+
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
+
+    </body>
+
+</html>

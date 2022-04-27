@@ -14,195 +14,140 @@
 
     <!-- Plugins css-->
     <link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-    <!-- Plugin css -->
-    <link href="assets/libs/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-
+    <script src="../fullcalendar/Calendar.js"></script>
+    <link href="../fullcalendar/Calendar.css" rel="stylesheet" />
     <!-- App css -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
     <link href="../CSS/main.css" rel="stylesheet" />
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+                initialDate: new Date(),
+                navLinks: true, // can click day/week names to navigate views
+                businessHours: true, // display business hours
+                editable: true,
+                selectable: true,
+                locale: 'he',
+                direction: 'rtl',
+                buttonText: {
+                    today: 'היום',
+                    list:'הזמנות',
+                    day: 'יום',
+                    week: 'שבוע',
+                    month: 'חודש',
+                },
+                events: [{}],
+
+            });
+
+            calendar.render();
+        });
+
+    </script>
 
 </head>
+<body>
+    <!-- Begin page -->
+    <div id="wrapper">
 
-    <body>
-        <!-- Begin page -->
-        <div id="wrapper">
-
-            <!-- Topbar Start -->
-            <div class="navbar-custom">
-                <h3>
-                    &nbsp; &nbsp; משק יעקבס
-                    <img src="../img/LOGO.png" />
-                </h3>
-                <!-- LOGO -->
-            </div>
-            <!-- end Topbar -->
-
-            <!-- ========== Left Sidebar Start ========== -->
-            <div class="left-side-menu" >
-                <div class="slimscroll-menu">
-                    <!--- Sidemenu -->
-                    <div id="sidebar-menu">
-                        <div class="user-box">
-                            <div class="float-left">
-                                <a href="login.html" class="waves-effect">
-                                    <i class="mdi mdi-account" id="LOgin"></i>
-                                </a>
-                            </div>
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <h3>
+                &nbsp; &nbsp; משק יעקבס
+                <img src="../img/LOGO.png" />
+            </h3>
+            <!-- LOGO -->
+        </div>
+        <!-- end Topbar -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left-side-menu">
+            <div class="slimscroll-menu">
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <div class="user-box">
+                        <div class="float-left">
+                            <a href="login.html" class="waves-effect">
+                                <i class="mdi mdi-account" id="LOgin"></i>
+                            </a>
                         </div>
-
-                        <ul class="metismenu" id="side-menu">
-                            <li>
-                                <a href="main.html" class="waves-effect">
-                                    <i class="mdi mdi-calendar"></i>
-                                    <span> לוח שנה </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="employe.html" class="waves-effect">
-                                    <i class=" mdi mdi-account"></i>
-                                    <span> עובדים </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="newOrder.html" class="waves-effect">
-                                    <i class=" mdi mdi-folder-plus"></i>
-                                    <span> הזמנה חדשה </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a  href="sendOrder.html"  class="waves-effect">
-                                    <i class=" mdi mdi-calendar"></i>
-                                    <span> הפצת הזמנות </span>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
-                    <!-- End Sidebar -->
-                    <div class="clearfix"></div>
-                </div>
-                <!-- Sidebar -left -->
-            </div>
-            <!-- Left Sidebar End -->
-            <!-- ============================================================== -->
-            <!-- Start Page Content here -->
-            <!-- ============================================================== -->
 
-            <!--calender-->
-            <div class="content-page" >
-                <div class="content">
-                    <!-- Start Content-->
-                    <div class="container-fluid">
-                        <!-- start page title -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box">
-                                </div>
+                    <ul class="metismenu" id="side-menu">
+                        <li>
+                            <a href="main.html" class="waves-effect">
+                                <i class="mdi mdi-calendar"></i>
+                                <span> לוח שנה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="employe.html" class="waves-effect">
+                                <i class=" mdi mdi-account"></i>
+                                <span> עובדים </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="newOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-folder-plus"></i>
+                                <span> הזמנה חדשה </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="sendOrder.html" class="waves-effect">
+                                <i class=" mdi mdi-calendar"></i>
+                                <span> הפצת הזמנות </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Sidebar -->
+                <div class="clearfix"></div>
+            </div>
+            <!-- Sidebar -left -->
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+        <!--calender-->
+        <div class="content-page">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
                             </div>
                         </div>
-                        <!-- end page title -->
+                    </div>
+                    <!-- end page title -->
 
-                        <div class="row">
-                            <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12">
 
-                                <div class="card-box">
-                                    <div class="row">
-                                        <div class="col-lg-9">
-                                            <div id="calendar"></div>
-                                        </div>
-                                        <!-- end col -->
-                                        <div class="col-lg-3">
-                                            <a href="#" data-toggle="modal" data-target="#add-category" class="btn btn-lg btn-primary btn-block waves-effect mt-3 waves-light">
-                                                <i class="fa fa-plus"></i> Create New
-                                            </a>
-                                            <div id="external-events" class="mt-3">
-                                                <br>
-                                                <p class="text-muted">Drag and drop your event or click in the calendar</p>
-                                                <div class="external-event bg-dark text-white" data-class="bg-dark">
-                                                    My Event One
-                                                </div>
-                                                <div class="external-event bg-danger text-white" data-class="bg-red">
-                                                    My Event Two
-                                                </div>
-                                                <div class="external-event bg-primary text-white" data-class="bg-primary">
-                                                    My Event Three
-                                                </div>
-                                                <div class="external-event bg-purple text-white" data-class="bg-purple">
-                                                    My Event Four
-                                                </div>
-                                            </div>
-
-                                            <!-- checkbox -->
-                                            <div class="checkbox checkbox-primary mt-4">
-                                                <input type="checkbox" id="drop-remove">
-                                                <label for="drop-remove">
-                                                    Remove after drop
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- end col-->
+                            <div class="card-box">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <div id='calendar'></div>
+                                    </div>
+                                    <div class="col-lg-2" style="margin-top:20%">
+                                        <p style="background-color: #bce3fe; border-radius: 25px; text-align: center ">צפון</p>
+                                        <p style="background-color: #9cf3cd; border-radius: 25px; text-align: center ">דרום</p>
+                                        <p style="background-color: #f5e8aa; border-radius: 25px; text-align: center ">מרכז</p>
+                                        <p style="background-color: #f9abab; border-radius: 25px; text-align:center">ירושלים</p>
                                     </div>
                                     <!-- end row -->
                                 </div>
-
-                                <!-- BEGIN MODAL -->
-                                <div class="modal fade none-border" id="event-modal" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Add New Event</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
-                                            </div>
-                                            <div class="modal-body pb-0"></div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Create event</button>
-                                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Modal Add Category -->
-                                <div class="modal fade none-border" id="add-category" tabindex="-1">
-                                    <div class="modal-dialog">
-
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Add a category</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            </div>
-                                            <div class="modal-body pb-0">
-                                                <form class="form">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Category Name</label>
-                                                        <input class="form-control form-white" placeholder="Enter name" type="text" name="category-name" />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label">Choose Category Color</label>
-                                                        <select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
-                                                            <option value="success">Success</option>
-                                                            <option value="danger">Danger</option>
-                                                            <option value="info">Info</option>
-                                                            <option value="pink">Pink</option>
-                                                            <option value="primary">Primary</option>
-                                                            <option value="warning">Warning</option>
-                                                            <option value="inverse">Inverse</option>
-                                                        </select>
-                                                    </div>
-
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-danger waves-effect waves-light save-category" data-dismiss="modal">Save</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END MODAL -->
                             </div>
                             <!-- end col-12 -->
                         </div>
@@ -222,35 +167,13 @@
             <!-- ============================================================== -->
 
         </div>
-        <!-- END wrapper -->
-        <!-- Right Sidebar -->
-        <div class="right-bar">
+    </div>
 
-        </div>
-        <!-- /Right-bar -->
-        <!-- Vendor js -->
-        <script src="assets/js/vendor.min.js"></script>
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
 
-        <script src="assets/libs/moment/moment.min.js"></script>
-        <script src="assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
-        <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <!-- App js -->
+    <script src="assets/js/app.min.js"></script>
 
-        <!-- plugin js -->
-        <script src="assets/libs/moment/moment.min.js"></script>
-        <script src="assets/libs/jquery-ui/jquery-ui.min.js"></script>
-        <script src="assets/libs/fullcalendar/fullcalendar.min.js"></script>
-
-        <!-- Calendar init -->
-        <script src="assets/js/pages/calendar.init.js"></script>
-
-        <!-- Todo app -->
-        <script src="assets/js/pages/jquery.todo.js"></script>
-
-        <!-- App js -->
-        <script src="assets/js/app.min.js"></script>
-
-
-
-    </body>
-
+</body>
 </html>

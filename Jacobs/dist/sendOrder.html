@@ -54,7 +54,13 @@
             date = new Date($("#dateJob").val());
             date = date.toLocaleDateString();
 
-         ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+
+            ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+
+            $("#north").hide();
+            $("#south").hide();
+            $("#center").hide();
+            $("#jerusalem").hide();
 
 
 
@@ -135,6 +141,8 @@
             document.getElementById("south").innerHTML = strSouth;
             document.getElementById("center").innerHTML = strCenter;
             document.getElementById("jerusalem").innerHTML = strJerusalem;
+
+  
 
 
         }
