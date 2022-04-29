@@ -800,6 +800,10 @@ A HORIZONTAL event
     z-index: 6;
     margin-top: 1px;
   }
+.fc .fc-non-business {
+    background: rgba(215, 215, 215, 0.3);
+    background: var(--fc-non-business-color, rgba(215, 215, 215, 0.3));
+}
 .fc .fc-daygrid-event.fc-event-mirror {
     z-index: 7;
   }
@@ -888,12 +892,19 @@ A HORIZONTAL event
   padding: 2px 0
 
 }
-.fc-daygrid-dot-event .fc-event-title {
+    .fc-daygrid-dot-event .fc-event-title {
+        flex-grow: 1;
+        flex-shrink: 1;
+        min-width: 0; /* important for allowing to shrink all the way */
+        overflow: hidden;
+        font-size: 10px;
+        text-align: right;
+    }.fc-daygrid-dot-event .fc-event-title {
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0; /* important for allowing to shrink all the way */
     overflow: hidden;
-    font-weight: bold;
+    font-size:10px;
   }
 .fc-daygrid-dot-event:hover,
   .fc-daygrid-dot-event.fc-event-mirror {

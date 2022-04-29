@@ -12,6 +12,10 @@ namespace Jacobs.Models
         string startDate;
         string dateArrival;
         int companynum;
+        string companyName;
+        string openHour;
+        string closeHour;
+        string distributaionArea;
         double weight;//משקל סה"כ למוצר
         int quantity;//אם לא צריך לשקול
         double total;
@@ -54,6 +58,17 @@ namespace Jacobs.Models
             this.status = status;
         }
 
+        public Orders(int orderNum, string dateArrival, int companynum, string companyName, string openHour, string closeHour, string distributaionArea)
+        {
+            this.orderNum = orderNum;
+            this.dateArrival = dateArrival;
+            this.companynum = companynum;
+            this.companyName = companyName;
+            this.openHour = openHour;
+            this.closeHour = closeHour;
+            this.distributaionArea = distributaionArea;
+        }
+
         public int OrderNum { get => orderNum; set => orderNum = value; }
         public string StartDate { get => startDate; set => startDate = value; }
         public string DateArrival { get => dateArrival; set => dateArrival = value; }
@@ -66,12 +81,23 @@ namespace Jacobs.Models
         public double Total { get => total; set => total = value; }
         public int Status { get => status; set => status = value; }
         public string Image { get => image; set => image = value; }
+        public string OpenHour { get => openHour; set => openHour = value; }
+        public string CloseHour { get => closeHour; set => closeHour = value; }
+        public string CompanyName { get => companyName; set => companyName = value; }
+        public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
 
         public int Insert()//insert new order
         {
             OrderDataServices ds = new OrderDataServices();
             int status = ds.Insert(this);
             return status;
+        }
+
+        public List<Orders> Read()//get the all  orders
+        {
+            OrderDataServices ds = new OrderDataServices();
+            List<Orders> listOrder = ds.Read();
+            return listOrder;
         }
 
         public List<Orders> Read(int idOrder)//get the product on order

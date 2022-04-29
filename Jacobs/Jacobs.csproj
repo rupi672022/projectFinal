@@ -419,6 +419,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fullcalendar\Calendar.css" />
     <Content Include="fullcalendar\Calendar.js" />
+    <Content Include="fullcalendar\popup.css" />
     <Content Include="Global.asax" />
     <Content Include="gulpfile.js" />
     <Content Include="img\Delete.png" />

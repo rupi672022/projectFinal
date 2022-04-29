@@ -11,6 +11,11 @@ namespace Jacobs.Controllers
     public class OrdersController : ApiController
     {
         // GET api/<controller>
+        public List<Orders> Get()//get the product on order
+        {
+            Orders order = new Orders();
+            return order.Read();
+        }
 
         public List<Orders> Get(int idOrder)//get the product on order
         {

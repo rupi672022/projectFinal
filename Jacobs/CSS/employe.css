@@ -33,6 +33,9 @@ h3 {
     border: hidden;
     padding: 5px;
     margin-top: 20px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
 }
 
 img {

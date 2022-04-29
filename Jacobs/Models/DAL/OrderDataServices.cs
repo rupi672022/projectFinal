@@ -71,6 +71,55 @@ namespace Jacobs.Models.DAL
 
         }
 
+        public List<Orders> Read()//get the all orders
+        {
+
+            SqlConnection con = null;
+
+            try
+            {
+                // Connect
+                con = Connect("ProjDB");
+
+                // Create the insert command
+                SqlCommand selectCommand = CreateSelectCommandAllOrders(con );
+
+                // Execute the command
+                SqlDataReader dataReader = selectCommand.ExecuteReader();
+
+                List<Orders> listOrder = new List<Orders>();
+
+                while (dataReader.Read())//if user on table
+                {
+                    Orders order = new Orders();
+                    order.OrderNum = Convert.ToInt32(dataReader["orderNum"]);
+                    order.Companynum = Convert.ToInt32(dataReader["companyNum"]);
+                    order.CompanyName = (string)dataReader["companyName"];
+                    order.DateArrival = (string)dataReader["dateArrivel"];
+                    order.OpenHour = (string)dataReader["openHour"];
+                    order.CloseHour = (string)dataReader["closeHour"];
+                    order.DistributaionArea = (string)dataReader["distributaionArea"];
+
+                    listOrder.Add(order);
+                }
+
+                dataReader.Close();
+
+                return listOrder;
+            }
+            catch (Exception ex)
+            {
+                // write the error to log
+                throw new Exception("failed in reading of order", ex);
+            }
+            finally
+            {
+                // Close the connection
+                if (con != null)
+                    con.Close();
+            }
+
+        }
 
         public List<Orders> Read(int idOrder)//get the product on order
         {
@@ -294,6 +343,14 @@ namespace Jacobs.Models.DAL
             return con;
         }
 
+        SqlCommand CreateSelectCommandAllOrders(SqlConnection con)
+        {
+            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.dateArrivel,Company.openHour,Company.closeHour,Company.distributaionArea FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum=[Order].orderNum INNER JOIN Company ON Company.companyNum=CompanyOnOrder.companyNum";
+            
+            SqlCommand cmd = createCommand(con, str);
+
+            return cmd;
+        }
         SqlCommand CreateInsertCommandCheck(Orders order, SqlConnection con)//check if this order in the table
         {
             string artstr = "SELECT * FROM [Order] WHERE orderNum = '" + order.OrderNum + "'";
