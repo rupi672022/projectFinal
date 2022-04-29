@@ -50,6 +50,13 @@ namespace Jacobs.Controllers
             order.Update();
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
+        [HttpPut]
+        [Route("api/Orders/{collectOrder}")]
+        public HttpResponseMessage PutEmploye([FromBody] Orders order)//update the order - status : 0 + image 
+        {
+            order.Update();
+            return Request.CreateResponse(HttpStatusCode.OK, "success");
+        }
 
         // DELETE api/<controller>/5
         public List<Orders> Delete(int id, int Norder)//delete product from order 

@@ -14,12 +14,12 @@ namespace Jacobs.Models
         int companynum;
         string companyName;
         string openHour;
-        string closeHour;
         string distributaionArea;
         double weight;//משקל סה"כ למוצר
         int quantity;//אם לא צריך לשקול
         double total;
         int productnum;
+        string productName;
         int employeeNum;
         string preprationDate;
         string image;
@@ -41,13 +41,14 @@ namespace Jacobs.Models
             this.companynum = companynum;
         }
 
-        public Orders(int orderNum, double weight, int quantity, double total, int productnum)
+        public Orders(int orderNum, double weight, int quantity, double total, int productnum, string productName)
         {
             this.orderNum = orderNum;
             this.weight = weight;
             this.quantity = quantity;
             this.total = total;
             this.productnum = productnum;
+            this.productName = productName;
         }
 
         public Orders(int orderNum, int employeeNum, string preprationDate,int status)
@@ -58,14 +59,13 @@ namespace Jacobs.Models
             this.status = status;
         }
 
-        public Orders(int orderNum, string dateArrival, int companynum, string companyName, string openHour, string closeHour, string distributaionArea)
+        public Orders(int orderNum, string dateArrival, int companynum, string companyName, string openHour, string distributaionArea)
         {
             this.orderNum = orderNum;
             this.dateArrival = dateArrival;
             this.companynum = companynum;
             this.companyName = companyName;
             this.openHour = openHour;
-            this.closeHour = closeHour;
             this.distributaionArea = distributaionArea;
         }
 
@@ -82,9 +82,9 @@ namespace Jacobs.Models
         public int Status { get => status; set => status = value; }
         public string Image { get => image; set => image = value; }
         public string OpenHour { get => openHour; set => openHour = value; }
-        public string CloseHour { get => closeHour; set => closeHour = value; }
         public string CompanyName { get => companyName; set => companyName = value; }
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
+        public string ProductName { get => productName; set => productName = value; }
 
         public int Insert()//insert new order
         {
@@ -127,6 +127,12 @@ namespace Jacobs.Models
             OrderDataServices ds = new OrderDataServices();
             return ds.Update(this);
 
+        }
+
+        public bool PutEmploye()
+        {
+            OrderDataServices ds = new OrderDataServices();
+            return ds.UpdateEmploye(this);
         }
 
         public List<Orders> Delete(int id, int Norder)//delete product frop order

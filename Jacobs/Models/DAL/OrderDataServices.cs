@@ -95,9 +95,9 @@ namespace Jacobs.Models.DAL
                     order.OrderNum = Convert.ToInt32(dataReader["orderNum"]);
                     order.Companynum = Convert.ToInt32(dataReader["companyNum"]);
                     order.CompanyName = (string)dataReader["companyName"];
+                    order.StartDate=(string)dataReader["startDate"];
                     order.DateArrival = (string)dataReader["dateArrivel"];
                     order.OpenHour = (string)dataReader["openHour"];
-                    order.CloseHour = (string)dataReader["closeHour"];
                     order.DistributaionArea = (string)dataReader["distributaionArea"];
 
                     listOrder.Add(order);
@@ -144,6 +144,7 @@ namespace Jacobs.Models.DAL
                     Orders order = new Orders();
                     order.OrderNum = Convert.ToInt32(dataReader["orderNum"]);
                     order.Productnum = Convert.ToInt32(dataReader["barcodNum"]);
+                    order.ProductName = (string)dataReader["productName"];
                     order.Weight = (double)dataReader["weight"];
                     order.Quantity = Convert.ToInt32(dataReader["quantity"]);
                     order.Total = (double)dataReader["total"];
@@ -297,6 +298,37 @@ namespace Jacobs.Models.DAL
             return true;
         }
 
+        public bool UpdateEmploye(Orders order)
+        {
+
+            SqlConnection con = null;
+
+
+            try
+            {
+                //C - Connect to the Database 
+                con = Connect("ProjDB");
+
+                SqlCommand updatecommand = CreateUpdateCommandEmployeOrder(con, order);
+
+
+                int numEffectedUser = updatecommand.ExecuteNonQuery();
+            }
+
+            catch (Exception ex)
+            {
+                // this code needs to write the error to a log file
+                throw new Exception("Failed to update a order", ex);
+            }
+
+            finally
+            {
+                // close the db connection
+                con.Close();
+            }
+
+            return true;
+        }
         public List<Orders> Delete(int id, int Norder) //delepe product from table
         {
 
@@ -345,7 +377,7 @@ namespace Jacobs.Models.DAL
 
         SqlCommand CreateSelectCommandAllOrders(SqlConnection con)
         {
-            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.dateArrivel,Company.openHour,Company.closeHour,Company.distributaionArea FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum=[Order].orderNum INNER JOIN Company ON Company.companyNum=CompanyOnOrder.companyNum";
+            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum=[Order].orderNum INNER JOIN Company ON Company.companyNum=CompanyOnOrder.companyNum";
             
             SqlCommand cmd = createCommand(con, str);
 
@@ -417,7 +449,7 @@ namespace Jacobs.Models.DAL
         SqlCommand CreateSelectCommandOrder(SqlConnection con, int idOrder)//get the prodct in this order
         {
 
-            string commandStr = "SELECT * FROM ProductOnOrder WHERE orderNum="+ idOrder;
+            string commandStr = "SELECT * FROM ProductOnOrder INNER JOIN Product ON Product.barcod=ProductOnOrder.barcodNum WHERE orderNum=" + idOrder;
 
            SqlCommand cmd = createCommand(con, commandStr);
 
@@ -455,6 +487,15 @@ namespace Jacobs.Models.DAL
             SqlCommand cmd = createCommand(con, commandStr);
 
             return cmd;
+        }
+
+        SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)
+        {
+            string commandStr = "UPDATE EmployeeOnOrder SET employNum='"+order.EmployeeNum+ "',preparationDate ='" + order.PreprationDate + "' WHERE orderNum='" + order.OrderNum + "' ";
+            SqlCommand cmd = createCommand(con, commandStr);
+
+            return cmd;
+
         }
 
         SqlCommand createDeleteCommand(SqlConnection con, int id, int Norder)//delete product from order

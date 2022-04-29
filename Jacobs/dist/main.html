@@ -93,18 +93,46 @@
             background-color: #fff;
             border:0
         }
+        .deleteBtn{
+            background-color: #FFE587;
+            border: hidden;
+            padding: 5px;
+            margin-top: 20px
+        }
+        img {
+            width: 20px;
+            height: 25px;
+        }
+        #idorder {
+            border-style: solid;
+            border-color: #FFE587;
+            padding: 5px;
+        }
+        select {
+            text-align:center
+        }
+        label{
+            padding:3px;
+        }
     </style>
     <script>
 
         $(document).ready(function () {
-            eventsArr = [];
 
-            ajaxCall("GET", "../api/Orders", "", getSCB, error);
+            eventsArr = [];//מערך של הזמנות 
+            productArr = [];//מערך של מוצרים 
+            detailsOrder = [];//פרטי כל הזמנה
+            collectors = [];//כל המלקטים
+            drivers = [];//כל הנהגים 
 
+            ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);
+            ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
+            ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
+
+            $("#BTN").click(funcEmploye);
         });
 
-        function getSCB(list) {
-            console.log(list)
+        function getOrderSCB(list) {
             count = 0;
 
             for (obj in list) {
@@ -145,12 +173,85 @@
                     end: endDate,
                     color: color
                 }
+
+                detailsOrder[count] = {
+                    idOrder: list[obj]["OrderNum"],
+                    idCompany: list[obj]["Companynum"],
+                    nameCompany: list[obj]["CompanyName"],
+                    startDate: list[obj]["StartDate"],
+                    dateArrive: list[obj]["DateArrival"],
+                    openArrive: list[obj]["OpenHour"],
+                    closeArrive: '',
+                    nameContact: '',
+                    phoneContact: '',
+                    productOrder:[],
+                    statusOrder: list[obj]["Status"],
+                    collercotrArr: [],
+                    driverArr:[]
+                }
                 count++;
+
+
+                ajaxCall("GET", "../api/Orders?idOrder=" + list[obj]["OrderNum"], "", getOrderProductSCB, error);
             }
+
 
             render();
         }
 
+        function getCompanySCB(list) {
+
+            for (obj in list) {
+                for (item in detailsOrder) {
+                    if (list[obj]["CompanyNum"] == detailsOrder[item]["idCompany"]) {
+                        detailsOrder[item]["closeArrive"] = list[obj]["CloseHour"]
+                        detailsOrder[item]["nameContact"] = list[obj]["NameContact"]
+                        detailsOrder[item]["phoneContact"] = list[obj]["PhoneContact"]
+                    }
+                }
+            }
+
+        }
+
+        function getOrderProductSCB(list) {
+            count = 0;
+            for (obj in list) {
+
+                productArr[count] = {
+                    id: list[obj]["Productnum"],
+                    name: list[obj]["ProductName"]
+                }
+                count++;
+            }
+
+            for (ans in detailsOrder) {
+                if (list[0]["OrderNum"] == detailsOrder[ans]["idOrder"]) {
+                    detailsOrder[ans]["productOrder"] = productArr;
+                }
+            }
+
+        }
+
+        function getEmployeSCB(list) {
+            x = 0;
+            y = 0;
+            for (obj in list) {
+                if (list[obj]["Role"] == "מלקט") {
+                    collectors[x] = list[obj];
+                    x++;
+                }
+                else if (list[obj]["Role"] == "נהג") {
+                    drivers[y] = list[obj];
+                    y++;
+                }
+            }
+
+            for (x in detailsOrder) {
+                detailsOrder[x]["collercotrArr"] = collectors;
+                detailsOrder[x]["driverArr"] = drivers;
+            }
+
+        }
 
         function render() {
 
@@ -185,15 +286,8 @@
                 eventClick: function (info) {
                     var modal = $("#editEvent");
                     modal.modal();
-
-                    str = '<div>';
-                    str += "<h2>מספר הזמנה : " + info.event.id+"</h2>";
-                    str += "<h5>שם החברה : " + info.event.title + "</h5>";
-                    str += "<p>תאריך הגעה : " + info.event.start.toLocaleDateString() + "</p>";
-                    str += "<p> זמן הגעה : " + info.event.start.toTimeString().slice(0,5) + "</p>";
-                    str += "</div>";
-
-                    document.getElementById("eventDiv").innerHTML = str;
+                    
+                    renderOrder(info.event.id);
                 },
 
             });
@@ -201,7 +295,92 @@
         };
 
 
+        function renderOrder(id) {
+            IdOrder = id;
+            answer='';
+            for (obj in detailsOrder) {
+                if (detailsOrder[obj]["idOrder"] == id) {
 
+                    if (detailsOrder[obj]["statusOrder"] == 1) {
+                        answer = "פתוח"
+                    }
+                    if (detailsOrder[obj]["statusOrder"] == 0) {
+                        answer = "ההזמנה לוקטה"
+                    }
+
+                    str = '<div>';
+                    str += "<h2 id='idorder'>מספר הזמנה : " + detailsOrder[obj]["idOrder"] + "</h2>";
+                    str += "<br/><br/>";
+                    str += "<p>שם החברה : " + detailsOrder[obj]["nameCompany"] + "<p>";
+                    str += "<p> תאריך פתיחת ההזמנה : " + detailsOrder[obj]["startDate"] + "</p>";
+                    str += "<p>תאריך הגעה : " + detailsOrder[obj]["dateArrive"].replace('.', "/").replace('.', "/") + "</p>";
+                    str += "<p> שעות הגעה : " + detailsOrder[obj]["closeArrive"] + " - " + detailsOrder[obj]["openArrive"] + "</p>";
+                    str += "<p> איש קשר : " + detailsOrder[obj]["nameContact"] + "&nbsp&nbsp&nbspטלפון איש קשר : " + detailsOrder[obj]["phoneContact"] + "</p>";
+
+                    str += "<p> סטטוס הזמנה - " + answer + "</p>";
+
+                    str += "<select id='product' class='form - control' >";
+                    str += "<option>מוצרי ההזמנה</option>";
+                    detailsOrder[obj]["productOrder"].forEach(function (value) {
+                        str += "<option>";
+                        str += "<p> ברקוד - " + value.id + "  שם המוצר - " + value.name + "</p>";
+                        str += "</option>";
+                    })
+                    str += "</select>";
+                    str += "<br/><br/>";
+
+                    str += "<label for='dateCollect'> הכנס תאריך הכנת הזמנה    </label>";
+                    str += "<input type='date' id='dateCollect' required>";
+                    str += "<br/><br/>";
+
+                    str += "<select id='collect' class='form - control'>";
+                    str += "<option>בחר מלקט להזמנה</option>";
+                    detailsOrder[obj]["collercotrArr"].forEach(function (value) {
+                        str += "<option>";
+                        str += value["EmployeNum"] + " - " + value["Name"];
+                        str += "</option>";
+                    })
+                    str += "</select>";
+                    str += "<br/><br/>";
+
+                    str += "<select id='driver' class='form - control'>";
+                    str += "<option>בחר נהג להזמנה</option>";
+                    detailsOrder[obj]["driverArr"].forEach(function (value) {
+                        str += "<option>";
+                        str += value["EmployeNum"] + " - "+value["Name"]+"  אזור חלוקה - " + value["DistributaionArea"];
+                        str += "</option>";
+                    })
+                    str += "</select>";
+                    str += "<br/><br/>";
+
+                 
+
+                    str += '</div>';
+                    document.getElementById("eventDiv").innerHTML = str;
+
+
+                }
+            }
+        }
+
+        function funcEmploye() {
+            console.log(IdOrder)
+            collect = document.getElementById("collect").value.split('-');
+            id = collect[0];
+            date = $("#dateCollect").val();
+            date = date.replace(/-/g, "/")
+            collectOrder = {
+                OrderNum: IdOrder,
+                EmployeeNum: id,
+                PreprationDate: date
+            }
+
+            ajaxCall("PUT", "../api/Orders", JSON.stringify(collectOrder), succsess, error);
+        }
+
+        function succsess() {
+            console.log("wow");
+        }
         function error(err) {
             swal("Error: " + err);
         }
@@ -325,7 +504,8 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button type="button" id="BTN" class="btn btn-danger" data-dismiss="modal">סגור</button>
+                                <button class='deleteBtn btn btn-info' > <img src='../img/Delete.png' />  </button> 
+                                <button type="button" id="BTN" class="btn btn-danger" data-dismiss="modal">שמור</button>
                             </div>
                         </div>
                     </div>
