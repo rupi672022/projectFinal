@@ -21,7 +21,7 @@ namespace Jacobs.Models
         string dateArrivel;
         int companyNum;
         string companyName;
-
+        public List<FindingPaths> FindingPathslist;
 
 
 
@@ -51,7 +51,7 @@ namespace Jacobs.Models
         public List<FindingPaths> Read(string date)
         {
             FindingPathDataServices ds = new FindingPathDataServices();
-            List<FindingPaths> FindingPathslist = ds.Read(date);
+              FindingPathslist = ds.Read(date);
             return Algo(FindingPathslist, date);
             //return FindingPathslist;
         }

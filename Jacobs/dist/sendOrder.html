@@ -68,14 +68,14 @@
 
 
         function success(list) {
-            
+
 
             console.log(list);
             algoNorth = [];
             algoSouth = [];
             algoCenter = [];
             algoJerusalem = [];
-           
+
 
 
             for (obj in list) {
@@ -93,60 +93,60 @@
 
                     if (list[obj]["DistributaionArea"] == "ירושלים")
                         algoJerusalem[algoJerusalem.length] = list[obj]
-            
+
                     initMap(list);
                 }
 
             }
 
-           
-       
+
+
 
             strNorth = "";
             strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
             for (obj in algoNorth) {
-                strNorth += "<p>" + algoNorth[obj]["CompanyName"]+" - "+ algoNorth[obj]["Address"] + "</p>";
+                strNorth += "<p>" + algoNorth[obj]["CompanyName"] + " - " + algoNorth[obj]["Address"] + "</p>";
             }
 
             strSouth = "";
             strSouth += "<h5>מסלול נסיעה - אזור דרום : </h5>";
             for (obj in algoSouth) {
-                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - "+ algoSouth[obj]["Address"] + "</p>";
+                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - " + algoSouth[obj]["Address"] + "</p>";
             }
 
             strCenter = "";
             strCenter += "<h5>מסלול נסיעה - אזור מרכז : </h5>";
             for (obj in algoCenter) {
-                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - "+algoCenter[obj]["Address"] + "</p>";
+                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - " + algoCenter[obj]["Address"] + "</p>";
             }
 
             strJerusalem = "";
             strJerusalem += "<h5>מסלול נסיעה - אזור ירושלים : </h5>";
             for (obj in algoJerusalem) {
-                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - "+ algoJerusalem[obj]["Address"] + "</p>";
+                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - " + algoJerusalem[obj]["Address"] + "</p>";
             }
 
             if (algoNorth.length != 0)
                 $("#north").show();
-            if (algoSouth.length!=0)
+            if (algoSouth.length != 0)
                 $("#south").show();
-            if (algoCenter.length!=0)
+            if (algoCenter.length != 0)
                 $("#center").show();
-            if (algoJerusalem.length!=0)
+            if (algoJerusalem.length != 0)
                 $("#jerusalem").show();
-           
 
-            
+
+
             document.getElementById("north").innerHTML = strNorth;
             document.getElementById("south").innerHTML = strSouth;
             document.getElementById("center").innerHTML = strCenter;
             document.getElementById("jerusalem").innerHTML = strJerusalem;
 
-  
+
 
 
         }
-  
+
         function error(error) {
             console.log(error);
         }
@@ -201,7 +201,7 @@
                 strokeWeight: 2,
                 fillColor: "#FF0000",
                 fillOpacity: 0.35,
-                
+
 
             });
 
@@ -213,7 +213,7 @@
                 strokeWeight: 2,
                 fillColor: "#0000FF",
                 fillOpacity: 0.35,
-         
+
 
             });
 
@@ -225,7 +225,7 @@
                 strokeWeight: 2,
                 fillColor: "#00FF00",
                 fillOpacity: 0.35,
-         
+
 
             });
 
@@ -237,17 +237,17 @@
                 strokeWeight: 2,
                 fillColor: "#FF00FF",
                 fillOpacity: 0.35,
-             
+
 
             });
-           
+
             var markers = [];
 
             for (let i = 1; i < list.length; i++) {
                 var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
                 markers[i] = new google.maps.Marker({
                     position: pos,
-                    map:map,
+                    map: map,
                     title: list[i]["Address"]
                 });
             }
@@ -255,52 +255,196 @@
                 url:
                     "../img/LOGO.png",
                 scaledSize: new google.maps.Size(45, 45), // scaled size
-              
+
             };
 
-            
-               
+
+
             const beachMarker = new google.maps.Marker({
                 position: { lat: 32.405410127264439, lng: 34.895175832114731 },
                 map,
                 icon: image,
             });
-            route = {};
-            var route = new Array();
-            route[0] = {
+
+            //polyline for north
+            routeNorth = {};
+            var routeNorth = new Array();
+            routeNorth[0] = {
                 lat: 32.405410127264439,
                 lng: 34.895175832114731
 
             };
-            for (let i = 0; i < algoNorth.length ; i++) {
-               
-                    route[i+1] =
-                    {
-                        lat: algoNorth[i].Lat,
+            for (let i = 0; i < algoNorth.length; i++) {
 
-                        lng: algoNorth[i].Lng
-                    };
-                
+                routeNorth[i + 1] =
+                {
+                    lat: algoNorth[i].Lat,
+
+                    lng: algoNorth[i].Lng
+                };
+
             }
-         
-            route[algoNorth.length+1] = {
+
+            routeNorth[algoNorth.length + 1] = {
                 lat: 32.405410127264439,
                 lng: 34.895175832114731
 
             };
 
-                polygons = new google.maps.Polyline({
-                    path: route,
-                    geodesic: true,
-                    strokeColor: "#00FF00",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2
-                 
 
 
-                });
+
+            var polygons = new google.maps.Polyline({
+                path: routeNorth,
+                geodesic: true,
+                strokeColor: "#00FF00",
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
             polygons.setMap(map);
+
+            //route poliyline for center
+            routeCenter = {};
+            var routeCenter = new Array();
+            routeCenter[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+            for (let i = 0; i < algoCenter.length; i++) {
+
+                routeCenter[i + 1] =
+                {
+                    lat: algoCenter[i].Lat,
+
+                    lng: algoCenter[i].Lng
+                };
+
             }
+
+            routeCenter[algoCenter.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeCenter,
+                geodesic: true,
+
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
+            //route poliyline for South
+            routeSouth = {};
+            var routeSouth = new Array();
+            routeSouth[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+            for (let i = 0; i < algoSouth.length; i++) {
+
+                routeSouth[i + 1] =
+                {
+                    lat: algoSouth[i].Lat,
+
+                    lng: algoSouth[i].Lng
+                };
+
+            }
+
+            routeSouth[algoSouth.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeSouth,
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
+            //route poliyline for jerusalem
+            routeJerusalem = {};
+            var routeJerusalem = new Array();
+            routeJerusalem[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+                    
+            };
+            for (let i = 0; i < algoJerusalem.length; i++) {
+
+                routeJerusalem[i + 1] =
+                {
+                    lat: algoJerusalem[i].Lat,
+
+                    lng: algoJerusalem[i].Lng
+                };
+
+            }
+
+            routeJerusalem[algoJerusalem.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeJerusalem,
+                geodesic: true,
+                strokeColor: "#00FF00",
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
+        }
+            
             
           
            
