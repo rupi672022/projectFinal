@@ -62,15 +62,24 @@
             min-width: 0; /* important for allowing to shrink all the way */
             overflow: hidden;
             font-size: 13px;
-            text-align: right;
+            padding:0px;
+        }
+        .fc-event {
+            border-radius: 2px;
+            border: none;
+            cursor: move;
+            font-size: .8125rem;
+            margin: 1px 1px;
+            padding: 0px;
+            text-align: center;
         }
 
         .fc-v-event .fc-event-title {
-            top: 0;
-            bottom: 0;
-            max-height: 100%;
-            overflow: hidden;
-            font-size: 10px;
+        top: 0;
+        bottom: 0;
+        max-height: 100%;
+        overflow: hidden;
+        font-size: 7px;
         }
 
         .fc .fc-list-event-title a {
@@ -394,7 +403,7 @@
 
         <!-- Topbar Start -->
         <div class="navbar-custom">
-            <h3>
+            <h3 style="margin-top:10px">
                 &nbsp; &nbsp; משק יעקבס
                 <img src="../img/LOGO.png" />
             </h3>
