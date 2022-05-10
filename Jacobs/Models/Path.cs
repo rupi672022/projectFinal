@@ -2,25 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-namespace Jacobs.Models
+namespace GoogleApi.Test.Maps.DistanceMatrix
 {
     public class Path
     {
-        double duration;
-        double distance;
+        int distance;
+        int duration;
 
-        public   Path()
-            {}
+        public int Distance { get => distance; set => distance = value; }
+        public int Duration { get => duration; set => duration = value; }
 
-        public Path(double duration, double distance)
+        public Path(int distance, int duration)
         {
-            this.Duration = duration;
             this.Distance = distance;
+            this.Duration = duration;
         }
 
-        public double Duration { get => duration; set => duration = value; }
-        public double Distance { get => distance; set => distance = value; }
+        public Path() { }
     }
-
 }

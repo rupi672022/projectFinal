@@ -6,7 +6,7 @@ using GoogleApi.Entities.Maps.Common;
 using GoogleApi.Entities.Maps.Common.Enums;
 using GoogleApi.Entities.Maps.DistanceMatrix.Request;
 //using NUnit.Framework;
-//using whatsapp.Models;
+
 using System.Collections.Generic;
 using GoogleApi.Entities.Maps.DistanceMatrix.Response;
 using GoogleApi.Entities.Maps.Geocoding;
@@ -14,8 +14,6 @@ using GoogleApi.Entities.Maps.Geolocation.Response;
 using Newtonsoft.Json.Linq;
 //using Json.Net;
 using Newtonsoft.Json;
-using System.Linq;
-using Jacobs.Models;
 
 namespace GoogleApi.Test.Maps.DistanceMatrix
 {
@@ -27,75 +25,34 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         public void test()
         {
 
-            //List<string> homes = new List<string> { "עיט 6 עין שריד", "ישראל גלילי 7 תל אביב" };
-            List<string>[] homes = getAddress( base.FindingPathslist);
-            for (int i = 0; i < homes.GetLength(0); i++)
-            {
+            List<string> homes = new List<string> { "גשר העץ 27,עמק חפר","עיט 6 עין שריד", "ישראל גלילי 7 תל אביב" };
 
-                GetDistMatrixFullPath(homes[i]);
-
-
-
-            }
+            string checkpoint = "מחסום תרקומיא";
+            string hospital = "בית החולים תל השומר";
+            GetDistMatrixFullPath(homes, checkpoint, hospital, true);
         }
 
-      
-        public List<string>[] getAddress(List<FindingPaths> findingPathslist)
 
-        {
-            List<string>[] areasArr = new List<string>[4];
-            List<string> north = new List<string>();
-            List<string> south = new List<string>();
-            List<string> center = new List<string>();
-            List<string> jerusalem = new List<string>();
-            areasArr[0] = north;
-            areasArr[1] = center;
-            areasArr[2] = south;
-            areasArr[3] = jerusalem;
-            foreach (FindingPaths obj in findingPathslist)
-            {
-                if (obj.DistributaionArea == "צפון")
-                {
-                    areasArr[0].Add(obj.Address);
-
-                }
-
-                else if (obj.DistributaionArea == "מרכז")
-                {
-                    areasArr[1].Add(obj.Address);
-
-                }
-
-                else if (obj.DistributaionArea == "דרום")
-                {
-                    areasArr[2].Add(obj.Address);
-                }
-
-                else //optin in jerusalem
-                {
-                    areasArr[3].Add(obj.Address);
-
-                }
-
-            }
-            areasArr[0].Prepend("גשר העץ 27,עמק חפר");
-            areasArr[1].Prepend("גשר העץ 27,עמק חפר");
-            areasArr[2].Prepend("גשר העץ 27,עמק חפר");
-            areasArr[3].Prepend("גשר העץ 27,עמק חפר");
-            return areasArr;
-
-        }
-
-        Address destination;
-        public Dictionary<string, Path> GetDistMatrixFullPath(List<string> homes)
+        public Dictionary<string, Path> GetDistMatrixFullPath(List<string> homes, string checkpoint, string hospital, bool direction)
         {
             Address origin;
-            
+            Address destination;
 
 
+            if (direction)
+            {
+                // home -> checkpoint -> hospital
+                destination = new Address(checkpoint);
+                origin = new Address(hospital);
+            }
+            else
+            {
+                // home - >hospital -> checkpoint
+                destination = new Address(hospital);
+                origin = new Address(checkpoint);
+            }
 
-
-            List<FindingPaths> homeAddresses = new List<FindingPaths>();
+            List<Address> homeAddresses = new List<Address>();
             List<LocationEx> homeLocations = new List<LocationEx>();
             foreach (string home in homes)
             {
@@ -107,17 +64,47 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             {
                 Key = this.ApiKey,
                 Origins = homeLocations,
-
-                Destinations = new[]
-                {
-                    new LocationEx(destination),
-                }
+                //Destinations = new[]
+                //{
+                //    new LocationEx(destination),
+                //}
+                Destinations = homeLocations
             };
 
             DistanceMatrixResponse firstLag = GoogleMaps.DistanceMatrix.Query(request1);
             Parent firstLagC = JsonConvert.DeserializeObject<Parent>(firstLag.RawJson);
 
+            //var request2 = new DistanceMatrixRequest
+            //{
+            //    Key = this.ApiKey,
+            //    Origins = new[]
+            //    {
+            //        new LocationEx(destination),
+            //    },
+            //    Destinations = new[]
+            //    {
+            //        new LocationEx(origin),
+            //    }
+            //};
 
+            //DistanceMatrixResponse secondLag = GoogleMaps.DistanceMatrix.Query(request2);
+            //Parent secondLagC = JsonConvert.DeserializeObject<Parent>(secondLag.RawJson);
+
+            //var request3 = new DistanceMatrixRequest
+            //{
+            //    Key = this.ApiKey,
+            //    Origins = new[] {
+            //        new LocationEx(origin),
+            //    },
+            //    Destinations = homeLocations
+            //};
+
+            //DistanceMatrixResponse thirdLag = GoogleMaps.DistanceMatrix.Query(request3);
+            //Parent thirdLagC = JsonConvert.DeserializeObject<Parent>(thirdLag.RawJson);
+
+
+            //Distance secondLagDistance = secondLagC.rows[0].elements[0].distance;
+            //Duration secondLagDuration = secondLagC.rows[0].elements[0].duration;
 
 
 
@@ -126,8 +113,10 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             for (int i = 0; i < firstLagC.rows.Length; i++)
             {
+                //int distance = firstLagC.rows[i].elements[0].distance.value + secondLagDistance.value + thirdLagC.rows[0].elements[i].distance.value;
                 int distance = firstLagC.rows[i].elements[0].distance.value;
                 int duration = firstLagC.rows[i].elements[0].duration.value;
+                //int duration = firstLagC.rows[i].elements[0].duration.value + secondLagDuration.value + thirdLagC.rows[0].elements[i].duration.value;
                 pathList.Add(homes[i], new Path(distance, duration));
             }
 
@@ -162,20 +151,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
     public class Parent
     {
-
         public string[] destination_addresses { get; set; }
         public string[] origin_addresses { get; set; }
         public Row[] rows { get; set; }
         public string status { get; set; }
-        public string getDistance()
-        {
-            DistanceMatrixTests dm = new DistanceMatrixTests();
-            dm.Setup();
-            dm.test();
-
-            return "ok";
-        }
     }
-
-    
 }
