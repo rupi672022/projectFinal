@@ -69,14 +69,10 @@
 
         function success(list) {
 
-
-            console.log(list);
             algoNorth = [];
             algoSouth = [];
             algoCenter = [];
             algoJerusalem = [];
-
-
 
             for (obj in list) {
                 if (list[obj]["Address"] != "גשר העץ 27,עמק חפר") {
@@ -150,6 +146,7 @@
         function error(error) {
             console.log(error);
         }
+
         //create map with distrbution area
         function initMap(list) {
             const map = new google.maps.Map(document.getElementById("map"), {
@@ -444,17 +441,7 @@
             });
             polygons.setMap(map);
         }
-            
-            
-          
-           
-        
-               
 
-            
-        
-      
-        
         
     </script>
 

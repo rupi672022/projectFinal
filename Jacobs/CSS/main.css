@@ -26,6 +26,11 @@ img {
     padding: 50px;
 }
 
+#imgLogo {
+    width: 60px;
+    height: 50px;
+}
+
 .content-page {
     margin-right: 240px;
     margin-left: 0px;

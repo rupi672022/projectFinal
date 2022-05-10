@@ -329,6 +329,7 @@ namespace Jacobs.Models.DAL
 
             return true;
         }
+
         public List<Orders> Delete(int id, int Norder) //delepe product from table
         {
 
@@ -491,13 +492,12 @@ namespace Jacobs.Models.DAL
 
         SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)
         {
-            string commandStr = "UPDATE EmployeeOnOrder SET employNum='"+order.EmployeeNum+ "',preparationDate ='" + order.PreprationDate + "' WHERE orderNum='" + order.OrderNum + "' ";
+            string commandStr = "UPDATE EmployeeOnOrder SET employNum='" + order.EmployeeNum + "',preparationDate ='" + order.PreprationDate + "' WHERE orderNum='" + order.OrderNum + "' ";
             SqlCommand cmd = createCommand(con, commandStr);
 
             return cmd;
 
         }
-
         SqlCommand createDeleteCommand(SqlConnection con, int id, int Norder)//delete product from order
         {
             string commandStr = "DELETE from [ProductOnOrder] WHERE orderNum='" + Norder + "' And barcodNum='"+id+"' ";
