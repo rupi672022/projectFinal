@@ -5,16 +5,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
-using System.Threading;
 
-
-
-namespace Jacobs.Models.DAL
+namespace GoogleApi.Test.Maps.DistanceMatrix
 {
-    public class FindingPathDataServices
+    public class DistanceMatrixDataServices
     {
         //string[] addressArr;
-        public List<FindingPaths> Read(string date)//get the all the employee 
+        public List<DistanceMatrixDataServices> Read(string Area)//get the all the employee 
         {
 
             SqlConnection con = null;
@@ -25,31 +22,31 @@ namespace Jacobs.Models.DAL
                 con = Connect("ProjDB");
 
                 // Create the insert command
-                SqlCommand selectCommand = createSelectCommandFindingFath(con, date);
+                SqlCommand selectCommand = createSelectCommandFindingFath(con, Area);
 
                 // Execute the command
                 SqlDataReader dataReader = selectCommand.ExecuteReader();
 
-                List<FindingPaths> FindingPathslist = new List<FindingPaths>();
+                List<DistanceMatrixDataServices> DistanceMatrixlist = new List<DistanceMatrixDataServices>();
                 while (dataReader.Read())//if user on table
                 {
-                    FindingPaths findingPath = new FindingPaths();
-                    findingPath.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
-                    findingPath.CompanyName = (string)dataReader["companyName"];
-                    findingPath.Address = (string)(dataReader["address"]);
-                    findingPath.DateArrivel=(string)(dataReader["dateArrivel"]);
-                    findingPath.DistributaionArea=(string)(dataReader["distributaionArea"]);
-                    findingPath.Lat = (double)dataReader["lat"];
-                    findingPath.Lng = (double)dataReader["lng"];
-                  
+                    DistanceMatrixDataServices distanceMatrixTests = new DistanceMatrixDataServices();
+                    // distanceMatrixTests.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
+                    //findingPath.CompanyName = (string)dataReader["companyName"];
+                    //findingPath.Address = (string)(dataReader["address"]);
+                    //findingPath.DateArrivel = (string)(dataReader["dateArrivel"]);
+                    //findingPath.DistributaionArea = (string)(dataReader["distributaionArea"]);
+                    //findingPath.Lat = (double)dataReader["lat"];
+                    //findingPath.Lng = (double)dataReader["lng"];
 
 
 
-                    FindingPathslist.Add(findingPath);
+
+                    DistanceMatrixlist.Add(distanceMatrixTests);
                 }
                 dataReader.Close();
 
-                return FindingPathslist;
+                return DistanceMatrixlist;
             }
             catch (Exception ex)
             {
@@ -64,7 +61,7 @@ namespace Jacobs.Models.DAL
             }
 
         }
-    
+
 
 
         SqlConnection Connect(string connectionStringName)
@@ -83,20 +80,20 @@ namespace Jacobs.Models.DAL
             con.Open(); // סטטוס - פתוח 
             return con;
         }
-        private SqlCommand createSelectCommandFindingFath(SqlConnection con,string date)
+        private SqlCommand createSelectCommandFindingFath(SqlConnection con, string Area)
         {
 
-            string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date ";
+            string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE Company.distributaionArea LIKE @Area ";
 
             SqlCommand cmd = createCommand(con, commandStr);
 
 
-            cmd.Parameters.AddWithValue("@date", "%" + date + "%");
+           // cmd.Parameters.AddWithValue("@date", "%" + date + "%");
 
             return cmd;
 
         }
-      
+
         SqlCommand createCommand(SqlConnection con, string CommandSTR)
         {
 
@@ -108,5 +105,5 @@ namespace Jacobs.Models.DAL
 
             return cmd;
         }
-}
+    }
 }

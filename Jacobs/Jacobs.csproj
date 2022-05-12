@@ -175,7 +175,7 @@
     <Compile Include="Controllers\FindingPathsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
-    <Compile Include="Controllers\testController.cs" />
+    <Compile Include="Controllers\DistanceMatrixController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -186,7 +186,8 @@
     <Compile Include="Models\DAL\FindingPathDataServices.cs" />
     <Compile Include="Models\DAL\OrderDataServices.cs" />
     <Compile Include="Models\DAL\ProductDataServices.cs" />
-    <Compile Include="Models\DistanceMatrixTests.cs" />
+    <Compile Include="Models\DAL\DistanceMatrixDataServices.cs" />
+    <Compile Include="Models\DistanceMatrix.cs" />
     <Compile Include="Models\Employees.cs" />
     <Compile Include="Models\FindingPaths.cs" />
     <Compile Include="Models\Orders.cs" />

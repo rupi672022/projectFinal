@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace Jacobs.Controllers
 {
-    public class testController : ApiController
+    public class DistanceMatrixController : ApiController
     {
         // GET api/<controller>
         public  void  Get()
@@ -20,9 +20,10 @@ namespace Jacobs.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public List<DistanceMatrixTests> Get(string Area)
         {
-            return "value";
+            DistanceMatrixTests distanceMatrixTests = new DistanceMatrixTests();
+            return distanceMatrixTests.Read(Area);
         }
 
         // POST api/<controller>
