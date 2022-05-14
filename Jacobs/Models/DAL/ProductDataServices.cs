@@ -94,6 +94,50 @@ namespace Jacobs.Models.DAL
 
         }
 
+        public List<Products> getproducts()//get the all product
+        {
+
+            SqlConnection con = null;
+
+            try
+            {
+                // Connect
+                con = Connect("ProjDB");
+
+                // Create the insert command
+                SqlCommand selectCommand = createSelectCommandProductsonOrder(con);
+
+                // Execute the command
+                SqlDataReader dataReader = selectCommand.ExecuteReader();
+
+                List<Products> listProdcut = new List<Products>();
+                while (dataReader.Read())//if user on table
+                {
+                    Products product = new Products();
+                    product.Barcod = Convert.ToInt32(dataReader["barcod"]);
+                    product.NameProduct = (string)dataReader["productName"];
+                    product.OrderNum= Convert.ToInt32(dataReader["orderNum"]);
+
+                    listProdcut.Add(product);
+                }
+                dataReader.Close();
+
+                return listProdcut;
+            }
+            catch (Exception ex)
+            {
+                // write the error to log
+                throw new Exception("failed in reading of product", ex);
+            }
+            finally
+            {
+                // Close the connection
+                if (con != null)
+                    con.Close();
+            }
+
+        }
+
         public List<Products> Read(string name)//get info to this product
         {
 
@@ -259,6 +303,16 @@ namespace Jacobs.Models.DAL
             return cmd;
 
         }
+
+        SqlCommand createSelectCommandProductsonOrder(SqlConnection con)//get all product to all orders
+        {
+            string commandStr = "select Product.barcod,ProductOnOrder.orderNum, Product.productName from ProductOnOrder inner join  Product on ProductOnOrder.barcodNum=Product.barcod";
+
+            SqlCommand cmd = createCommand(con, commandStr);
+
+            return cmd;
+        }
+
 
         SqlCommand createSelectCommandproductNAME(SqlConnection con, string name)//get info to this product
         {

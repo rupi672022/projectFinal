@@ -42,7 +42,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.3/fullcalendar.min.js'></script>
+    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.3/fullcalendar.min.js'></script>-->
 
 
 
@@ -129,14 +129,15 @@
         $(document).ready(function () {
 
             eventsArr = [];//מערך של הזמנות 
-            productArr = [];//מערך של מוצרים 
             detailsOrder = [];//פרטי כל הזמנה
+            productArr = [];//מערך של מוצרים 
             collectors = [];//כל המלקטים
             drivers = [];//כל הנהגים 
 
             ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);
             ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
             ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
+            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
 
             $("#BTN").click(funcEmploye);
         });
@@ -199,9 +200,6 @@
                     driverArr:[]
                 }
                 count++;
-
-
-                ajaxCall("GET", "../api/Orders?idOrder=" + list[obj]["OrderNum"], "", getOrderProductSCB, error);
             }
 
 
@@ -223,22 +221,24 @@
         }
 
         function getOrderProductSCB(list) {
+            array = [];
+            next = 0;
             count = 0;
             for (obj in list) {
-
-                productArr[count] = {
-                    id: list[obj]["Productnum"],
-                    name: list[obj]["ProductName"]
+                x = list[obj]["OrderNum"];
+                while (x == list[obj]["OrderNum"]) {
+                    array[count] = {
+                        orderNum: list[obj]["OrderNum"],
+                        barcod: list[obj]["Barcod"],
+                        nameProduct: list[obj]["NameProduct"]
+                    }
+                    count++
                 }
-                count++;
-            }
 
-            for (ans in detailsOrder) {
-                if (list[0]["OrderNum"] == detailsOrder[ans]["idOrder"]) {
-                    detailsOrder[ans]["productOrder"] = productArr;
-                }
+                productArr[next] = array;
+                count = 0;
             }
-
+            console.log(productArr);
         }
 
         function getEmployeSCB(list) {
