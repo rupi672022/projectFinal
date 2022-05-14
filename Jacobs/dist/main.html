@@ -109,6 +109,10 @@
             margin-top: 20px
         }
         img {
+            width: 60px;
+            height: 50px;
+        }
+        #deleteBtn {
             width: 20px;
             height: 25px;
         }
@@ -220,27 +224,6 @@
 
         }
 
-        function getOrderProductSCB(list) {
-            array = [];
-            next = 0;
-            count = 0;
-            for (obj in list) {
-                x = list[obj]["OrderNum"];
-                while (x == list[obj]["OrderNum"]) {
-                    array[count] = {
-                        orderNum: list[obj]["OrderNum"],
-                        barcod: list[obj]["Barcod"],
-                        nameProduct: list[obj]["NameProduct"]
-                    }
-                    count++
-                }
-
-                productArr[next] = array;
-                count = 0;
-            }
-            console.log(productArr);
-        }
-
         function getEmployeSCB(list) {
             x = 0;
             y = 0;
@@ -255,12 +238,47 @@
                 }
             }
 
+
             for (x in detailsOrder) {
                 detailsOrder[x]["collercotrArr"] = collectors;
                 detailsOrder[x]["driverArr"] = drivers;
             }
 
+            console.log(detailsOrder)
         }
+
+        function getOrderProductSCB(list) {
+ 
+            next = 0;
+            y = 0;
+            for (let i = 0; i < list.length; i=y+1) {
+                x = list[i]["OrderNum"];
+                array = [];
+                count = 0;
+                for (obj in list) {
+                    if (x == list[obj]["OrderNum"]) {
+                        array[count] = list[obj];
+                        count++
+                        y = parseInt(obj);
+                    }
+
+
+                }
+                productArr[next] = array;
+                next++;
+            }
+
+
+            for (ans in productArr) {
+                for (item in detailsOrder) {
+                    if (productArr[ans][0]["OrderNum"] == detailsOrder[item]["idOrder"]) {
+                        detailsOrder[item]["productOrder"] = productArr[ans]
+                    }
+                }
+            }
+
+        }
+
 
         function render() {
 
@@ -305,8 +323,10 @@
 
 
         function renderOrder(id) {
+           
             IdOrder = id;
-            answer='';
+            answer = '';
+
             for (obj in detailsOrder) {
                 if (detailsOrder[obj]["idOrder"] == id) {
 
@@ -317,6 +337,7 @@
                         answer = "ההזמנה לוקטה"
                     }
 
+                    console.log(detailsOrder[obj])
                     str = '<div>';
                     str += "<h2 id='idorder'>מספר הזמנה : " + detailsOrder[obj]["idOrder"] + "</h2>";
                     str += "<br/><br/>";
@@ -332,7 +353,7 @@
                     str += "<option>מוצרי ההזמנה</option>";
                     detailsOrder[obj]["productOrder"].forEach(function (value) {
                         str += "<option>";
-                        str += "<p> ברקוד - " + value.id + "  שם המוצר - " + value.name + "</p>";
+                        str += "<p> ברקוד - " + value["Barcod"] + "  שם המוצר - " + value["NameProduct"] + "</p>";
                         str += "</option>";
                     })
                     str += "</select>";
@@ -513,7 +534,7 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button class='deleteBtn btn btn-info' > <img src='../img/Delete.png' />  </button> 
+                                <button class='deleteBtn btn btn-info' > <img id="deleteBtn" src='../img/Delete.png' />  </button> 
                                 <button type="button" id="BTN" class="btn btn-danger" data-dismiss="modal">שמור</button>
                             </div>
                         </div>

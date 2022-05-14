@@ -30,7 +30,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         //    return status;
         //}
 
-        public List<DistanceMatrix> Read( string Area)//get the all company
+        public List<DistanceMatrix> Read(string Area)//get the all company
         {
             DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
             List<DistanceMatrix> DistanceMatrixlist = ds.Read(Area);
@@ -39,14 +39,14 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         public void test()
         {
-           
-            List<string> companies = new List<string> { "גשר העץ 27,עמק חפר","עיט 6 עין שריד", "ישראל גלילי 7 תל אביב" };
-            double[,] northMatrixRes=GetDistMatrixFullPath(companies);
+
+            List<string> companies = new List<string> { "גשר העץ 27,עמק חפר", "עיט 6 עין שריד", "ישראל גלילי 7 תל אביב" };
+            double[,] northMatrixRes = GetDistMatrixFullPath(companies);
         }
 
 
-        public double [,] GetDistMatrixFullPath(List<string> companies)
-        { 
+        public double[,] GetDistMatrixFullPath(List<string> companies)
+        {
 
             List<Address> companyAddresses = new List<Address>();
             List<LocationEx> companyLocations = new List<LocationEx>();
@@ -66,7 +66,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             DistanceMatrixResponse firstLag = GoogleMaps.DistanceMatrix.Query(request1);
             Parent firstLagC = JsonConvert.DeserializeObject<Parent>(firstLag.RawJson);
 
-            
+
             //Dictionary<string, Path> pathList = new Dictionary<string, Path>();
             double[,] matrixNorth = new double[firstLagC.rows.Length, firstLagC.rows.Length];
             int k = 0, m = 0;

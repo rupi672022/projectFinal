@@ -11,7 +11,7 @@ namespace Jacobs.Controllers
     public class DistanceMatrixController : ApiController
     {
         // GET api/<controller>
-        public  void  Get()
+        public void Get()
         {
             DistanceMatrixTests dm = new DistanceMatrixTests();
             dm.Setup();
