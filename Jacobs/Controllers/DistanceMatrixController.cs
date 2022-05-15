@@ -28,8 +28,9 @@ namespace Jacobs.Controllers
         //}
 
         //POST api/<controller>
-        public HttpResponseMessage Post([FromBody]  Company company)
+        public HttpResponseMessage Post([FromBody]  DistanceMatrix distanceMatrix)
         {
+            int id = distanceMatrix.Insert();
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
 

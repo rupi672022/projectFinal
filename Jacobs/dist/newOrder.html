@@ -113,7 +113,12 @@
         function getCompany(list) {
             console.log(list);
 
-            ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(list), getDistance, error);
+            listadress = [];
+            for (obj in list) {
+                listadress.push(list[obj].Address)
+            }
+
+            ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(listadress), getDistance, error);
 
         }
         function getDistance() {
