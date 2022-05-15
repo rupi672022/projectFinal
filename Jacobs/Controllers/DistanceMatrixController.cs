@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Jacobs.Models;
 
 namespace Jacobs.Controllers
 {
@@ -20,20 +21,22 @@ namespace Jacobs.Controllers
         }
 
         // GET api/<controller>/5
-        public List<DistanceMatrix> Get(string Area)
-        {
-            DistanceMatrix distanceMatrixTests = new DistanceMatrix();
-            return distanceMatrixTests.Read(Area);
-        }
+        //public List<DistanceMatrix> Get(string Area)
+        //{
+        //    DistanceMatrix distanceMatrixTests = new DistanceMatrix();
+        //    return distanceMatrixTests.Read(Area);
+        //}
 
-        // POST api/<controller>
-        public void Post([FromBody] string value)
+        //POST api/<controller>
+        public HttpResponseMessage Post([FromBody]  Company company)
         {
+            return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody] string value)
         {
+
         }
 
         // DELETE api/<controller>/5

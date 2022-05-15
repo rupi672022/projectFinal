@@ -25,16 +25,24 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
     {
         //public int Insert()//insert new company
         //{
-        //    TestDataServices ds = new TestDataServices();
+        //    DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
         //    int status = ds.Insert(this);
         //    return status;
         //}
 
-        public List<DistanceMatrix> Read(string Area)//get the all company
+        //public List<DistanceMatrix> Read(string Area)//get the all company
+        //{
+        //    DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
+        //    List<DistanceMatrix> DistanceMatrixlist = ds.Read(Area);
+        //    return DistanceMatrixlist;
+        //}
+        string addressMatrix;
+
+        public string AddressMatrix { get => addressMatrix; set => addressMatrix = value; }
+
+        public DistanceMatrix(string addressMatrix)
         {
-            DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
-            List<DistanceMatrix> DistanceMatrixlist = ds.Read(Area);
-            return DistanceMatrixlist;
+            this.AddressMatrix = addressMatrix;
         }
 
         public void test()

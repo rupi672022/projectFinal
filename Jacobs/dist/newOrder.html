@@ -105,11 +105,20 @@
             console.log(newCompany);
 
             ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsses, error);
+            ajaxCall("GET", "../api/Companies", "", getCompany, error);
 
             return false;
 
         }
+        function getCompany(list) {
+            console.log(list);
 
+            ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(list), getDistance, error);
+
+        }
+        function getDistance() {
+            console.log("wow");
+        }
         function submitToPro() {//add new product
 
             if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram
