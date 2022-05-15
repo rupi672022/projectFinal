@@ -13,16 +13,16 @@ namespace Jacobs.Controllers
         // GET api/<controller>
         public  void  Get()
         {
-            DistanceMatrixTests dm = new DistanceMatrixTests();
+            DistanceMatrix dm = new DistanceMatrix();
             dm.Setup();
             dm.test();
             //return new string[] { "value1", "value2" };
         }
 
         // GET api/<controller>/5
-        public List<DistanceMatrixTests> Get(string Area)
+        public List<DistanceMatrix> Get(string Area)
         {
-            DistanceMatrixTests distanceMatrixTests = new DistanceMatrixTests();
+            DistanceMatrix distanceMatrixTests = new DistanceMatrix();
             return distanceMatrixTests.Read(Area);
         }
 
