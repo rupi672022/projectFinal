@@ -15,9 +15,17 @@ namespace Jacobs.Models
         double weightAll;
         double weightperOne;
         double downfromTotal;
+        int orderNum;
         int status = 1;
 
         public Products() { }
+
+        public Products(int barcod, string nameProduct,int orderNum)
+        {
+            this.barcod = barcod;
+            this.nameProduct = nameProduct;
+            this.orderNum = orderNum;
+        }
 
         public Products(int barcod, string nameProduct, string type, int status)
         {
@@ -46,6 +54,7 @@ namespace Jacobs.Models
         public int Quantity { get => quantity; set => quantity = value; }
         public double WeightAll { get => weightAll; set => weightAll = value; }
         public int Status { get => status; set => status = value; }
+        public int OrderNum { get => orderNum; set => orderNum = value; }
 
         public int Insert()//insert new product
         {
@@ -58,6 +67,13 @@ namespace Jacobs.Models
         {
             ProductDataServices ds = new ProductDataServices();
             List<Products> productslist = ds.Read();
+            return productslist;
+        }
+
+        public List<Products> getproducts()
+        {
+            ProductDataServices ds = new ProductDataServices();
+            List<Products> productslist = ds.getproducts();
             return productslist;
         }
 

@@ -31,7 +31,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 while (dataReader.Read())//if user on table
                 {
                     DistanceMatrixDataServices distanceMatrixTests = new DistanceMatrixDataServices();
-                    // distanceMatrixTests.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
+                    //distanceMatrixTests.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
                     //findingPath.CompanyName = (string)dataReader["companyName"];
                     //findingPath.Address = (string)(dataReader["address"]);
                     //findingPath.DateArrivel = (string)(dataReader["dateArrivel"]);

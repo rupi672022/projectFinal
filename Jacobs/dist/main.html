@@ -42,7 +42,7 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.3/fullcalendar.min.js'></script>
+    <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.3/fullcalendar.min.js'></script>-->
 
 
 
@@ -109,6 +109,10 @@
             margin-top: 20px
         }
         img {
+            width: 60px;
+            height: 50px;
+        }
+        #deleteBtn {
             width: 20px;
             height: 25px;
         }
@@ -129,14 +133,15 @@
         $(document).ready(function () {
 
             eventsArr = [];//מערך של הזמנות 
-            productArr = [];//מערך של מוצרים 
             detailsOrder = [];//פרטי כל הזמנה
+            productArr = [];//מערך של מוצרים 
             collectors = [];//כל המלקטים
             drivers = [];//כל הנהגים 
 
             ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);
             ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
             ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
+            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
 
             $("#BTN").click(funcEmploye);
         });
@@ -199,9 +204,6 @@
                     driverArr:[]
                 }
                 count++;
-
-
-                ajaxCall("GET", "../api/Orders?idOrder=" + list[obj]["OrderNum"], "", getOrderProductSCB, error);
             }
 
 
@@ -222,25 +224,6 @@
 
         }
 
-        function getOrderProductSCB(list) {
-            count = 0;
-            for (obj in list) {
-
-                productArr[count] = {
-                    id: list[obj]["Productnum"],
-                    name: list[obj]["ProductName"]
-                }
-                count++;
-            }
-
-            for (ans in detailsOrder) {
-                if (list[0]["OrderNum"] == detailsOrder[ans]["idOrder"]) {
-                    detailsOrder[ans]["productOrder"] = productArr;
-                }
-            }
-
-        }
-
         function getEmployeSCB(list) {
             x = 0;
             y = 0;
@@ -255,12 +238,47 @@
                 }
             }
 
+
             for (x in detailsOrder) {
                 detailsOrder[x]["collercotrArr"] = collectors;
                 detailsOrder[x]["driverArr"] = drivers;
             }
 
+            console.log(detailsOrder)
         }
+
+        function getOrderProductSCB(list) {
+ 
+            next = 0;
+            y = 0;
+            for (let i = 0; i < list.length; i=y+1) {
+                x = list[i]["OrderNum"];
+                array = [];
+                count = 0;
+                for (obj in list) {
+                    if (x == list[obj]["OrderNum"]) {
+                        array[count] = list[obj];
+                        count++
+                        y = parseInt(obj);
+                    }
+
+
+                }
+                productArr[next] = array;
+                next++;
+            }
+
+
+            for (ans in productArr) {
+                for (item in detailsOrder) {
+                    if (productArr[ans][0]["OrderNum"] == detailsOrder[item]["idOrder"]) {
+                        detailsOrder[item]["productOrder"] = productArr[ans]
+                    }
+                }
+            }
+
+        }
+
 
         function render() {
 
@@ -305,8 +323,10 @@
 
 
         function renderOrder(id) {
+           
             IdOrder = id;
-            answer='';
+            answer = '';
+
             for (obj in detailsOrder) {
                 if (detailsOrder[obj]["idOrder"] == id) {
 
@@ -317,6 +337,7 @@
                         answer = "ההזמנה לוקטה"
                     }
 
+                    console.log(detailsOrder[obj])
                     str = '<div>';
                     str += "<h2 id='idorder'>מספר הזמנה : " + detailsOrder[obj]["idOrder"] + "</h2>";
                     str += "<br/><br/>";
@@ -332,7 +353,7 @@
                     str += "<option>מוצרי ההזמנה</option>";
                     detailsOrder[obj]["productOrder"].forEach(function (value) {
                         str += "<option>";
-                        str += "<p> ברקוד - " + value.id + "  שם המוצר - " + value.name + "</p>";
+                        str += "<p> ברקוד - " + value["Barcod"] + "  שם המוצר - " + value["NameProduct"] + "</p>";
                         str += "</option>";
                     })
                     str += "</select>";
@@ -513,7 +534,7 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button class='deleteBtn btn btn-info' > <img src='../img/Delete.png' />  </button> 
+                                <button class='deleteBtn btn btn-info' > <img id="deleteBtn" src='../img/Delete.png' />  </button> 
                                 <button type="button" id="BTN" class="btn btn-danger" data-dismiss="modal">שמור</button>
                             </div>
                         </div>

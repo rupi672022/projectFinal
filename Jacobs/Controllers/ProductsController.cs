@@ -17,6 +17,13 @@ namespace Jacobs.Controllers
             return product.Read();
         }
 
+        [HttpGet]
+        [Route("api/Product")]
+        public List<Products> getproducts()//get all product
+        {
+            Products product = new Products();
+            return product.getproducts();
+        }
         // GET api/<controller>/5
         public List<Products> Get(string name)//get the info product
         {
