@@ -129,12 +129,6 @@ namespace Jacobs.Models
 
         }
 
-        public bool PutEmploye()
-        {
-            OrderDataServices ds = new OrderDataServices();
-            return ds.UpdateEmploye(this);
-        }
-
         public List<Orders> Delete(int id, int Norder)//delete product frop order
         {
             OrderDataServices ds = new OrderDataServices();

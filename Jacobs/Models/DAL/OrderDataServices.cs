@@ -277,10 +277,17 @@ namespace Jacobs.Models.DAL
                 //C - Connect to the Database 
                 con = Connect("ProjDB");
 
-                SqlCommand updatecommand = CreateUpdateCommandStatusOrder(con, order);
+                SqlCommand updatecommand; 
+                if (order.EmployeeNum == 0)
+                {
+                     updatecommand = CreateUpdateCommandStatusOrder(con, order);
+                }
+
+                else  updatecommand = CreateUpdateCommandEmployeOrder(con, order);
 
 
                 int numEffectedUser = updatecommand.ExecuteNonQuery();
+
             }
 
             catch (Exception ex)
@@ -298,37 +305,6 @@ namespace Jacobs.Models.DAL
             return true;
         }
 
-        public bool UpdateEmploye(Orders order)
-        {
-
-            SqlConnection con = null;
-
-
-            try
-            {
-                //C - Connect to the Database 
-                con = Connect("ProjDB");
-
-                SqlCommand updatecommand = CreateUpdateCommandEmployeOrder(con, order);
-
-
-                int numEffectedUser = updatecommand.ExecuteNonQuery();
-            }
-
-            catch (Exception ex)
-            {
-                // this code needs to write the error to a log file
-                throw new Exception("Failed to update a order", ex);
-            }
-
-            finally
-            {
-                // close the db connection
-                con.Close();
-            }
-
-            return true;
-        }
 
         public List<Orders> Delete(int id, int Norder) //delepe product from table
         {
@@ -485,15 +461,25 @@ namespace Jacobs.Models.DAL
         SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image - app
         {
             string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "' WHERE orderNum='" + order.OrderNum + "' ";
+            
             SqlCommand cmd = createCommand(con, commandStr);
+
 
             return cmd;
         }
 
         SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)
         {
-            string commandStr = "UPDATE EmployeeOnOrder SET employNum='" + order.EmployeeNum + "',preparationDate ='" + order.PreprationDate + "' WHERE orderNum='" + order.OrderNum + "' ";
+            string commandStr = "INSERT INTO EmployeeOnOrder([employNum],[orderNum],[preparationDate]) VALUES(@employNum, @orderNum, @preparationDate)";
+            
             SqlCommand cmd = createCommand(con, commandStr);
+
+            cmd.Parameters.Add("@employNum", SqlDbType.Float);
+            cmd.Parameters["@employNum"].Value = order.EmployeeNum;
+            cmd.Parameters.Add("@orderNum", SqlDbType.Float);
+            cmd.Parameters["@orderNum"].Value = order.OrderNum;
+            cmd.Parameters.Add("@preparationDate", SqlDbType.Char);
+            cmd.Parameters["@preparationDate"].Value = order.PreprationDate;
 
             return cmd;
 

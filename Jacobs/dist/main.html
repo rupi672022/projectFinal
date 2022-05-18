@@ -117,8 +117,7 @@
             height: 25px;
         }
         #idorder {
-            border-style: solid;
-            border-color: #FFE587;
+            background-color: #ffe587;
             padding: 5px;
         }
         select {
@@ -139,9 +138,6 @@
             drivers = [];//כל הנהגים 
 
             ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);
-            ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
-            ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
-            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
 
             $("#BTN").click(funcEmploye);
         });
@@ -206,6 +202,8 @@
                 count++;
             }
 
+            ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
+
 
             render();
         }
@@ -222,9 +220,11 @@
                 }
             }
 
+            ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
         }
 
         function getEmployeSCB(list) {
+
             x = 0;
             y = 0;
             for (obj in list) {
@@ -244,7 +244,7 @@
                 detailsOrder[x]["driverArr"] = drivers;
             }
 
-            console.log(detailsOrder)
+            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
         }
 
         function getOrderProductSCB(list) {
@@ -337,8 +337,8 @@
                         answer = "ההזמנה לוקטה"
                     }
 
-                    console.log(detailsOrder[obj])
                     str = '<div>';
+
                     str += "<h2 id='idorder'>מספר הזמנה : " + detailsOrder[obj]["idOrder"] + "</h2>";
                     str += "<br/><br/>";
                     str += "<p>שם החברה : " + detailsOrder[obj]["nameCompany"] + "<p>";
@@ -349,7 +349,7 @@
 
                     str += "<p> סטטוס הזמנה - " + answer + "</p>";
 
-                    str += "<select id='product' class='form - control' >";
+                    str += "<select id='product' class='form - control'>";
                     str += "<option>מוצרי ההזמנה</option>";
                     detailsOrder[obj]["productOrder"].forEach(function (value) {
                         str += "<option>";
@@ -360,10 +360,10 @@
                     str += "<br/><br/>";
 
                     str += "<label for='dateCollect'> הכנס תאריך הכנת הזמנה    </label>";
-                    str += "<input type='date' id='dateCollect' required>";
+                    str += "<input type='date' id='dateCollect' >";
                     str += "<br/><br/>";
 
-                    str += "<select id='collect' class='form - control'>";
+                    str += "<select id='collect' class='form - control' >";
                     str += "<option>בחר מלקט להזמנה</option>";
                     detailsOrder[obj]["collercotrArr"].forEach(function (value) {
                         str += "<option>";
@@ -373,7 +373,7 @@
                     str += "</select>";
                     str += "<br/><br/>";
 
-                    str += "<select id='driver' class='form - control'>";
+                    str += "<select id='driver' class='form - control' >";
                     str += "<option>בחר נהג להזמנה</option>";
                     detailsOrder[obj]["driverArr"].forEach(function (value) {
                         str += "<option>";
@@ -384,8 +384,8 @@
                     str += "<br/><br/>";
 
                  
-
                     str += '</div>';
+
                     document.getElementById("eventDiv").innerHTML = str;
 
 
@@ -398,7 +398,11 @@
             collect = document.getElementById("collect").value.split('-');
             id = collect[0];
             date = $("#dateCollect").val();
+
             date = date.replace(/-/g, "/")
+            date = date.split('/');
+            date = date[2] + "/" + date[1] + "/" + date[0];
+
             collectOrder = {
                 OrderNum: IdOrder,
                 EmployeeNum: id,
