@@ -49,7 +49,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
 
         }
-        public List<DistanceMatrix> Read(string addressMatrix)
+        public List<DistanceMatrix> Read(DistanceMatrix dm)
         {
 
             SqlConnection con = null;
@@ -60,7 +60,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 con = Connect("ProjDB");
 
                 // Create the insert command
-                SqlCommand selectCommand = createSelectCommandDistanceMatrix(con, addressMatrix);
+                SqlCommand selectCommand = createSelectCommandDistanceMatrix(con);
 
                 // Execute the command
                 SqlDataReader dataReader = selectCommand.ExecuteReader();
@@ -68,17 +68,8 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 List<DistanceMatrix> DistanceMatrixlist = new List<DistanceMatrix>();
                 while (dataReader.Read())//if user on table
                 {
-                    DistanceMatrix distanceMatrixTests = new DistanceMatrix(addressMatrix);
-                    distanceMatrixTests.AddressMatrix = (string)dataReader["addressMatrix"];
-                    //findingPath.CompanyName = (string)dataReader["companyName"];
-                    //findingPath.Address = (string)(dataReader["address"]);
-                    //findingPath.DateArrivel = (string)(dataReader["dateArrivel"]);
-                    //findingPath.DistributaionArea = (string)(dataReader["distributaionArea"]);
-                    //findingPath.Lat = (double)dataReader["lat"];
-                    //findingPath.Lng = (double)dataReader["lng"];
-
-
-
+                    DistanceMatrix distanceMatrixTests = new DistanceMatrix();
+                    distanceMatrixTests.AddressMatrix = (string)dataReader["address"];
 
                     DistanceMatrixlist.Add(distanceMatrixTests);
                 }
@@ -131,15 +122,12 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         }
 
 
-        private SqlCommand createSelectCommandDistanceMatrix(SqlConnection con, string addressMatrix)
+        private SqlCommand createSelectCommandDistanceMatrix(SqlConnection con)
         {
 
-            string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE Company.distributaionArea LIKE @Area ";
+            string commandStr = "select * from Company";
 
             SqlCommand cmd = createCommand(con, commandStr);
-
-
-            // cmd.Parameters.AddWithValue("@date", "%" + date + "%");
 
             return cmd;
 

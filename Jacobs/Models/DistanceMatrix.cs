@@ -19,7 +19,6 @@ using Jacobs.Models.DAL;
 
 namespace GoogleApi.Test.Maps.DistanceMatrix
 {
-    //hi
 
     public class DistanceMatrix : BaseTest
     {
@@ -37,10 +36,10 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             return status;
         }
 
-        public List<DistanceMatrix> Read(string addressMatrix)
+        public List<DistanceMatrix> Read()
         {
             DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
-            List<DistanceMatrix> DistanceMatrixlist = ds.Read(addressMatrix);
+            List<DistanceMatrix> DistanceMatrixlist = ds.Read(this);
             return DistanceMatrixlist;
         }
 
@@ -51,10 +50,10 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             this.AddressMatrix = addressMatrix;
         }
 
-        public void test()
+        public void test(DistanceMatrix list)
         {
             
-            List<string> companies = new List<string> { "גשר העץ 27,עמק חפר", "עיט 6 עין שריד", "ישראל גלילי 7 תל אביב" };
+            List<string> companies = new List<string> { "גשר העץ 27,עמק חפר", "עיט 6 עין*/ שריד", "ישראל גלילי 7 תל אביב" };
             double[,] northMatrixRes = GetDistMatrixFullPath(companies);
         }
 
@@ -110,7 +109,6 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             return matrixNorth;
 
         }
-
     }
     public class Distance
     {
