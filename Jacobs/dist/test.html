@@ -28,11 +28,12 @@
     <script>
 
         $(document).ready(function () {
-            ajaxCall("GET", "../api/DistanceMatrix", "", getSCB, getECB);
+            ajaxCall("POST", "../api/DistanceMatrix?addressMatrix = " + addressMatrix, "", getSCB, getECB);
+
+            ajaxCall("GET", "../api/DistanceMatrix?addressMatrix = " + addressMatrix, "", getSCB, getECB);
         });
 
        
-
 
         function getSCB(answer) { 
 

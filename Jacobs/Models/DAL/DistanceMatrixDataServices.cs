@@ -12,7 +12,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
     {
         //string[] addressArr;
 
-        public int Insert(DistanceMatrix list) 
+        public int Insert(DistanceMatrix list)
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -49,7 +49,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
 
         }
-        public List<DistanceMatrixDataServices> Read(string Area)//get the all the employee 
+        public List<DistanceMatrix> Read(string addressMatrix)
         {
 
             SqlConnection con = null;
@@ -60,16 +60,16 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 con = Connect("ProjDB");
 
                 // Create the insert command
-                SqlCommand selectCommand = createSelectCommandFindingFath(con, Area);
+                SqlCommand selectCommand = createSelectCommandDistanceMatrix(con, addressMatrix);
 
                 // Execute the command
                 SqlDataReader dataReader = selectCommand.ExecuteReader();
 
-                List<DistanceMatrixDataServices> DistanceMatrixlist = new List<DistanceMatrixDataServices>();
+                List<DistanceMatrix> DistanceMatrixlist = new List<DistanceMatrix>();
                 while (dataReader.Read())//if user on table
                 {
-                    DistanceMatrixDataServices distanceMatrixTests = new DistanceMatrixDataServices();
-                    //distanceMatrixTests.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
+                    DistanceMatrix distanceMatrixTests = new DistanceMatrix(addressMatrix);
+                    distanceMatrixTests.AddressMatrix = (string)dataReader["addressMatrix"];
                     //findingPath.CompanyName = (string)dataReader["companyName"];
                     //findingPath.Address = (string)(dataReader["address"]);
                     //findingPath.DateArrivel = (string)(dataReader["dateArrivel"]);
@@ -117,21 +117,21 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             SqlCommand cmd = createCommand(con, commandStr);
 
-            cmd.Parameters.Add("@companyName", SqlDbType.Char);
-            cmd.Parameters["@companyName"].Value = company.CompanyName;
+            //cmd.Parameters.Add("@companyName", SqlDbType.Char);
+            //cmd.Parameters["@companyName"].Value = company.CompanyName;
 
-            cmd.Parameters.Add("@address", SqlDbType.Char);
-            cmd.Parameters["@address"].Value = company.Address;
+            //cmd.Parameters.Add("@address", SqlDbType.Char);
+            //cmd.Parameters["@address"].Value = company.Address;
 
-            cmd.Parameters.Add("@openHour", SqlDbType.Char);
-            cmd.Parameters["@openHour"].Value = company.OpenHour;
+            //cmd.Parameters.Add("@openHour", SqlDbType.Char);
+            //cmd.Parameters["@openHour"].Value = company.OpenHour;
 
 
             return cmd;
         }
 
 
-        private SqlCommand createSelectCommandFindingFath(SqlConnection con, string Area)
+        private SqlCommand createSelectCommandDistanceMatrix(SqlConnection con, string addressMatrix)
         {
 
             string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE Company.distributaionArea LIKE @Area ";
@@ -139,7 +139,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             SqlCommand cmd = createCommand(con, commandStr);
 
 
-           // cmd.Parameters.AddWithValue("@date", "%" + date + "%");
+            // cmd.Parameters.AddWithValue("@date", "%" + date + "%");
 
             return cmd;
 

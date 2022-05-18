@@ -23,8 +23,12 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
     public class DistanceMatrix : BaseTest
     {
-
+        
         string addressMatrix;
+        public DistanceMatrix()
+        {
+
+        }
 
         public int Insert()//insert new company
         {
@@ -33,12 +37,12 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             return status;
         }
 
-        //public List<DistanceMatrix> Read(string Area)//get the all company
-        //{
-        //    DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
-        //    List<DistanceMatrix> DistanceMatrixlist = ds.Read(Area);
-        //    return DistanceMatrixlist;
-        //}
+        public List<DistanceMatrix> Read(string addressMatrix)
+        {
+            DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
+            List<DistanceMatrix> DistanceMatrixlist = ds.Read(addressMatrix);
+            return DistanceMatrixlist;
+        }
 
         public string AddressMatrix { get => addressMatrix; set => addressMatrix = value; }
 
@@ -49,7 +53,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         public void test()
         {
-
+            
             List<string> companies = new List<string> { "גשר העץ 27,עמק חפר", "עיט 6 עין שריד", "ישראל גלילי 7 תל אביב" };
             double[,] northMatrixRes = GetDistMatrixFullPath(companies);
         }

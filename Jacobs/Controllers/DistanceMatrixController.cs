@@ -17,18 +17,18 @@ namespace Jacobs.Controllers
             DistanceMatrix dm = new DistanceMatrix();
             dm.Setup();
             dm.test();
-            //return new string[] { "value1", "value2" };
+            //return dm.Read();
         }
 
         // GET api/<controller>/5
-        //public List<DistanceMatrix> Get(string Area)
-        //{
-        //    DistanceMatrix distanceMatrixTests = new DistanceMatrix();
-        //    return distanceMatrixTests.Read(Area);
-        //}
+        public List<DistanceMatrix> Get(string addressMatrix)
+        {
+            DistanceMatrix distanceMatrixTests = new DistanceMatrix();
+            return distanceMatrixTests.Read(addressMatrix);
+        }
 
-        //POST api/<controller>
-        public HttpResponseMessage Post([FromBody]  DistanceMatrix distanceMatrix)
+      // POST api/<controller>
+        public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix)
         {
             int id = distanceMatrix.Insert();
             return Request.CreateResponse(HttpStatusCode.OK, "success");
