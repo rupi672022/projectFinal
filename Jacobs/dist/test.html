@@ -28,7 +28,7 @@
     <script>
 
         $(document).ready(function () {
-            ajaxCall("POST", "../api/DistanceMatrix?addressMatrix = " + addressMatrix, "", getSCB, getECB);
+        //    ajaxCall("POST", "../api/DistanceMatrix?addressMatrix = " + addressMatrix, "", getSCB, getECB);
 
             ajaxCall("GET", "../api/DistanceMatrix?addressMatrix = " + addressMatrix, "", getSCB, getECB);
         });
