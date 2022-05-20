@@ -130,6 +130,7 @@ namespace Jacobs.Models.DAL
                     else
                         employe.DistributaionArea = (string)dataReader["distributaionArea"];
 
+
                     listEmployes.Add(employe);
                 }
                 dataReader.Close();
@@ -267,7 +268,7 @@ namespace Jacobs.Models.DAL
         private SqlCommand createSelectCommandEmploye(SqlConnection con)//get all the employe that Active
         {
 
-            string commandStr = "SELECT * FROM Employes WHERE Employes.status=1";
+            string commandStr = "SELECT * FROM Employes WHERE Employes.status=1 ";
 
             SqlCommand cmd = createCommand(con, commandStr);
 

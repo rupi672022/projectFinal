@@ -100,6 +100,17 @@ namespace Jacobs.Models.DAL
                     order.OpenHour = (string)dataReader["openHour"];
                     order.DistributaionArea = (string)dataReader["distributaionArea"];
 
+                    if (dataReader.IsDBNull(7))
+                        order.PreprationDate = null;
+                    else
+                        order.PreprationDate = (string)dataReader["preparationDate"];
+
+
+                    if (dataReader.IsDBNull(8))
+                        order.Status = 1;
+                    else
+                        order.Status = Convert.ToInt32(dataReader["status"]);
+
                     listOrder.Add(order);
                 }
 
@@ -266,27 +277,54 @@ namespace Jacobs.Models.DAL
 
         }
 
-        public bool Update(Orders order) //updae the order - status + image - app
+        public bool Update(Orders order) //updae the order 
         {
 
             SqlConnection con = null;
 
+            int numEffected = 0;
 
             try
             {
                 //C - Connect to the Database 
                 con = Connect("ProjDB");
 
-                SqlCommand updatecommand; 
-                if (order.EmployeeNum == 0)
+                SqlCommand updatecommand;
+                if (order.EmployeeNum == 0 && order.DriverNum==0)
                 {
-                     updatecommand = CreateUpdateCommandStatusOrder(con, order);
+                    updatecommand = CreateUpdateCommandStatusOrder(con, order);
                 }
 
-                else  updatecommand = CreateUpdateCommandEmployeOrder(con, order);
+    
+                else  {
+                   
+
+                    //C Create the Insert SqlCommand - check if the order in table [employeOrder]
+                    SqlCommand insertCommand = CreateCheckCommand(order, con);
 
 
-                int numEffectedUser = updatecommand.ExecuteNonQuery();
+                    // Execute the command
+                    SqlDataReader dataReader = insertCommand.ExecuteReader();
+
+
+                    if (dataReader.Read())//if yes update order on order in table [employeOrder]
+                    {
+                        dataReader.Close();
+                        updatecommand = CreateUpdateCommandEmployeOrder(con, order);
+                        //E Execute
+                        numEffected = updatecommand.ExecuteNonQuery();
+                    }
+                    else//if not
+                    {
+                        dataReader.Close();
+                        //C Create the Insert SqlCommand insert order int table [employeOrder]
+                        SqlCommand insertCommandOrder = CreateInsertCommandEmployeOrder(order, con);
+                        numEffected = insertCommandOrder.ExecuteNonQuery();
+
+                    } 
+                } 
+
+
 
             }
 
@@ -354,7 +392,9 @@ namespace Jacobs.Models.DAL
 
         SqlCommand CreateSelectCommandAllOrders(SqlConnection con)
         {
-            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum=[Order].orderNum INNER JOIN Company ON Company.companyNum=CompanyOnOrder.companyNum";
+            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea,EmployeeOnOrder.preparationDate,EmployeeOnOrder.status ";
+                str += "FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum =[Order].orderNum INNER JOIN Company ON Company.companyNum = CompanyOnOrder.companyNum ";
+                str+="left join EmployeeOnOrder on EmployeeOnOrder.orderNum =[Order].orderNum";
             
             SqlCommand cmd = createCommand(con, str);
 
@@ -458,6 +498,7 @@ namespace Jacobs.Models.DAL
 
         }
 
+
         SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image - app
         {
             string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "' WHERE orderNum='" + order.OrderNum + "' ";
@@ -468,14 +509,37 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
+        SqlCommand CreateCheckCommand( Orders order, SqlConnection con)
+        {
+            string artstr = "SELECT * FROM EmployeeOnOrder WHERE orderNum = '" + order.OrderNum + "'";
+
+
+            SqlCommand cmd = createCommand(con, artstr);
+
+            return cmd;
+        }
+
+
         SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)
         {
-            string commandStr = "INSERT INTO EmployeeOnOrder([employNum],[orderNum],[preparationDate]) VALUES(@employNum, @orderNum, @preparationDate)";
+            string commandStr = "UPDATE EmployeeOnOrder SET employNum = '"+order.EmployeeNum + "',driverNum='"+order.DriverNum+"',preparationDate ='" + order.PreprationDate + "'";
+
+            SqlCommand cmd = createCommand(con, commandStr);
+
+
+            return cmd;
+        }
+
+        SqlCommand CreateInsertCommandEmployeOrder(Orders order,SqlConnection con)
+        {
+            string commandStr = "INSERT INTO EmployeeOnOrder([employNum],[orderNum],[preparationDate],[driverNum]) VALUES(@employNum, @orderNum, @preparationDate,@driverNum)";
             
             SqlCommand cmd = createCommand(con, commandStr);
 
             cmd.Parameters.Add("@employNum", SqlDbType.Float);
             cmd.Parameters["@employNum"].Value = order.EmployeeNum;
+            cmd.Parameters.Add("@driverNum", SqlDbType.Float);
+            cmd.Parameters["@driverNum"].Value = order.DriverNum;
             cmd.Parameters.Add("@orderNum", SqlDbType.Float);
             cmd.Parameters["@orderNum"].Value = order.OrderNum;
             cmd.Parameters.Add("@preparationDate", SqlDbType.Char);
