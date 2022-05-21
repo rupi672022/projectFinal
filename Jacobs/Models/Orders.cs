@@ -21,6 +21,7 @@ namespace Jacobs.Models
         int productnum;
         string productName;
         int employeeNum;
+        int driverNum;
         string preprationDate;
         string image;
         int status = 1;
@@ -51,10 +52,11 @@ namespace Jacobs.Models
             this.productName = productName;
         }
 
-        public Orders(int orderNum, int employeeNum, string preprationDate,int status)
+        public Orders(int orderNum, int employeeNum, string preprationDate,int status,int driverNum)
         {
             this.orderNum = orderNum;
             this.employeeNum = employeeNum;
+            this.driverNum = driverNum;
             this.preprationDate = preprationDate;
             this.status = status;
         }
@@ -85,6 +87,7 @@ namespace Jacobs.Models
         public string CompanyName { get => companyName; set => companyName = value; }
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
         public string ProductName { get => productName; set => productName = value; }
+        public int DriverNum { get => driverNum; set => driverNum = value; }
 
         public int Insert()//insert new order
         {

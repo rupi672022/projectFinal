@@ -131,6 +131,14 @@
 
         $(document).ready(function () {
 
+
+
+            funcInit();
+
+            $("#BTN").click(funcEmploye);
+        });
+
+        function funcInit() {
             eventsArr = [];//מערך של הזמנות 
             detailsOrder = [];//פרטי כל הזמנה
             productArr = [];//מערך של מוצרים 
@@ -138,13 +146,11 @@
             drivers = [];//כל הנהגים 
 
             ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);
-
-            $("#BTN").click(funcEmploye);
-        });
+        }
 
         function getOrderSCB(list) {
             count = 0;
-
+            console.log(list)
             for (obj in list) {
 
                 dd = '';
@@ -184,6 +190,10 @@
                     color: color
                 }
 
+                preparationDate = '';
+                if (list[obj]["PreprationDate"] != '')
+                    preparationDate = list[obj]["PreprationDate"]
+
                 detailsOrder[count] = {
                     idOrder: list[obj]["OrderNum"],
                     idCompany: list[obj]["Companynum"],
@@ -196,10 +206,13 @@
                     phoneContact: '',
                     productOrder:[],
                     statusOrder: list[obj]["Status"],
-                    collercotrArr: [],
+                    collercotrArr:[],
+                    preparationDate: preparationDate,
                     driverArr:[]
                 }
                 count++;
+
+
             }
 
             ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
@@ -219,7 +232,6 @@
                     }
                 }
             }
-
             ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
         }
 
@@ -227,6 +239,7 @@
 
             x = 0;
             y = 0;
+
             for (obj in list) {
                 if (list[obj]["Role"] == "מלקט") {
                     collectors[x] = list[obj];
@@ -237,7 +250,6 @@
                     y++;
                 }
             }
-
 
             for (x in detailsOrder) {
                 detailsOrder[x]["collercotrArr"] = collectors;
@@ -323,11 +335,12 @@
 
 
         function renderOrder(id) {
-           
+
             IdOrder = id;
             answer = '';
 
             for (obj in detailsOrder) {
+
                 if (detailsOrder[obj]["idOrder"] == id) {
 
                     if (detailsOrder[obj]["statusOrder"] == 1) {
@@ -359,9 +372,16 @@
                     str += "</select>";
                     str += "<br/><br/>";
 
-                    str += "<label for='dateCollect'> הכנס תאריך הכנת הזמנה    </label>";
-                    str += "<input type='date' id='dateCollect' >";
-                    str += "<br/><br/>";
+
+                    if (detailsOrder[obj]["preparationDate"] != null) {
+                        str += "<p id='dateCollect'> תאריך ליקוט ההזמנה : " + detailsOrder[obj]["preparationDate"] + "</p>";
+                    }
+                    else {
+                        str += "<label for='dateCollect'> הכנס תאריך הכנת הזמנה    </label>";
+                        str += "<input type='date' id='dateCollect' >";
+                        str += "<br/><br/>";
+                    }
+
 
                     str += "<select id='collect' class='form - control' >";
                     str += "<option>בחר מלקט להזמנה</option>";
@@ -396,25 +416,37 @@
         function funcEmploye() {
             console.log(IdOrder)
             collect = document.getElementById("collect").value.split('-');
-            id = collect[0];
-            date = $("#dateCollect").val();
+            driver = document.getElementById("driver").value.split(' ');
 
-            date = date.replace(/-/g, "/")
-            date = date.split('/');
-            date = date[2] + "/" + date[1] + "/" + date[0];
+            idcollect = collect[0];
+            iddriver = driver[0];
 
-            collectOrder = {
-                OrderNum: IdOrder,
-                EmployeeNum: id,
-                PreprationDate: date
+            if (idcollect == 'בחר'  || $("#dateCollect").val() == null || iddriver=='בחר' ) {
+                swal("יש למלא תאריך ליקוט , עובד להכנת ההזמנה ונהג להוצאת ההזמנה ")
             }
+            else {
 
-            ajaxCall("PUT", "../api/Orders", JSON.stringify(collectOrder), succsess, error);
+                date = $("#dateCollect").val();
+                date = date.split('-');
+                date = date[2] + "/" + date[1] + "/" + date[0];
+
+
+                EmployeOrder = {
+                    OrderNum: IdOrder,
+                    EmployeeNum: idcollect,
+                    PreprationDate: date,
+                    DriverNum: iddriver,
+                }
+                ajaxCall("PUT", "../api/Orders", JSON.stringify(EmployeOrder), succsess, error);
+            }
+          
         }
 
         function succsess() {
             console.log("wow");
+            funcInit();
         }
+
         function error(err) {
             swal("Error: " + err);
         }
