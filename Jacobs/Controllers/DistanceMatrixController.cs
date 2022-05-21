@@ -18,7 +18,7 @@ namespace Jacobs.Controllers
             DistanceMatrix dm = new DistanceMatrix();
             list=dm.Read();
             dm.Setup();
-            dm.test(list);
+          //  dm.test(list);
             //return dm.Read();
         }
 
