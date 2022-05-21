@@ -103,27 +103,46 @@
                 DistributaionArea: $("#CdisArrea").val()
             }
             console.log(newCompany);
+           let area = $("#CdisArrea").val();
+
+            ajaxCall("GET", "../api/DistanceMatrix?area=" + area, "", getSCB, getECB);
+
 
             ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsses, error);
+
             ajaxCall("GET", "../api/Companies", "", getCompany, error);
 
             return false;
 
         }
+        function getSCB(answer) {
+            console.log("yes");
+
+            console.log(answer);
+
+
+        }
+
+        function getECB(err) {
+            console.log("No");
+
+            console.log(err);
+        }
         function getCompany(list) {
             console.log(list);
 
-            listadress = [];
-            for (obj in list) {
-                listadress.push(list[obj].Address)
-            }
 
-            ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(listadress), getDistance, error);
+            //listaddress = [];
+            //for (obj in list) {
+            //    listaddress.push(list[obj].Address)
+            //}
+
+           // ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(listaddress), postDistance, error);
 
         }
-        function getDistance() {
-            console.log("wow");
-        }
+        //function postDistance() {
+        //    console.log("wow");
+        //}
         function submitToPro() {//add new product
 
             if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram
@@ -182,6 +201,7 @@
 
             name_company = document.getElementById("companyName").value;//the series choose
             console.log(name_company);
+
             if (name_company != "בחר בית עסק")
                 ajaxCall("GET", "../api/Companies?name=" + name_company, "", getNCSCB, error);
         }
@@ -301,7 +321,9 @@
 
         function postSucsses() {
             console.log("sucsses");
+
             renderCompany();
+
         }
 
         function postProductSucsses() {//fget all the product in this order

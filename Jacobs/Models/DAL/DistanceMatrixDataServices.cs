@@ -49,7 +49,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
 
         }
-        public List<DistanceMatrix> Read(DistanceMatrix dm)
+        public List<DistanceMatrix> Read(string area)
         {
 
             SqlConnection con = null;
@@ -60,7 +60,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 con = Connect("ProjDB");
 
                 // Create the insert command
-                SqlCommand selectCommand = createSelectCommandDistanceMatrix(con);
+                SqlCommand selectCommand = createSelectCommandDistanceMatrix(con,area);
 
                 // Execute the command
                 SqlDataReader dataReader = selectCommand.ExecuteReader();
@@ -69,7 +69,8 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 while (dataReader.Read())//if user on table
                 {
                     DistanceMatrix distanceMatrixTests = new DistanceMatrix();
-                    distanceMatrixTests.AddressMatrix = (string)dataReader["address"];
+                    distanceMatrixTests.Address = (string)(dataReader["address"]);
+
 
                     DistanceMatrixlist.Add(distanceMatrixTests);
                 }
@@ -80,7 +81,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             catch (Exception ex)
             {
                 // write the error to log
-                throw new Exception("failed in reading of FindingFath", ex);
+                throw new Exception("failed in reading of company", ex);
             }
             finally
             {
@@ -122,15 +123,18 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         }
 
 
-        private SqlCommand createSelectCommandDistanceMatrix(SqlConnection con)
+        private SqlCommand createSelectCommandDistanceMatrix(SqlConnection con,string area)
         {
 
-            string commandStr = "select * from Company";
+            string commandStr = "SELECT * FROM Company WHERE Company.distributaionArea LIKE @area";
 
             SqlCommand cmd = createCommand(con, commandStr);
+            cmd.Parameters.AddWithValue("@area", "%" + area + "%");
+
 
             return cmd;
 
+        
         }
 
         SqlCommand createCommand(SqlConnection con, string CommandSTR)
