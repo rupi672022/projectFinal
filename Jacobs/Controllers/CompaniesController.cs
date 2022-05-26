@@ -28,7 +28,16 @@ namespace Jacobs.Controllers
         // POST api/<controller>
         public HttpResponseMessage Post([FromBody] Company company) //insert new company
         {
-            int id = company.Insert();
+            
+        
+        int id = company.Insert();
+
+        DistanceMatrixController dM = new DistanceMatrixController();
+            //new distance matrix
+            List<DistanceMatrix> final=dM.Get(company.DistributaionArea);
+            //call to distance matrix that create
+            //send cooridnation
+            //here to call to calcuate distancematrix and post to db
             return Request.CreateResponse(HttpStatusCode.OK,"success");
         }
 
