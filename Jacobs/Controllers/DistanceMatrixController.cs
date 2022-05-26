@@ -12,8 +12,9 @@ namespace Jacobs.Controllers
     public class DistanceMatrixController : ApiController
     {
         // GET api/<controller>
-        public void Get(string area)
+        public List<DistanceMatrix> Get(string area)
         {
+
             List<DistanceMatrix> list = new List<DistanceMatrix>();
             List<string> addressList = new List<string>();
 
@@ -33,7 +34,7 @@ namespace Jacobs.Controllers
             }
             dm.Setup();
 
-            dm.test(addressList);
+            return dm.test(addressList);
 
             //return dm.Read();
         }
@@ -46,11 +47,11 @@ namespace Jacobs.Controllers
         //}
 
         // POST api/<controller>
-        //public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix)
-        //{
-        //    int id = distanceMatrix.Insert();
-        //    return Request.CreateResponse(HttpStatusCode.OK, "success");
-        //}
+        public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix)
+        {
+            int id = distanceMatrix.Insert();
+            return Request.CreateResponse(HttpStatusCode.OK, "success");
+        }
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody] string value)

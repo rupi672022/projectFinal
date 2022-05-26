@@ -10,9 +10,8 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 {
     public class DistanceMatrixDataServices
     {
-        //string[] addressArr;
 
-        public int Insert(DistanceMatrix list)
+        public int Insert(DistanceMatrix distanceMatrix)
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -23,7 +22,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 con = Connect("ProjDB");
 
                 //C Create the Insert SqlCommand
-                SqlCommand insertCommand = CreateInsertCommand(list, con);
+                SqlCommand insertCommand = CreateInsertCommand(distanceMatrix,con);
 
                 //E Execute
                 numEffected = insertCommand.ExecuteNonQuery();
@@ -34,7 +33,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             {
 
                 // this code needs to write the error to a log file
-                throw new Exception("Failed to insert a company", ex);
+                throw new Exception("Failed to insert a matrix", ex);
             }
 
             finally
@@ -67,11 +66,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
                 List<DistanceMatrix> DistanceMatrixlist = new List<DistanceMatrix>();
                 while (dataReader.Read())//if user on table
-                {
+                {  
                     DistanceMatrix distanceMatrixTests = new DistanceMatrix();
                     distanceMatrixTests.Address = (string)(dataReader["address"]);
-
-
                     DistanceMatrixlist.Add(distanceMatrixTests);
                 }
                 dataReader.Close();
@@ -103,20 +100,20 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             return con;
         }
 
-        SqlCommand CreateInsertCommand(DistanceMatrix list, SqlConnection con)//insert new company
+        SqlCommand CreateInsertCommand(DistanceMatrix distanceMatrix, SqlConnection con)//insert new company
         {
-            string commandStr = "INSERT INTO Company ([companyName],[address],[openHour],[closeHour],[nameContact],[phoneContact],[lat],[lng],[distributaionArea]) VALUES (@companyName,@address,@openHour,@closeHour,@nameContact,@phoneContact,@lat,@lng,@distributaionArea)";
+            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance]) VALUES (@from,@to,@distance)";
 
             SqlCommand cmd = createCommand(con, commandStr);
 
-            //cmd.Parameters.Add("@companyName", SqlDbType.Char);
-            //cmd.Parameters["@companyName"].Value = company.CompanyName;
+            cmd.Parameters.Add("@from", SqlDbType.Int);
+            cmd.Parameters["@from"].Value = distanceMatrix.From;
 
-            //cmd.Parameters.Add("@address", SqlDbType.Char);
-            //cmd.Parameters["@address"].Value = company.Address;
+            cmd.Parameters.Add("@to", SqlDbType.Int);
+            cmd.Parameters["@to"].Value = distanceMatrix.To;
 
-            //cmd.Parameters.Add("@openHour", SqlDbType.Char);
-            //cmd.Parameters["@openHour"].Value = company.OpenHour;
+            cmd.Parameters.Add("@distance", SqlDbType.Int);
+            cmd.Parameters["@distance"].Value = distanceMatrix.Distance;
 
 
             return cmd;
@@ -129,13 +126,14 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             string commandStr = "SELECT * FROM Company WHERE Company.distributaionArea LIKE @area";
 
             SqlCommand cmd = createCommand(con, commandStr);
-            cmd.Parameters.AddWithValue("@area", "%" + area + "%");
+           cmd.Parameters.AddWithValue("@area", "%" + area + "%");
 
 
             return cmd;
 
         
         }
+
 
         SqlCommand createCommand(SqlConnection con, string CommandSTR)
         {

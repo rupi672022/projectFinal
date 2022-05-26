@@ -93,7 +93,7 @@
 
         function submitToCom() {//add new company
 
-            newCompany = {
+           let newCompany = {
                 CompanyName: $("#Cname").val(),
                 Address: $("#Caddress").val(),
                 OpenHour: $("#CopenHour").val(),
@@ -103,12 +103,12 @@
                 DistributaionArea: $("#CdisArrea").val()
             }
             console.log(newCompany);
-           let area = $("#CdisArrea").val();
-
-            ajaxCall("GET", "../api/DistanceMatrix?area=" + area, "", getSCB, getECB);
+         
 
 
-            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsses, error);
+            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsss, error);
+            
+
 
             ajaxCall("GET", "../api/Companies", "", getCompany, error);
 
@@ -117,10 +117,12 @@
         }
         function getSCB(answer) {
             console.log("yes");
+            
+         ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(answer), postDistance, error);
 
-            console.log(answer);
-
-
+        }
+        function postSucsss(answer) {
+            console.log("succsess");
         }
 
         function getECB(err) {
@@ -130,19 +132,16 @@
         }
         function getCompany(list) {
             console.log(list);
+           // let area = $("#CdisArrea").val();
+          //  ajaxCall("GET", "../api/DistanceMatrix?area=" + area, "", getSCB, getECB);
 
 
-            //listaddress = [];
-            //for (obj in list) {
-            //    listaddress.push(list[obj].Address)
-            //}
-
-           // ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(listaddress), postDistance, error);
-
+            
         }
-        //function postDistance() {
-        //    console.log("wow");
-        //}
+
+        function postDistance() {
+            console.log("wow");
+        }
         function submitToPro() {//add new product
 
             if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram

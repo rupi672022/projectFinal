@@ -23,11 +23,21 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
     public class DistanceMatrix : BaseTest
     {
         
-        string addressMatrix;
+        string from;
+        string to;
+        int distance;
 
-        public DistanceMatrix()
+        public string From { get => from; set => from = value; }
+        public string To { get => to; set => to = value; }
+        public int Distance { get => distance; set => distance = value; }
+
+        public DistanceMatrix() { }
+
+        public DistanceMatrix(string from, string to, int distance)
         {
-
+            this.From = from;
+            this.To = to;
+            this.Distance = distance;
         }
 
         public int Insert()//insert new company
@@ -44,22 +54,16 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             return DistanceMatrixlist;
         }
 
-        public string AddressMatrix { get => addressMatrix; set => addressMatrix = value; }
+       
 
-        public DistanceMatrix(string addressMatrix)
-        {
-            this.AddressMatrix = addressMatrix;
-        }
-
-        public void test(List<string> list)
+        public List<DistanceMatrix> test(List<string> list)
         {
 
-            // List<string> companies = new List<string> {  "גשר העץ 27,עמק חפר", "גשר העץ 27,עמק חפר", "גשר העץ 27,עמק חפר", "גשר העץ 27,עמק חפר", "גשר העץ 27,עמק חפר", "גשר העץ 27,עמק חפר", "עיט 6 עין*/ שריד", "ישראל גלילי 7 תל אביב", "ישראל גלילי 7 תל אביב", "ישראל גלילי 7 תל אביב" };
-            List<string>[] northMatrixRes = GetDistMatrixFullPath(list);
+            return GetDistMatrixFullPath(list);
         }
 
 
-        public List<string>[] GetDistMatrixFullPath(List<string> list)
+        public List<DistanceMatrix> GetDistMatrixFullPath(List<string> list)
         {
 
             List<Address> companyAddresses = new List<Address>();
@@ -87,6 +91,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             List<string> company2 = new List<string>();
             List<string> distances = new List<string>();
             List<string>[] fullTable = new List<string>[3];
+            List<DistanceMatrix> alldistanceMatrixArea = new List<DistanceMatrix>();
 
 
             for (int i = 0; i < firstLagC.rows.Length; i++)
@@ -94,17 +99,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
                 for (int j = 0; j < firstLagC.rows.Length; j++)
                 {
+                    int distance = firstLagC.rows[i].elements[j].distance.value;
 
-
-                    string distance = firstLagC.rows[i].elements[j].distance.value.ToString();
-                    company1.Add(firstLagC.destination_addresses[i]);
-                    company2.Add(firstLagC.destination_addresses[j]);
-                    distances.Add(distance);
-                    fullTable[0] = company1;
-                    fullTable[1] = company2;
-                    fullTable[2] = distances;
-
-
+                    alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance));
 
                     int duration = firstLagC.rows[i].elements[j].duration.value;
                     //pathList.Add(companies[i], new Path(distance, duration));
@@ -114,7 +111,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 }
             }
 
-            return fullTable;
+            return alldistanceMatrixArea;
 
         }
 
