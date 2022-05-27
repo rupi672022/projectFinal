@@ -11,7 +11,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
     public class DistanceMatrixDataServices
     {
 
-        public int Insert(DistanceMatrix distanceMatrix)
+        public int Insert(List<DistanceMatrix> distanceMatrix)
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -22,7 +22,20 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 con = Connect("ProjDB");
 
                 //C Create the Insert SqlCommand
-                SqlCommand insertCommand = CreateInsertCommand(distanceMatrix,con);
+                DistanceMatrix postDm = new DistanceMatrix();
+
+                foreach (var i in distanceMatrix)
+                {
+
+                    postDm.Id = i.Id;
+                    postDm.From = i.From;
+                    postDm.To = i.To;
+                    postDm.Distance = i.Distance;
+
+
+
+                }
+                SqlCommand insertCommand = CreateInsertCommand(postDm, con);
 
                 //E Execute
                 numEffected = insertCommand.ExecuteNonQuery();
@@ -106,10 +119,10 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             SqlCommand cmd = createCommand(con, commandStr);
 
-            cmd.Parameters.Add("@from", SqlDbType.Int);
+            cmd.Parameters.Add("@from", SqlDbType.Char);
             cmd.Parameters["@from"].Value = distanceMatrix.From;
 
-            cmd.Parameters.Add("@to", SqlDbType.Int);
+            cmd.Parameters.Add("@to", SqlDbType.Char);
             cmd.Parameters["@to"].Value = distanceMatrix.To;
 
             cmd.Parameters.Add("@distance", SqlDbType.Int);

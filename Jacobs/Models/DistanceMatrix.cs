@@ -22,10 +22,11 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
     public class DistanceMatrix : BaseTest
     {
-        
+        int id;
         string from;
         string to;
         int distance;
+        public int Id { get => id; set => id = value; }
 
         public string From { get => from; set => from = value; }
         public string To { get => to; set => to = value; }
@@ -33,17 +34,18 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         public DistanceMatrix() { }
 
-        public DistanceMatrix(string from, string to, int distance)
+        public DistanceMatrix(string from, string to, int distance,int id)
         {
+            this.Id = id;
             this.From = from;
             this.To = to;
             this.Distance = distance;
         }
 
-        public int Insert()//insert new company
+        public int Insert(List<DistanceMatrix> list)//insert distance matrix to db
         {
             DistanceMatrixDataServices ds = new DistanceMatrixDataServices();
-            int status = ds.Insert(this);
+            int status = ds.Insert(list);
             return status;
         }
 
@@ -87,11 +89,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             //Dictionary<string, Path> pathList = new Dictionary<string, Path>();
            
-            List<string> company1 = new List<string>();
-            List<string> company2 = new List<string>();
-            List<string> distances = new List<string>();
-            List<string>[] fullTable = new List<string>[3];
+         
             List<DistanceMatrix> alldistanceMatrixArea = new List<DistanceMatrix>();
+            DistanceMatrix dm = new DistanceMatrix();
 
 
             for (int i = 0; i < firstLagC.rows.Length; i++)
@@ -101,7 +101,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 {
                     int distance = firstLagC.rows[i].elements[j].distance.value;
 
-                    alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance));
+                    alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance,dm.Id ));
 
                     int duration = firstLagC.rows[i].elements[j].duration.value;
                     //pathList.Add(companies[i], new Path(distance, duration));

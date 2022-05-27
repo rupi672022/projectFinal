@@ -50,6 +50,8 @@ namespace Jacobs.Controllers
         public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix)
         {
             int id = distanceMatrix.Insert();
+            CompaniesController comp = new CompaniesController();
+            //comp.insertToDb();
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
 

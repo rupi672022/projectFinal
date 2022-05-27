@@ -35,12 +35,27 @@ namespace Jacobs.Controllers
         DistanceMatrixController dM = new DistanceMatrixController();
             //new distance matrix
             List<DistanceMatrix> final=dM.Get(company.DistributaionArea);
+            insertToDb(final,dM);
+                    
             //call to distance matrix that create
             //send cooridnation
             //here to call to calcuate distancematrix and post to db
             return Request.CreateResponse(HttpStatusCode.OK,"success");
         }
+        public void insertToDb(List<DistanceMatrix> final, DistanceMatrixController dM)
+        {
+            foreach (var i in final)
+            {
+                DistanceMatrix postDm = new DistanceMatrix();
 
+                postDm.Id = i.Id;
+                postDm.From = i.From;
+                postDm.To = i.To;
+                postDm.Distance = i.Distance;
+
+                dM.Post(postDm);
+            }
+        }
         // PUT api/<controller>/5
         public HttpResponseMessage Put([FromBody] Company company)//update contact in the company
         {

@@ -162,7 +162,7 @@ namespace Jacobs.Models
 
 
 
-
+                    
                     var listAlgo = func.Dis(resultDic, result, list, arrayDis);
                     foreach (FindingPaths ans in listAlgo)
                     {
