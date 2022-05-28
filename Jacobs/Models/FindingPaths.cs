@@ -4,11 +4,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using Jacobs.Models.DAL;
-
+using GoogleApi.Test.Maps.DistanceMatrix;
 namespace Jacobs.Models
 {
     public class FindingPaths
     {
+        
        
       
         double[,] arrayDis;
@@ -17,17 +18,17 @@ namespace Jacobs.Models
         string address;
         double lng;
         double lat;
+        string from;
+        string to;
         string distributaionArea;
         string dateArrivel;
         int companyNum;
         string companyName;
+      
         public List<FindingPaths> FindingPathslist;
-
-
-
         public FindingPaths() { }
 
-        public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum,string companyName)
+        public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum, string companyName)
         {
             this.address = address;
             this.lng = lng;
@@ -57,7 +58,7 @@ namespace Jacobs.Models
         }
 
 
-
+        
         public List<FindingPaths> Algo(List<FindingPaths> list, string date)
             //alogrithm of optimal path base on tsp
         {
@@ -207,8 +208,8 @@ namespace Jacobs.Models
             int indexWinner = 0;
             double winner = 0;
 
-            
-            list.Add(new FindingPaths(result[0, 0], 0, 0, "", "", 0,""));
+
+            list.Add(new FindingPaths(result[0, 0], 0, 0, "", "", 0, ""));
             double sumline = 0;
 
             List<int> termsList = new List<int>();
@@ -269,15 +270,14 @@ namespace Jacobs.Models
 
             for (int j = 0; j < resColSize; j++)
             {
-                for(int x = 0; x < list.Count; x++)
+                for (int x = 0; x < list.Count; x++)
                 {
-                    if(result[indexWinner,j]==list[x].Address)
+                    if (result[indexWinner, j] == list[x].Address)
                         //save the shortes combination in list object
-                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum,list[x].CompanyName));
+                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum, list[x].CompanyName));
                 }
 
 
-               
             }
 
             return selectedCombintion;

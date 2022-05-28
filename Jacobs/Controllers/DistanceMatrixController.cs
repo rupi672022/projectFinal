@@ -6,11 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Jacobs.Models;
-
 namespace Jacobs.Controllers
 {
     public class DistanceMatrixController : ApiController
     {
+        
+        
         // GET api/<controller>
         public List<DistanceMatrix> Get(string area)
         {
@@ -27,7 +28,6 @@ namespace Jacobs.Controllers
                 if(count<10)
                 {
                     addressList.Add(i.Address);
-
                 }
                 count++;
 
@@ -47,10 +47,11 @@ namespace Jacobs.Controllers
         //}
 
         // POST api/<controller>
-        public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix)
+        public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix, List<DistanceMatrix> final)
         {
-            int id = distanceMatrix.Insert();
-            CompaniesController comp = new CompaniesController();
+            int id = distanceMatrix.Insert(final);
+           // CompaniesController comp = new CompaniesController();
+           
             //comp.insertToDb();
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }

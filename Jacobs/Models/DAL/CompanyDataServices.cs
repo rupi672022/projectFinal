@@ -5,11 +5,13 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
+using GoogleApi.Test.Maps.DistanceMatrix;
 
 namespace Jacobs.Models.DAL
 {
     public class CompanyDataServices
     {
+        
         public int Insert(Company company) //insert new company
         {
             SqlConnection con = null;
@@ -258,7 +260,7 @@ namespace Jacobs.Models.DAL
 
         private SqlCommand createSelectCommandCompanyNAME(SqlConnection con, string name)//get this company
         {
-
+            
             string commandStr = "SELECT * FROM Company WHERE companyName LIKE @name";
 
             SqlCommand cmd = createCommand(con, commandStr);

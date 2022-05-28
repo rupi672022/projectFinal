@@ -6,17 +6,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Threading;
-
+using GoogleApi.Test.Maps.DistanceMatrix;
 
 
 namespace Jacobs.Models.DAL
 {
+    
     public class FindingPathDataServices
     {
+        
         //string[] addressArr;
         public List<FindingPaths> Read(string date)//get the all the employee 
         {
-
+            
+            
             SqlConnection con = null;
 
             try
@@ -34,14 +37,19 @@ namespace Jacobs.Models.DAL
                 while (dataReader.Read())//if user on table
                 {
                     FindingPaths findingPath = new FindingPaths();
+                   
                     findingPath.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
                     findingPath.CompanyName = (string)dataReader["companyName"];
                     findingPath.Address = (string)(dataReader["address"]);
-                    findingPath.DateArrivel=(string)(dataReader["dateArrivel"]);
-                    findingPath.DistributaionArea=(string)(dataReader["distributaionArea"]);
+                    findingPath.DateArrivel = (string)(dataReader["dateArrivel"]);
+                    findingPath.DistributaionArea = (string)(dataReader["distributaionArea"]);
                     findingPath.Lat = (double)dataReader["lat"];
                     findingPath.Lng = (double)dataReader["lng"];
-                  
+
+
+                    //findingPath.Lat = (double)dataReader["lat"];
+                    //findingPath.Lng = (double)dataReader["lng"];
+
 
 
 
@@ -85,12 +93,20 @@ namespace Jacobs.Models.DAL
         }
         private SqlCommand createSelectCommandFindingFath(SqlConnection con,string date)
         {
-
             string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date ";
-
+            //DistanceMatrix.from ,
+            // DistanceMatrix.from , DistanceMatrix.to, Company.distributaionArea,CompanyOnOrder.dateArrivel,Company.companyNum,Company.companyName,DistanceMatrix.distance
+            // string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date ";
+            //DistanceMatrix.from, DistanceMatrix.to,DistanceMatrix.distance
+            //string commandStr = "SELECT *";
+            //commandStr += " FROM Company INNER JOIN CompanyOnOrder ON CompanyOnOrder.companyNum = Company.companyNum ";
+            //  commandStr += "INNER JOIN DistanceMatrix ON  Company.address=DistanceMatrix.for ";
+           // commandStr += "WHERE [CompanyOnOrder].dateArrivel LIKE @date ";
+            //commandStr+=" LEFT JOIN DistanceMatrix ON DistanceMatrix.to = [Company].address";
+            // string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea,EmployeeOnOrder.preparationDate,EmployeeOnOrder.status ";
+            //str += "FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum =[Order].orderNum INNER JOIN Company ON Company.companyNum = CompanyOnOrder.companyNum ";
+            // str += "left join EmployeeOnOrder on EmployeeOnOrder.orderNum =[Order].orderNum";
             SqlCommand cmd = createCommand(con, commandStr);
-
-
             cmd.Parameters.AddWithValue("@date", "%" + date + "%");
 
             return cmd;

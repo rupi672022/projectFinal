@@ -5,13 +5,16 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
-
+using System.Threading;
+using Jacobs.Models.DAL;
+using Jacobs.Models;
 namespace GoogleApi.Test.Maps.DistanceMatrix
 {
     public class DistanceMatrixDataServices
     {
-
-        public int Insert(List<DistanceMatrix> distanceMatrix)
+        
+        
+        public int Insert(DistanceMatrix distanceMatrix, List<DistanceMatrix> final)
         {
             SqlConnection con = null;
             int numEffected = 0;
@@ -22,23 +25,23 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 con = Connect("ProjDB");
 
                 //C Create the Insert SqlCommand
-                DistanceMatrix postDm = new DistanceMatrix();
-
-                foreach (var i in distanceMatrix)
+                
+                foreach(var i in final)
                 {
-
+                    DistanceMatrix postDm = new DistanceMatrix();
                     postDm.Id = i.Id;
                     postDm.From = i.From;
                     postDm.To = i.To;
                     postDm.Distance = i.Distance;
-
-
+                   
+                    SqlCommand insertCommand = CreateInsertCommand(postDm, con);
+                        numEffected = insertCommand.ExecuteNonQuery();
 
                 }
-                SqlCommand insertCommand = CreateInsertCommand(postDm, con);
+               
+               
 
                 //E Execute
-                numEffected = insertCommand.ExecuteNonQuery();
 
             }
 
@@ -116,7 +119,6 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         SqlCommand CreateInsertCommand(DistanceMatrix distanceMatrix, SqlConnection con)//insert new company
         {
             string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance]) VALUES (@from,@to,@distance)";
-
             SqlCommand cmd = createCommand(con, commandStr);
 
             cmd.Parameters.Add("@from", SqlDbType.Char);
