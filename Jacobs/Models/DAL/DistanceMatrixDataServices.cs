@@ -29,7 +29,8 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 foreach(var i in final)
                 {
                     DistanceMatrix postDm = new DistanceMatrix();
-                    postDm.Id = i.Id;
+                    postDm.IdFrom = i.IdFrom;
+                    postDm.IdTo = i.IdTo;
                     postDm.From = i.From;
                     postDm.To = i.To;
                     postDm.Distance = i.Distance;
@@ -119,7 +120,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         SqlCommand CreateInsertCommand(DistanceMatrix distanceMatrix, SqlConnection con)//insert new company
         {
-            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNum]) VALUES (@from,@to,@distance,@companyNum)";
+            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNumFrom],[companyNumTo]) VALUES (@from,@to,@distance,@companyNumFrom,@companyNumTo)";
             SqlCommand cmd = createCommand(con, commandStr);
 
             cmd.Parameters.Add("@from", SqlDbType.Char);
@@ -131,10 +132,11 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             cmd.Parameters.Add("@distance", SqlDbType.Int);
             cmd.Parameters["@distance"].Value = distanceMatrix.Distance;
 
-            cmd.Parameters.Add("@companyNum", SqlDbType.Int);
-            cmd.Parameters["@companyNum"].Value = distanceMatrix.Id;
+            cmd.Parameters.Add("@companyNumFrom", SqlDbType.Int);
+            cmd.Parameters["@companyNumFrom"].Value = distanceMatrix.IdFrom;
 
-
+            cmd.Parameters.Add("@companyNumTo", SqlDbType.Int);
+            cmd.Parameters["@companyNumTo"].Value = distanceMatrix.IdTo;
             return cmd;
         }
 

@@ -94,20 +94,32 @@ namespace Jacobs.Models.DAL
                 while (dataReader.Read())//if user on table
                 {
                     FindingPaths findingPath = new FindingPaths();
-                    if (dataReader.IsDBNull(3))
+                    findingPath.DistributaionArea = (string)dataReader["distributaionArea"];
+                    if (dataReader.IsDBNull(4))
                         findingPath.FromCompany = null;
                     else
                         findingPath.FromCompany = (string)dataReader["from"];
 
-                    if (dataReader.IsDBNull(4))
+                    if (dataReader.IsDBNull(5))
                         findingPath.ToCompany = null;
                     else
                         findingPath.ToCompany = (string)(dataReader["to"]);
 
-                    if (dataReader.IsDBNull(5))
-                        findingPath.Lat = 0;
+                    if (dataReader.IsDBNull(6))
+                        findingPath.DistanceCompany = 0;
                     else
-                        findingPath.Lat = Convert.ToInt32(dataReader["distance"]);
+                        findingPath.DistanceCompany = Convert.ToInt32(dataReader["distance"]);
+
+                    if (dataReader.IsDBNull(7))
+                        findingPath.IdFromCompany = 0;
+                    else
+                        findingPath.IdFromCompany = Convert.ToInt32(dataReader["companyNumFrom"]);
+
+
+                    if (dataReader.IsDBNull(8))
+                        findingPath.IdToCompany = 0;
+                    else
+                        findingPath.IdToCompany = Convert.ToInt32(dataReader["comapnyNumTo"]);
 
 
 
@@ -166,15 +178,15 @@ namespace Jacobs.Models.DAL
             cmd.Parameters.AddWithValue("@date", "%" + date + "%");
 
             return cmd;
-
+            
         }
 
         SqlCommand createSelectCommandFindingFathDistance(SqlConnection con, string date)
         {
-            string commandStr = "select Company.companyName,CompanyOnOrder.dateArrivel,Company.address,DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance from CompanyOnOrder inner join Company on Company.companyNum=CompanyOnOrder.companyNum left join DistanceMatrix on DistanceMatrix.companyNum = Company.companyNum";
+            string commandStr = "select Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address,DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo from CompanyOnOrder inner join Company on Company.companyNum=CompanyOnOrder.companyNum left join DistanceMatrix on  DistanceMatrix.companyNumFrom = Company.companyNum and DistanceMatrix.companyNumFrom=Company.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date";
             
             SqlCommand cmd = createCommand(con, commandStr);
-
+            cmd.Parameters.AddWithValue("@date", "%" + date + "%");
 
             return cmd;
         }

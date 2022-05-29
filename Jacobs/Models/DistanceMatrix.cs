@@ -27,24 +27,27 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
     {
         
         
-         int id;
+        int idFrom;
+        int idTo;
         string from;
         string to;
         int distance;
 
-        public int Id { get => id; set => id = value; }
+        public int IdFrom { get => idFrom; set => idFrom = value; }
         public string From { get => from; set => from = value; }
         public string To { get => to; set => to = value; }
         public int Distance { get => distance; set => distance = value; }
+        public int IdTo { get => idTo; set => idTo = value; }
 
         public DistanceMatrix() { }
 
-        public DistanceMatrix(string from, string to, int distance, int id)
+        public DistanceMatrix(string from, string to, int distance, int idFrom,int idTo)
         {
-            this.Id = id;
+            this.IdFrom = idFrom;
             this.From = from;
             this.To = to;
             this.Distance = distance;
+            this.IdTo = idTo;
         }
 
         public int Insert(List<DistanceMatrix> final)//insert distance matrix to db
@@ -74,7 +77,6 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         {
 
             List<Address> companyAddresses = new List<Address>();
-            List<PlusCode> companyNum = new List<PlusCode>();
             List<LocationEx> companyLocations = new List<LocationEx>();
 
             foreach (KeyValuePair<int, string> ele1 in list)
@@ -104,24 +106,40 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             for (int i = 0; i < firstLagC.rows.Length; i++)
             {
-
+          
                 for (int j = 0; j < firstLagC.rows.Length; j++)
                 {
-                    int count = 0;
+                    int countFrom = 0;
+                    int idFrom = 0;
+                    int countTo = 0;
+                    int idTo = 0;
                     foreach (KeyValuePair<int, string> ele1 in list)
                     {
 
-                        if (count == i)
+                        if (countFrom == i )
                         {
+                            idFrom = ele1.Key;
+                        }
+                        countFrom++;
 
+                        if (countTo == j)
+                        {
+                            idTo = ele1.Key;
+                        }
+                        countTo++;
+
+                        if (idFrom != 0 && idTo != 0)
+                        {
                             int distance = firstLagC.rows[i].elements[j].distance.value;
 
-                            alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, ele1.Key));
+                            alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, idFrom,idTo));
 
                             int duration = firstLagC.rows[i].elements[j].duration.value;
-                            //pathList.Add(companies[i], new Path(distance, duration));
+                            //pathList.Add(companies[i], new Path(distance, duration))
+
+                            idFrom = 0;
+                            idTo = 0;
                         }
-                        count++;
                     }
                   
 

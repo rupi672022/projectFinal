@@ -24,6 +24,9 @@ namespace Jacobs.Models
         string dateArrivel;
         int companyNum;
         string companyName;
+        int distanceCompany;
+        int idFromCompany;
+        int idToCompany;
       
         public List<FindingPaths> FindingPathslist;
         public List<FindingPaths> DistanceList;
@@ -43,12 +46,14 @@ namespace Jacobs.Models
 
         }
 
-        public FindingPaths(string fromCompany, string toCompany, int lat, int companyNum)
+        public FindingPaths(string fromCompany, string toCompany,int distanceCompany, string distributaionArea, int idFromCompany, int idToCompany)
         {
             this.fromCompany = fromCompany;
             this.toCompany = toCompany;
-            this.lat = lat;
-            this.companyNum = companyNum;
+            this.distanceCompany = distanceCompany;
+            this.distributaionArea = distributaionArea;
+            this.idFromCompany = idFromCompany;
+            this.idToCompany = idToCompany;
         }
 
         public string Address { get => address; set => address = value; }
@@ -60,6 +65,9 @@ namespace Jacobs.Models
         public string CompanyName { get => companyName; set => companyName = value; }
         public string ToCompany { get => toCompany; set => toCompany = value; }
         public string FromCompany { get => fromCompany; set => fromCompany = value; }
+        public int DistanceCompany { get => distanceCompany; set => distanceCompany = value; }
+        public int IdFromCompany { get => idFromCompany; set => idFromCompany = value; }
+        public int IdToCompany { get => idToCompany; set => idToCompany = value; }
 
         public List<FindingPaths> Read(string date)
         {
