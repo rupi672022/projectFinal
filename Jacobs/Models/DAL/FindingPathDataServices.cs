@@ -73,7 +73,63 @@ namespace Jacobs.Models.DAL
 
         }
     
+        public List<FindingPaths> ReadDistance(string date)
+        {
 
+
+            SqlConnection con = null;
+
+            try
+            {
+                // Connect
+                con = Connect("ProjDB");
+
+                // Create the insert command
+                SqlCommand selectCommand = createSelectCommandFindingFathDistance(con, date);
+
+                // Execute the command
+                SqlDataReader dataReader = selectCommand.ExecuteReader();
+
+                List<FindingPaths> FindingPathslist = new List<FindingPaths>();
+                while (dataReader.Read())//if user on table
+                {
+                    FindingPaths findingPath = new FindingPaths();
+                    if (dataReader.IsDBNull(3))
+                        findingPath.FromCompany = null;
+                    else
+                        findingPath.FromCompany = (string)dataReader["from"];
+
+                    if (dataReader.IsDBNull(4))
+                        findingPath.ToCompany = null;
+                    else
+                        findingPath.ToCompany = (string)(dataReader["to"]);
+
+                    if (dataReader.IsDBNull(5))
+                        findingPath.Lat = 0;
+                    else
+                        findingPath.Lat = Convert.ToInt32(dataReader["distance"]);
+
+
+
+                    FindingPathslist.Add(findingPath);
+                }
+                dataReader.Close();
+
+                return FindingPathslist;
+            }
+            catch (Exception ex)
+            {
+                // write the error to log
+                throw new Exception("failed in reading of FindingFath", ex);
+            }
+            finally
+            {
+                // Close the connection
+                if (con != null)
+                    con.Close();
+            }
+
+        }
 
         SqlConnection Connect(string connectionStringName)
         {
@@ -112,7 +168,18 @@ namespace Jacobs.Models.DAL
             return cmd;
 
         }
-      
+
+        SqlCommand createSelectCommandFindingFathDistance(SqlConnection con, string date)
+        {
+            string commandStr = "select Company.companyName,CompanyOnOrder.dateArrivel,Company.address,DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance from CompanyOnOrder inner join Company on Company.companyNum=CompanyOnOrder.companyNum left join DistanceMatrix on DistanceMatrix.companyNum = Company.companyNum";
+            
+            SqlCommand cmd = createCommand(con, commandStr);
+
+
+            return cmd;
+        }
+
+
         SqlCommand createCommand(SqlConnection con, string CommandSTR)
         {
 

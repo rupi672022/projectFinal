@@ -85,7 +85,6 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 {  
                     DistanceMatrix distanceMatrixTests = new DistanceMatrix();
                     distanceMatrixTests.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
-
                     distanceMatrixTests.Address = (string)(dataReader["address"]);
                     DistanceMatrixlist.Add(distanceMatrixTests);
                 }
@@ -120,7 +119,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         SqlCommand CreateInsertCommand(DistanceMatrix distanceMatrix, SqlConnection con)//insert new company
         {
-            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance]) VALUES (@from,@to,@distance)";
+            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNum]) VALUES (@from,@to,@distance,@companyNum)";
             SqlCommand cmd = createCommand(con, commandStr);
 
             cmd.Parameters.Add("@from", SqlDbType.Char);
@@ -131,6 +130,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             cmd.Parameters.Add("@distance", SqlDbType.Int);
             cmd.Parameters["@distance"].Value = distanceMatrix.Distance;
+
+            cmd.Parameters.Add("@companyNum", SqlDbType.Int);
+            cmd.Parameters["@companyNum"].Value = distanceMatrix.Id;
 
 
             return cmd;

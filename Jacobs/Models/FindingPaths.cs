@@ -18,14 +18,16 @@ namespace Jacobs.Models
         string address;
         double lng;
         double lat;
-        string from;
-        string to;
+        string fromCompany;
+        string toCompany;
         string distributaionArea;
         string dateArrivel;
         int companyNum;
         string companyName;
       
         public List<FindingPaths> FindingPathslist;
+        public List<FindingPaths> DistanceList;
+
         public FindingPaths() { }
 
         public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum, string companyName)
@@ -41,6 +43,14 @@ namespace Jacobs.Models
 
         }
 
+        public FindingPaths(string fromCompany, string toCompany, int lat, int companyNum)
+        {
+            this.fromCompany = fromCompany;
+            this.toCompany = toCompany;
+            this.lat = lat;
+            this.companyNum = companyNum;
+        }
+
         public string Address { get => address; set => address = value; }
         public double Lng { get => lng; set => lng = value; }
         public double Lat { get => lat; set => lat = value; }
@@ -48,18 +58,20 @@ namespace Jacobs.Models
         public string DateArrivel { get => dateArrivel; set => dateArrivel = value; }
         public int CompanyNum { get => companyNum; set => companyNum = value; }
         public string CompanyName { get => companyName; set => companyName = value; }
+        public string ToCompany { get => toCompany; set => toCompany = value; }
+        public string FromCompany { get => fromCompany; set => fromCompany = value; }
 
         public List<FindingPaths> Read(string date)
         {
             FindingPathDataServices ds = new FindingPathDataServices();
               FindingPathslist = ds.Read(date);
-            return Algo(FindingPathslist, date);
-            //return FindingPathslist;
+            DistanceList = ds.ReadDistance(date);
+            return Algo(FindingPathslist, DistanceList, date);
         }
 
 
         
-        public List<FindingPaths> Algo(List<FindingPaths> list, string date)
+        public List<FindingPaths> Algo(List<FindingPaths> list,List<FindingPaths> DistanceList, string date)
             //alogrithm of optimal path base on tsp
         {
 

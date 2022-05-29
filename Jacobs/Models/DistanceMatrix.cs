@@ -74,15 +74,12 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         {
 
             List<Address> companyAddresses = new List<Address>();
+            List<PlusCode> companyNum = new List<PlusCode>();
             List<LocationEx> companyLocations = new List<LocationEx>();
-            List<string> newlist = new List<string>();
-            for (int i = 0; i < list.Count; i++)
+
+            foreach (KeyValuePair<int, string> ele1 in list)
             {
-                newlist.Add(list[i]);
-            }
-            foreach (string company in newlist)
-            {
-                Address address = new Address(company);
+                Address address = new Address(ele1.Value);
                 companyLocations.Add(new LocationEx(address));
             }
 
@@ -104,17 +101,28 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             DistanceMatrix dm = new DistanceMatrix();
 
 
+
             for (int i = 0; i < firstLagC.rows.Length; i++)
             {
 
                 for (int j = 0; j < firstLagC.rows.Length; j++)
                 {
-                    int distance = firstLagC.rows[i].elements[j].distance.value;
+                    int count = 0;
+                    foreach (KeyValuePair<int, string> ele1 in list)
+                    {
 
-                    alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, dm.Id));
+                        if (count == i)
+                        {
 
-                    int duration = firstLagC.rows[i].elements[j].duration.value;
-                    //pathList.Add(companies[i], new Path(distance, duration));
+                            int distance = firstLagC.rows[i].elements[j].distance.value;
+
+                            alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, ele1.Key));
+
+                            int duration = firstLagC.rows[i].elements[j].duration.value;
+                            //pathList.Add(companies[i], new Path(distance, duration));
+                        }
+                        count++;
+                    }
                   
 
 
