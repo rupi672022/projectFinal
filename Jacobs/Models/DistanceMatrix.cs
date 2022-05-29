@@ -63,19 +63,24 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
        
 
-        public List<DistanceMatrix> test(List<string> list)
+        public List<DistanceMatrix> test(Dictionary<int,string> list)
         {
 
             return GetDistMatrixFullPath(list);
         }
 
 
-        public List<DistanceMatrix> GetDistMatrixFullPath(List<string> list)
+        public List<DistanceMatrix> GetDistMatrixFullPath(Dictionary<int, string> list)
         {
 
             List<Address> companyAddresses = new List<Address>();
             List<LocationEx> companyLocations = new List<LocationEx>();
-            foreach (string company in list)
+            List<string> newlist = new List<string>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                newlist.Add(list[i]);
+            }
+            foreach (string company in newlist)
             {
                 Address address = new Address(company);
                 companyLocations.Add(new LocationEx(address));

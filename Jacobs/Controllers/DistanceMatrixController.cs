@@ -17,7 +17,7 @@ namespace Jacobs.Controllers
         {
 
             List<DistanceMatrix> list = new List<DistanceMatrix>();
-            List<string> addressList = new List<string>();
+            Dictionary<int,string> addressList = new Dictionary<int,string>();
 
             DistanceMatrix dm = new DistanceMatrix();
 
@@ -27,7 +27,7 @@ namespace Jacobs.Controllers
             {
                 if(count<10)
                 {
-                    addressList.Add(i.Address);
+                    addressList.Add(i.CompanyNum,i.Address);
                 }
                 count++;
 

@@ -84,6 +84,8 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                 while (dataReader.Read())//if user on table
                 {  
                     DistanceMatrix distanceMatrixTests = new DistanceMatrix();
+                    distanceMatrixTests.CompanyNum = Convert.ToInt32(dataReader["companyNum"]);
+
                     distanceMatrixTests.Address = (string)(dataReader["address"]);
                     DistanceMatrixlist.Add(distanceMatrixTests);
                 }
