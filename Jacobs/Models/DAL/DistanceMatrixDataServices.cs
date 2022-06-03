@@ -34,6 +34,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                     postDm.From = i.From;
                     postDm.To = i.To;
                     postDm.Distance = i.Distance;
+                    postDm.Area = i.Area;
                    
                     SqlCommand insertCommand = CreateInsertCommand(postDm, con);
                         numEffected = insertCommand.ExecuteNonQuery();
@@ -120,7 +121,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         SqlCommand CreateInsertCommand(DistanceMatrix distanceMatrix, SqlConnection con)//insert new company
         {
-            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNumFrom],[companyNumTo]) VALUES (@from,@to,@distance,@companyNumFrom,@companyNumTo)";
+            string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNumFrom],[companyNumTo],[area]) VALUES (@from,@to,@distance,@companyNumFrom,@companyNumTo,@area)";
             SqlCommand cmd = createCommand(con, commandStr);
 
             cmd.Parameters.Add("@from", SqlDbType.Char);
@@ -137,6 +138,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
             cmd.Parameters.Add("@companyNumTo", SqlDbType.Int);
             cmd.Parameters["@companyNumTo"].Value = distanceMatrix.IdTo;
+
+            cmd.Parameters.Add("@area", SqlDbType.Char);
+            cmd.Parameters["@area"].Value = distanceMatrix.Area;
             return cmd;
         }
 

@@ -32,22 +32,25 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         string from;
         string to;
         int distance;
+        string area;
 
         public int IdFrom { get => idFrom; set => idFrom = value; }
         public string From { get => from; set => from = value; }
         public string To { get => to; set => to = value; }
         public int Distance { get => distance; set => distance = value; }
         public int IdTo { get => idTo; set => idTo = value; }
+        public string Area { get => area; set => area = value; }
 
         public DistanceMatrix() { }
 
-        public DistanceMatrix(string from, string to, int distance, int idFrom,int idTo)
+        public DistanceMatrix(string from, string to, int distance, int idFrom,int idTo,string area)
         {
             this.IdFrom = idFrom;
             this.From = from;
             this.To = to;
             this.Distance = distance;
             this.IdTo = idTo;
+            this.Area = area;
         }
 
         public int Insert(List<DistanceMatrix> final)//insert distance matrix to db
@@ -66,25 +69,27 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
        
 
-        public List<DistanceMatrix> test(Dictionary<int,string> list)
+        public List<DistanceMatrix> test(Dictionary<int,string> list,string area)
         {
 
-            return GetDistMatrixFullPath(list);
+            return GetDistMatrixFullPath(list,area);
         }
 
 
-        public List<DistanceMatrix> GetDistMatrixFullPath(Dictionary<int, string> list)
+        public List<DistanceMatrix> GetDistMatrixFullPath(Dictionary<int, string> list,string area)
         {
 
             List<Address> companyAddresses = new List<Address>();
             List<LocationEx> companyLocations = new List<LocationEx>();
+       
+            list.Add(1, "גשר העץ 27,עמק חפר");
 
             foreach (KeyValuePair<int, string> ele1 in list)
             {
                 Address address = new Address(ele1.Value);
                 companyLocations.Add(new LocationEx(address));
             }
-
+           
             var request1 = new DistanceMatrixRequest
             {
                 Key = this.ApiKey,
@@ -132,7 +137,7 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                         {
                             int distance = firstLagC.rows[i].elements[j].distance.value;
 
-                            alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, idFrom,idTo));
+                            alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, idFrom,idTo,area));
 
                             int duration = firstLagC.rows[i].elements[j].duration.value;
                             //pathList.Add(companies[i], new Path(distance, duration))

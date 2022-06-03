@@ -25,7 +25,7 @@ namespace Jacobs.Controllers
             int count = 0;
             foreach (DistanceMatrix i in list)
             {
-                if(count<10)
+                if(count<9)
                 {
                     addressList.Add(i.CompanyNum,i.Address);
                 }
@@ -34,7 +34,7 @@ namespace Jacobs.Controllers
             }
             dm.Setup();
 
-            return dm.test(addressList);
+            return dm.test(addressList,area);
 
             //return dm.Read();
         }
@@ -50,9 +50,7 @@ namespace Jacobs.Controllers
         public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix, List<DistanceMatrix> final)
         {
             int id = distanceMatrix.Insert(final);
-           // CompaniesController comp = new CompaniesController();
-           
-            //comp.insertToDb();
+           //num הוא אפס צריך לבדוק מה עושים ש
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
 

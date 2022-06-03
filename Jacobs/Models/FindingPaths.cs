@@ -82,28 +82,21 @@ namespace Jacobs.Models
         public List<FindingPaths> Algo(List<FindingPaths> list,List<FindingPaths> DistanceList, string date)
             //alogrithm of optimal path base on tsp
         {
-
-
-            List<FindingPaths> selectedPath = new List<FindingPaths>();
-            //lists with distrebiution area
             List<FindingPaths> north = new List<FindingPaths>();
             List<FindingPaths> south = new List<FindingPaths>();
             List<FindingPaths> center = new List<FindingPaths>();
             List<FindingPaths> jerusalem = new List<FindingPaths>();
+            
             List<FindingPaths>[] areasArr = new List<FindingPaths>[4];
-            //example of distances arrays
-            double[,] arrayDis0 = new double[,] {  { 0, 54.6, 75.1, 53.9,129 },
-                    {54.8, 0,25.5 , 7 ,101}, {  80.3, 25.6, 0, 27.3,53.6 }, { 54.2, 8.6,26.1, 0 ,98.1} , {127, 100,53 ,101,0}};
-            double[,] arrayDis1 = new double[,] {  { 0, 50.3, 8.2, 17,15.2 },
-                    {49, 0,56.8 , 43 ,37.2}, {  7.9, 58.2, 0, 20.6,22.1 }, { 14.7, 42.7, 17.5, 0 ,6.6} , {16.8, 38.3,20.9 ,7.1,0}};
-            double[,] arrayDis2 = new double[,] {  { 0, 154, 125, 110 },
-                    {154, 0,61.1 , 86}, { 95.1, 59.9, 0, 20.1 }, { 83.2, 78.6, 20.3, 0 } };
-            double[,] arrayDis3 = new double[,] {  { 0, 114, 116, 115 },
-                    {114, 0,5.1 ,4}, { 114, 5.1, 0, 2.8}, { 113, 4.4, 3.9, 0 } };
             areasArr[0] = north;
             areasArr[1] = center;
             areasArr[2] = south;
             areasArr[3] = jerusalem;
+            FindingPaths createSource = new FindingPaths("גשר העץ 27,עמק חפר", 1332, 424,"",date,1, "משק יעקבס");
+            areasArr[0].Add(createSource);
+            areasArr[1].Add(createSource);
+            areasArr[2].Add(createSource);
+            areasArr[3].Add(createSource);
 
             foreach (FindingPaths obj in list)
             {
@@ -131,7 +124,146 @@ namespace Jacobs.Models
                     areasArr[3].Add(obj);
 
                 }
+
             }
+
+            List<FindingPaths> northDis = new List<FindingPaths>();
+            List<FindingPaths> southDis = new List<FindingPaths>();
+            List<FindingPaths> centerDis = new List<FindingPaths>();
+            List<FindingPaths> jerusalemDis = new List<FindingPaths>();
+            
+            foreach (FindingPaths obj in DistanceList)
+            {
+                if (obj.DistributaionArea == "צפון"|| obj.DistributaionArea =="")
+                {
+                    foreach (FindingPaths ans in north)
+                    {
+                        if (ans.CompanyNum == obj.IdToCompany)
+                        {
+                            northDis.Add(obj);
+
+                        }
+                    }
+
+                }
+                if (obj.DistributaionArea == "מרכז"||obj.DistributaionArea == " ")
+                {
+                    foreach (FindingPaths ans in center)
+                    {
+                        if (ans.CompanyNum == obj.IdToCompany )
+                        {
+                            centerDis.Add(obj);
+                        }
+                    }
+                }
+                if (obj.DistributaionArea == "דרום" || obj.DistributaionArea == " ")
+                {
+                    foreach (FindingPaths ans in south)
+                    {
+                        if (ans.CompanyNum == obj.IdToCompany )
+                        {
+                            southDis.Add(obj);
+                        }
+                    }
+                }
+                if (obj.DistributaionArea == "ירושלים" || obj.DistributaionArea == " ")
+                {
+                    foreach (FindingPaths ans in jerusalem)
+                    {
+                        if (ans.CompanyNum == obj.IdToCompany)
+                        {
+                            jerusalemDis.Add(obj);
+                        }
+                    }
+                }
+            }
+            double[,] northMat = new double[areasArr[0].Count, areasArr[0].Count];
+            double[,] centerMat = new double[areasArr[1].Count, areasArr[1].Count];
+            double[,] southMat = new double[areasArr[2].Count, areasArr[2].Count];
+            double[,] jerusalemMat = new double[areasArr[3].Count, areasArr[3].Count];
+            if (northDis.Count >1)
+            {
+                int i = 0;
+                int j = 0;
+                foreach (FindingPaths obj in northDis)
+                {    
+                    northMat[i, j] = Convert.ToDouble(obj.DistanceCompany+","+obj.IdFromCompany+","+obj.IdToCompany);
+                    j++;
+                    if(j == areasArr[0].Count )
+                    {
+                        j = 0;
+                        i++;
+                    }
+                }
+                
+            }
+
+            if (centerDis.Count >1)
+            {
+                int i = 0;
+                int j = areasArr[1].Count-1;
+                foreach (FindingPaths obj in centerDis)
+                {
+                    centerMat[i, j] = obj.DistanceCompany;
+                    j--;
+                    if (j == -1)
+                    {
+                        j = areasArr[1].Count-1;
+                        i++;
+                    }
+                    
+                }
+
+            }
+
+            if (southDis.Count >1)
+            {
+                int i = 0;
+                int j = areasArr[2].Count-1 ;
+                foreach (FindingPaths obj in southDis)
+                {
+                    southMat[i, j] = obj.DistanceCompany;
+                    j--;
+                    if (j ==-1)
+                    {
+                        j = areasArr[2].Count-1;
+                        i++;
+                    }
+                }
+
+            }
+
+            if (jerusalemDis.Count >1)
+            {
+                int i = 0;
+                int j = areasArr[3].Count-1;
+                foreach (FindingPaths obj in jerusalemDis)
+                {
+                    jerusalemMat[i, j] = obj.DistanceCompany;
+                    j--;
+                    if (j == -1)
+                    {
+                        j = areasArr[3].Count-1;
+                        i++;
+                    }
+                }
+
+            }
+            List<FindingPaths> selectedPath = new List<FindingPaths>();
+            //lists with distrebiution area
+           
+            //example of distances arrays
+          //double[,] arrayDis0 = new double[,] {  { 0, 54.6, 75.1, 53.9,129 },
+          //         {54.8, 0,25.5 , 7 ,101}, {  80.3, 25.6, 0, 27.3,53.6 }, { 54.2, 8.6,26.1, 0 ,98.1} , {127, 100,53 ,101,0}};
+          //  double[,] arrayDis1 = new double[,] {  { 0, 50.3, 8.2, 17,15.2 },
+          //          {49, 0,56.8 , 43 ,37.2}, {  7.9, 58.2, 0, 20.6,22.1 }, { 14.7, 42.7, 17.5, 0 ,6.6} , {16.8, 38.3,20.9 ,7.1,0}};
+          //  double[,] arrayDis2 = new double[,] {  { 0, 154, 125, 110 },
+          //          {154, 0,61.1 , 86}, { 95.1, 59.9, 0, 20.1 }, { 83.2, 78.6, 20.3, 0 } };
+          //  double[,] arrayDis3 = new double[,] {  { 0, 114, 116, 115 },
+          //          {114, 0,5.1 ,4}, { 114, 5.1, 0, 2.8}, { 113, 4.4, 3.9, 0 } };
+            
+
+            
 
             for (int i = 0; i < areasArr.Length; i++)
             {
@@ -139,46 +271,48 @@ namespace Jacobs.Models
                 {
                     fullfunc func = new fullfunc();
                     //function factorial calculate how much comabination has
-                    int factRes = func.factorial(areasArr[i].Count);
+                    int factRes = func.factorial(areasArr[i].Count-1);
                     //add +2 to save place to origin and destnation
-                    string[,] result = new string[factRes, (areasArr[i].Count) + 2];
+                    string[,] result = new string[factRes, (areasArr[i].Count) + 1];
                  
                     List<String> listIncludeJacobs = new List<string>();
-                    List<String> addressList = new List<string>();
-                   
+                    Dictionary<string,int> addressList = new Dictionary<string, int>();
 
+                    List<string> addressToArr=new List<string>();
                     foreach (FindingPaths ans in areasArr[i])
                     {
-                        addressList.Add(ans.Address);
+                        addressList.Add(ans.Address,ans.CompanyNum);
+
+                        addressToArr.Add(ans.Address);
                     }
-                    listIncludeJacobs.Insert(0, "גשר העץ 27,עמק חפר");
-                    listIncludeJacobs.AddRange(addressList);
-                   string[] arrIncludeJacobs = listIncludeJacobs.ToArray();
-                    string[] addressToArr = addressList.ToArray();
+
+                    string[] addressToArrN = addressToArr.ToArray();
+
+
                     var resultDic = new Dictionary<string, int>();
                     if (whichArea == 0)
                     {
-                        arrayDis = arrayDis0;
+                        arrayDis = northMat;
                         whichArea++;
                     }
                     //whichare include the number of select area
                     else if (whichArea == 1)
                     {
-                        arrayDis = arrayDis1;
+                        arrayDis = centerMat;
                         whichArea++;
 
                     }
                     else if (whichArea == 2)
                     {
-                        arrayDis = arrayDis2;
+                        arrayDis = southMat;
                         whichArea++;
                     }
                     else
-                        arrayDis = arrayDis3;
+                        arrayDis = jerusalemMat;
                     //function dic is a Dictionary for all the index in adress array
-                    resultDic = func.Dic(arrIncludeJacobs);
+                    resultDic = func.Dic(addressList);
                     //prnPermut functaion return all the combination of routes 
-                    func.prnPermut(addressToArr, 0, addressToArr.Length - 1, result);
+                    func.prnPermut(addressToArrN, 0, addressToArrN.Length - 2, result);
                     Console.Write("\n\n");
 
 
@@ -203,16 +337,17 @@ namespace Jacobs.Models
         int currRow = 0;
 
         
-        public Dictionary<string, int> Dic(string[] areasArr)
+        public Dictionary<string, int> Dic(Dictionary<string, int> areasArr)
         {
+          
+
             //create Dictionary of index of address in original array
-
             var capitals = new Dictionary<string, int>();
-            for (int i = 0; i < areasArr.Length; i++)
+          
+            foreach (KeyValuePair< string,int > ele1 in areasArr)
             {
-                capitals.Add(areasArr[i], i);
+                capitals.Add(ele1.Key, ele1.Value);
             }
-
             return capitals;
         }
 
@@ -261,13 +396,14 @@ namespace Jacobs.Models
             {
                 for (int j = 0; j < combMatrixCol; j++)
                 {
-                    if (j+1!= combMatrixCol)
+                    if (j + 1 != combMatrixCol)
                     {
-                        
-                        sumline += arrayDis[combonationMatrix[i,j], combonationMatrix[i, j+1]];
+
+                        sumline += arrayDis[combonationMatrix[i, j], combonationMatrix[i, j + 1]];
                     }
-                   
-                    
+                    //הערה בנתיים 
+
+
                     //count++;
                 }
                 if (sumline < winner || winner == 0)
@@ -322,6 +458,8 @@ namespace Jacobs.Models
         }
         public void prnPermut(string[] list, int k, int m, string[,]  resultComb)
         {
+            list = list.Where(val => val != "גשר העץ 27,עמק חפר").ToArray();
+            
             //this function create matrix of combination
             int i;
             int Z = 1;
