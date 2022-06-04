@@ -49,16 +49,20 @@ namespace Jacobs.Controllers
 
 
         // DELETE api/<controller>/5
-        public List<Employees> Delete()//update the info on employe
-        {
-            Employees employe = new Employees();
-            return employe.Read();
-        }
-
         public List<Employees> Delete(int id)//delete this employe - just to update to 0
         {
             Employees employe = new Employees();
-            return employe.Delete(id);
+
+            if (id > 10000)
+            {
+               return employe.Delete(id);
+            }
+            else
+            {
+                return employe.Read();
+
+            }
+
         }
     }
 }
