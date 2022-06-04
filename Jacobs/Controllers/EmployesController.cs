@@ -19,6 +19,14 @@ namespace Jacobs.Controllers
             return employe.Read();
         }
 
+        [HttpGet]
+        [Route("api/Employes")]
+        public List<Employees> GetEmployeDriver()//get all the employes that Active
+        {
+            Employees employe = new Employees();
+            return employe.ReadEmployeDriver();
+        }
+
         public List<Employees> Get(int employeNum)//get the the employe with this number employe
         {
             Employees employe = new Employees();
@@ -39,7 +47,14 @@ namespace Jacobs.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, "success");
         }
 
+
         // DELETE api/<controller>/5
+        public List<Employees> Delete()//update the info on employe
+        {
+            Employees employe = new Employees();
+            return employe.Read();
+        }
+
         public List<Employees> Delete(int id)//delete this employe - just to update to 0
         {
             Employees employe = new Employees();

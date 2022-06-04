@@ -131,8 +131,6 @@
 
         $(document).ready(function () {
 
-
-
             funcInit();
 
             $("#BTN").click(funcEmploye);
@@ -150,7 +148,7 @@
 
         function getOrderSCB(list) {
             count = 0;
-            console.log(list)
+
             for (obj in list) {
 
                 dd = '';
@@ -241,24 +239,24 @@
             y = 0;
 
             for (obj in list) {
-                if (list[obj]["Role"] == "מלקט") {
-                    collectors[x] = list[obj];
-                    x++;
-                }
-                else if (list[obj]["Role"] == "נהג") {
-                    drivers[y] = list[obj];
-                    y++;
+                for (item in detailsOrder) {
+                    if (list[obj]["OrderNum"] == detailsOrder[item]["idOrder"]) {
+                        if (list[obj]["EmployeNum"] != 0)
+                            detailsOrder[item]["collercotrArr"] = list[obj]["EmployeNum"];
+                        if (list[obj]["DriverNum"] !=0)
+                            detailsOrder[item]["driverArr"] = list[obj]["DriverNum"]
+                    }
                 }
             }
 
-            for (x in detailsOrder) {
-                detailsOrder[x]["collercotrArr"] = collectors;
-                detailsOrder[x]["driverArr"] = drivers;
-            }
+            ajaxCall("DELETE", "../api/Employes", "", getEmploye, error);
 
-            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
         }
 
+        function getEmploye(list) {
+            console.log(list);
+            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
+        }
         function getOrderProductSCB(list) {
  
             next = 0;
@@ -366,7 +364,7 @@
                     str += "<option>מוצרי ההזמנה</option>";
                     detailsOrder[obj]["productOrder"].forEach(function (value) {
                         str += "<option>";
-                        str += "<p> ברקוד - " + value["Barcod"] + "  שם המוצר - " + value["NameProduct"] + "</p>";
+                        str += "<p>" + value["Barcod"] + "  - " + value["NameProduct"] + "</p>";
                         str += "</option>";
                     })
                     str += "</select>";
@@ -379,28 +377,40 @@
                     else {
                         str += "<label for='dateCollect'> הכנס תאריך הכנת הזמנה    </label>";
                         str += "<input type='date' id='dateCollect' >";
-                        str += "<br/><br/>";
+
                     }
 
-
-                    str += "<select id='collect' class='form - control' >";
-                    str += "<option>בחר מלקט להזמנה</option>";
-                    detailsOrder[obj]["collercotrArr"].forEach(function (value) {
-                        str += "<option>";
-                        str += value["EmployeNum"] + " - " + value["Name"];
-                        str += "</option>";
-                    })
-                    str += "</select>";
                     str += "<br/><br/>";
 
-                    str += "<select id='driver' class='form - control' >";
-                    str += "<option>בחר נהג להזמנה</option>";
-                    detailsOrder[obj]["driverArr"].forEach(function (value) {
-                        str += "<option>";
-                        str += value["EmployeNum"] + " - "+value["Name"]+"  אזור חלוקה - " + value["DistributaionArea"];
-                        str += "</option>";
-                    })
-                    str += "</select>";
+                    if (detailsOrder[obj]["collercotrArr"]!=0) {
+                        str += "<p> מלקט ההזמנה : " + detailsOrder[obj]["collercotrArr"] + "</p>";
+                    }
+                    else {
+                        str += "<select id='collect' class='form - control' >";
+                        str += "<option>בחר מלקט להזמנה</option>";
+                        detailsOrder[obj]["collercotrArr"].forEach(function (value) {
+                            str += "<option>";
+                            str += value["EmployeNum"] + " - " + value["Name"];
+                            str += "</option>";
+                        })
+                        str += "</select>";
+                    }
+                    str += "<br/><br/>";
+
+
+                    if (detailsOrder[obj]["driverArr"]!=0) {
+                        str += "<p> נהג ההזמנה : " + detailsOrder[obj]["driverArr"] + "</p>";
+                    }
+                    else {
+                        str += "<select id='driver' class='form - control' >";
+                        str += "<option>בחר נהג להזמנה</option>";
+                        detailsOrder[obj]["driverArr"].forEach(function (value) {
+                            str += "<option>";
+                            str += value["EmployeNum"] + " - " + value["Name"] + "  אזור חלוקה - " + value["DistributaionArea"];
+                            str += "</option>";
+                        })
+                        str += "</select>";
+                    }
                     str += "<br/><br/>";
 
                  
@@ -421,7 +431,7 @@
             idcollect = collect[0];
             iddriver = driver[0];
 
-            if (idcollect == 'בחר'  || $("#dateCollect").val() == null || iddriver=='בחר' ) {
+            if (idcollect == 'בחר' || $("#dateCollect").val() == null || iddriver == 'בחר' ) {
                 swal("יש למלא תאריך ליקוט , עובד להכנת ההזמנה ונהג להוצאת ההזמנה ")
             }
             else {
@@ -429,8 +439,7 @@
                 date = $("#dateCollect").val();
                 date = date.split('-');
                 date = date[2] + "/" + date[1] + "/" + date[0];
-
-
+                console.log(date);
                 EmployeOrder = {
                     OrderNum: IdOrder,
                     EmployeeNum: idcollect,
