@@ -11,6 +11,7 @@ namespace Jacobs.Models
     {
         
         int employeNum;
+        int driverNum;
         string name;
         string phone;
         string role; //driver or collector
@@ -18,9 +19,10 @@ namespace Jacobs.Models
         int orderNum;
 
         public Employees() { }
-        public Employees(int employeNum, string name, string phone, string role, string distributaionArea,int orderNum)
+        public Employees(int employeNum,int driverNum, string name, string phone, string role, string distributaionArea,int orderNum)
         {
             this.employeNum = employeNum;
+            this.driverNum = driverNum;
             this.name = name;
             this.phone = phone;
             this.role = role;
@@ -34,11 +36,19 @@ namespace Jacobs.Models
         public string Role { get => role; set => role = value; }
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
         public int OrderNum { get => orderNum; set => orderNum = value; }
+        public int DriverNum { get => driverNum; set => driverNum = value; }
 
         public List<Employees> Read()//read all the employe that Active
         {
             EmployeeDataServices ds = new EmployeeDataServices();
             List<Employees> listEmployes = ds.Read();
+            return listEmployes;
+        }
+
+        public List<Employees> ReadEmployeDriver()
+        {
+            EmployeeDataServices ds = new EmployeeDataServices();
+            List<Employees> listEmployes = ds.ReadEmployeDriver();
             return listEmployes;
         }
 

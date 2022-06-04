@@ -152,6 +152,56 @@ namespace Jacobs.Models.DAL
 
         }
 
+        public List<Employees> ReadEmployeDriver()
+        {
+            SqlConnection con = null;
+
+            try
+            {
+                // Connect
+                con = Connect("ProjDB");
+
+                // Create the insert command
+                SqlCommand selectCommand = createSelectCommandEmployeDrivertoOrder(con);
+
+                // Execute the command
+                SqlDataReader dataReader = selectCommand.ExecuteReader();
+
+                List<Employees> listEmployes = new List<Employees>();
+                while (dataReader.Read())//if user on table
+                {
+                    Employees employe = new Employees();
+                    if (dataReader.IsDBNull(0))
+                        employe.EmployeNum = 0;
+                    else
+                        employe.EmployeNum = Convert.ToInt32(dataReader["employNum"]);
+
+                    if (dataReader.IsDBNull(1))
+                        employe.DriverNum = 0;
+                    else
+                        employe.DriverNum = Convert.ToInt32(dataReader["driverNum"]);
+
+                    employe.OrderNum = Convert.ToInt32(dataReader["orderNum"]);
+
+                    listEmployes.Add(employe);
+                }
+                dataReader.Close();
+
+                return listEmployes;
+            }
+            catch (Exception ex)
+            {
+                // write the error to log
+                throw new Exception("failed in reading of employe", ex);
+            }
+            finally
+            {
+                // Close the connection
+                if (con != null)
+                    con.Close();
+            }
+
+        }
         public bool Update(Employees employe) //update the employe
         {
 
@@ -255,7 +305,7 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
-        private SqlCommand createSelectCommand(SqlConnection con,int employeNum)//get this employe
+        SqlCommand createSelectCommand(SqlConnection con,int employeNum)//get this employe
         {
 
             string commandStr = "SELECT * FROM Employes WHERE employeNum ="+employeNum;
@@ -266,7 +316,7 @@ namespace Jacobs.Models.DAL
 
         }
 
-        private SqlCommand createSelectCommandEmploye(SqlConnection con)//get all the employe that Active
+        SqlCommand createSelectCommandEmploye(SqlConnection con)//get all the employe that Active
         {
 
             string commandStr = "SELECT * FROM Employes WHERE Employes.status=1 ";
@@ -277,6 +327,15 @@ namespace Jacobs.Models.DAL
 
         }
 
+        SqlCommand createSelectCommandEmployeDrivertoOrder(SqlConnection con)
+        {
+            string commandStr = "select EmployeeOnOrder.employNum,EmployeeOnOrder.driverNum,[Order].orderNum from EmployeeOnOrder right join[order] on[order].orderNum = EmployeeOnOrder.orderNum";
+
+            SqlCommand cmd = createCommand(con, commandStr);
+
+            return cmd;
+
+        }
 
         SqlCommand createUpdateCommand(SqlConnection con, Employees employe)//update this employe
         {
