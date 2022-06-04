@@ -12,7 +12,6 @@ namespace Jacobs.Models
         
        
       
-        double[,] arrayDis;
         //array of distances
         int whichArea = 0;//help us to know which area selected
         string address;
@@ -82,6 +81,8 @@ namespace Jacobs.Models
         public List<FindingPaths> Algo(List<FindingPaths> list,List<FindingPaths> DistanceList, string date)
             //alogrithm of optimal path base on tsp
         {
+            List<FindingPaths> arrayDis = new List<FindingPaths>();
+
             List<FindingPaths> north = new List<FindingPaths>();
             List<FindingPaths> south = new List<FindingPaths>();
             List<FindingPaths> center = new List<FindingPaths>();
@@ -177,17 +178,24 @@ namespace Jacobs.Models
                     }
                 }
             }
-            double[,] northMat = new double[areasArr[0].Count, areasArr[0].Count];
-            double[,] centerMat = new double[areasArr[1].Count, areasArr[1].Count];
-            double[,] southMat = new double[areasArr[2].Count, areasArr[2].Count];
-            double[,] jerusalemMat = new double[areasArr[3].Count, areasArr[3].Count];
+            int[] insert = new int[3];
+
+            string[,] northMat = new string [areasArr[0].Count, areasArr[0].Count];
+            string[,] centerMat = new string[areasArr[1].Count, areasArr[1].Count];
+            string[,] southMat = new string[areasArr[2].Count, areasArr[2].Count];
+            string[,] jerusalemMat = new string[areasArr[3].Count, areasArr[3].Count];
             if (northDis.Count >1)
             {
                 int i = 0;
                 int j = 0;
                 foreach (FindingPaths obj in northDis)
-                {    
-                    northMat[i, j] = Convert.ToDouble(obj.DistanceCompany+","+obj.IdFromCompany+","+obj.IdToCompany);
+                {
+                    insert[0] = obj.DistanceCompany;
+                    insert[1] = obj.IdFromCompany;
+                    insert[2] = obj.IdToCompany;
+
+                    //(obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany);
+                    northMat[i, j] = obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany;
                     j++;
                     if(j == areasArr[0].Count )
                     {
@@ -204,7 +212,7 @@ namespace Jacobs.Models
                 int j = areasArr[1].Count-1;
                 foreach (FindingPaths obj in centerDis)
                 {
-                    centerMat[i, j] = obj.DistanceCompany;
+                    centerMat[i, j] = (obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany);
                     j--;
                     if (j == -1)
                     {
@@ -222,7 +230,7 @@ namespace Jacobs.Models
                 int j = areasArr[2].Count-1 ;
                 foreach (FindingPaths obj in southDis)
                 {
-                    southMat[i, j] = obj.DistanceCompany;
+                    southMat[i, j] = (obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany);
                     j--;
                     if (j ==-1)
                     {
@@ -239,7 +247,7 @@ namespace Jacobs.Models
                 int j = areasArr[3].Count-1;
                 foreach (FindingPaths obj in jerusalemDis)
                 {
-                    jerusalemMat[i, j] = obj.DistanceCompany;
+                    jerusalemMat[i, j] = (obj.DistanceCompany + " , " + obj.IdFromCompany + " , " + obj.IdToCompany);
                     j--;
                     if (j == -1)
                     {
@@ -292,23 +300,23 @@ namespace Jacobs.Models
                     var resultDic = new Dictionary<string, int>();
                     if (whichArea == 0)
                     {
-                        arrayDis = northMat;
+                        arrayDis = northDis;
                         whichArea++;
                     }
                     //whichare include the number of select area
                     else if (whichArea == 1)
                     {
-                        arrayDis = centerMat;
+                        arrayDis = centerDis;
                         whichArea++;
 
                     }
                     else if (whichArea == 2)
                     {
-                        arrayDis = southMat;
+                        arrayDis = southDis;
                         whichArea++;
                     }
                     else
-                        arrayDis = jerusalemMat;
+                        arrayDis = jerusalemDis;
                     //function dic is a Dictionary for all the index in adress array
                     resultDic = func.Dic(addressList);
                     //prnPermut functaion return all the combination of routes 
@@ -351,7 +359,7 @@ namespace Jacobs.Models
             return capitals;
         }
 
-        public List<FindingPaths> Dis(Dictionary<string, int> capitals, string[,] result, List<FindingPaths> list, double[,] arrayDis)///להפוך לרשימה
+        public List<FindingPaths> Dis(Dictionary<string, int> capitals, string[,] result, List<FindingPaths> list, List<FindingPaths> arrayDis)///להפוך לרשימה
         {
             int resRowSize = result.GetLength(0);
             int resColSize = result.GetLength(1);
@@ -398,8 +406,14 @@ namespace Jacobs.Models
                 {
                     if (j + 1 != combMatrixCol)
                     {
-
-                        sumline += arrayDis[combonationMatrix[i, j], combonationMatrix[i, j + 1]];
+                      
+                        foreach(FindingPaths obj in arrayDis)
+                        {
+                            if(combonationMatrix[i, j]==obj.IdFromCompany&& combonationMatrix[i, j+1]== obj.IdToCompany)
+                            {
+                                sumline+=  obj.DistanceCompany;
+                            }
+                        }
                     }
                     //הערה בנתיים 
 
