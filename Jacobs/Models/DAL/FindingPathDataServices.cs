@@ -47,8 +47,7 @@ namespace Jacobs.Models.DAL
                     findingPath.Lng = (double)dataReader["lng"];
 
 
-                    //findingPath.Lat = (double)dataReader["lat"];
-                    //findingPath.Lng = (double)dataReader["lng"];
+                  
 
 
 
@@ -93,32 +92,17 @@ namespace Jacobs.Models.DAL
                 List<FindingPaths> FindingPathslist = new List<FindingPaths>();
                 while (dataReader.Read())//if user on table
                 {
+
                     FindingPaths findingPath = new FindingPaths();
-                    findingPath.DistributaionArea = (string)dataReader["distributaionArea"];
-                    if (dataReader.IsDBNull(4))
-                        findingPath.FromCompany = null;
+                    if (dataReader.IsDBNull(2))
+                        findingPath.DistributaionArea = null;
                     else
-                        findingPath.FromCompany = (string)dataReader["from"];
-
-                    if (dataReader.IsDBNull(5))
-                        findingPath.ToCompany = null;
-                    else
+                        findingPath.DistributaionArea = (string)dataReader["distributaionArea"];
+                   
+                        findingPath.FromCompany = (string)dataReader["from"];  
                         findingPath.ToCompany = (string)(dataReader["to"]);
-
-                    if (dataReader.IsDBNull(6))
-                        findingPath.DistanceCompany = 0;
-                    else
                         findingPath.DistanceCompany = Convert.ToInt32(dataReader["distance"]);
-
-                    if (dataReader.IsDBNull(7))
-                        findingPath.IdFromCompany = 0;
-                    else
                         findingPath.IdFromCompany = Convert.ToInt32(dataReader["companyNumFrom"]);
-
-
-                    if (dataReader.IsDBNull(8))
-                        findingPath.IdToCompany = 0;
-                    else
                         findingPath.IdToCompany = Convert.ToInt32(dataReader["companyNumTo"]);
 
 

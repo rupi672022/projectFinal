@@ -132,7 +132,13 @@ namespace Jacobs.Models
             List<FindingPaths> southDis = new List<FindingPaths>();
             List<FindingPaths> centerDis = new List<FindingPaths>();
             List<FindingPaths> jerusalemDis = new List<FindingPaths>();
-            
+            bool northbool = false;
+            bool centerbool = false;
+            bool southbool = false;
+
+            bool jerusalembool = false;
+
+
             foreach (FindingPaths obj in DistanceList)
             {
                 if (obj.DistributaionArea == "צפון"|| obj.DistributaionArea =="")
@@ -178,104 +184,17 @@ namespace Jacobs.Models
                     }
                 }
             }
-            int[] insert = new int[3];
-
-            string[,] northMat = new string [areasArr[0].Count, areasArr[0].Count];
-            string[,] centerMat = new string[areasArr[1].Count, areasArr[1].Count];
-            string[,] southMat = new string[areasArr[2].Count, areasArr[2].Count];
-            string[,] jerusalemMat = new string[areasArr[3].Count, areasArr[3].Count];
-            if (northDis.Count >1)
-            {
-                int i = 0;
-                int j = 0;
-                foreach (FindingPaths obj in northDis)
-                {
-                    insert[0] = obj.DistanceCompany;
-                    insert[1] = obj.IdFromCompany;
-                    insert[2] = obj.IdToCompany;
-
-                    //(obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany);
-                    northMat[i, j] = obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany;
-                    j++;
-                    if(j == areasArr[0].Count )
-                    {
-                        j = 0;
-                        i++;
-                    }
-                }
-                
-            }
-
-            if (centerDis.Count >1)
-            {
-                int i = 0;
-                int j = areasArr[1].Count-1;
-                foreach (FindingPaths obj in centerDis)
-                {
-                    centerMat[i, j] = (obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany);
-                    j--;
-                    if (j == -1)
-                    {
-                        j = areasArr[1].Count-1;
-                        i++;
-                    }
-                    
-                }
-
-            }
-
-            if (southDis.Count >1)
-            {
-                int i = 0;
-                int j = areasArr[2].Count-1 ;
-                foreach (FindingPaths obj in southDis)
-                {
-                    southMat[i, j] = (obj.DistanceCompany + "," + obj.IdFromCompany + "," + obj.IdToCompany);
-                    j--;
-                    if (j ==-1)
-                    {
-                        j = areasArr[2].Count-1;
-                        i++;
-                    }
-                }
-
-            }
-
-            if (jerusalemDis.Count >1)
-            {
-                int i = 0;
-                int j = areasArr[3].Count-1;
-                foreach (FindingPaths obj in jerusalemDis)
-                {
-                    jerusalemMat[i, j] = (obj.DistanceCompany + " , " + obj.IdFromCompany + " , " + obj.IdToCompany);
-                    j--;
-                    if (j == -1)
-                    {
-                        j = areasArr[3].Count-1;
-                        i++;
-                    }
-                }
-
-            }
+           
             List<FindingPaths> selectedPath = new List<FindingPaths>();
             //lists with distrebiution area
            
-            //example of distances arrays
-          //double[,] arrayDis0 = new double[,] {  { 0, 54.6, 75.1, 53.9,129 },
-          //         {54.8, 0,25.5 , 7 ,101}, {  80.3, 25.6, 0, 27.3,53.6 }, { 54.2, 8.6,26.1, 0 ,98.1} , {127, 100,53 ,101,0}};
-          //  double[,] arrayDis1 = new double[,] {  { 0, 50.3, 8.2, 17,15.2 },
-          //          {49, 0,56.8 , 43 ,37.2}, {  7.9, 58.2, 0, 20.6,22.1 }, { 14.7, 42.7, 17.5, 0 ,6.6} , {16.8, 38.3,20.9 ,7.1,0}};
-          //  double[,] arrayDis2 = new double[,] {  { 0, 154, 125, 110 },
-          //          {154, 0,61.1 , 86}, { 95.1, 59.9, 0, 20.1 }, { 83.2, 78.6, 20.3, 0 } };
-          //  double[,] arrayDis3 = new double[,] {  { 0, 114, 116, 115 },
-          //          {114, 0,5.1 ,4}, { 114, 5.1, 0, 2.8}, { 113, 4.4, 3.9, 0 } };
-            
+     
 
             
 
             for (int i = 0; i < areasArr.Length; i++)
             {
-                if (areasArr[i].Count != 0)//if the area not empty from address
+                if (areasArr[i].Count > 1)//if the area not empty from address
                 {
                     fullfunc func = new fullfunc();
                     //function factorial calculate how much comabination has
@@ -298,39 +217,54 @@ namespace Jacobs.Models
 
 
                     var resultDic = new Dictionary<string, int>();
-                    if (whichArea == 0)
-                    {
-                        arrayDis = northDis;
-                        whichArea++;
-                    }
+                   
+                        if (northDis.Count > 4&&northbool!=true)
+                        {
+                            arrayDis = northDis;
+                        northbool = true;
+                        }
+                    
                     //whichare include the number of select area
-                    else if (whichArea == 1)
-                    {
-                        arrayDis = centerDis;
-                        whichArea++;
+                    
+                    else  if (centerDis.Count > 4&&centerbool != true )
+                        {
+                        
+                        
+                            arrayDis = centerDis;
+                        centerbool = true;
+                        }
+                    
+                    else  if (southDis.Count > 4&&southbool!=true)
+                        {
+                            arrayDis = southDis;
+
+                        southbool = true;
+
 
                     }
-                    else if (whichArea == 2)
+                    else if (jerusalemDis.Count > 4&&jerusalembool!=true)
                     {
-                        arrayDis = southDis;
-                        whichArea++;
-                    }
-                    else
-                        arrayDis = jerusalemDis;
+                      
+                        
+                            arrayDis = jerusalemDis;
+                        jerusalembool = true;
+                        }
+                    
                     //function dic is a Dictionary for all the index in adress array
                     resultDic = func.Dic(addressList);
                     //prnPermut functaion return all the combination of routes 
                     func.prnPermut(addressToArrN, 0, addressToArrN.Length - 2, result);
-                    Console.Write("\n\n");
+                
 
 
-
+                        var listAlgo = func.Dis(resultDic, result, list, arrayDis);
+                        foreach (FindingPaths ans in listAlgo)
+                        {
+                            selectedPath.Add(ans);
+                        }
                     
-                    var listAlgo = func.Dis(resultDic, result, list, arrayDis);
-                    foreach (FindingPaths ans in listAlgo)
-                    {
-                        selectedPath.Add(ans);
-                    }
+
+                  
 
                 }
 

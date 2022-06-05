@@ -254,11 +254,32 @@
         }
 
         function getEmploye(list) {
-            x = 0;            y = 0;            for (obj in list) {                if (list[obj]["Role"] == "מלקט") {                    collectors[x] = list[obj];                    x++;                }                else if (list[obj]["Role"] == "נהג") {                    drivers[y] = list[obj];                    y++;                }            }
 
-            for (x in detailsOrder) {                if (detailsOrder[x]["collercotrArr"] == 0) {                    detailsOrder[x]["collercotrArr"] = collectors;
-                }                if (detailsOrder[x]["driverArr"] == 0) {                    detailsOrder[x]["driverArr"] = drivers;
-                }            }
+            x = 0;
+            y = 0;
+
+            for (obj in list) {
+                if (list[obj]["Role"] == "מלקט") {
+                    collectors[x] = list[obj];
+                    x++;
+                }
+                else if (list[obj]["Role"] == "נהג") {
+                    drivers[y] = list[obj];
+                    y++;
+                }
+            }
+
+            for (x in detailsOrder) {
+
+                if (detailsOrder[x]["collercotrArr"] == 0) {
+                    detailsOrder[x]["collercotrArr"] = collectors;
+                }
+
+                if (detailsOrder[x]["driverArr"] == 0) {
+                    detailsOrder[x]["driverArr"] = drivers;
+                }
+
+            }
 
             console.log(detailsOrder)
 
