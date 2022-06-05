@@ -93,7 +93,7 @@ namespace Jacobs.Models
             areasArr[1] = center;
             areasArr[2] = south;
             areasArr[3] = jerusalem;
-            FindingPaths createSource = new FindingPaths("גשר העץ 27,עמק חפר", 1332, 424,"",date,1, "משק יעקבס");
+            FindingPaths createSource = new FindingPaths("גשר העץ 27, עמק חפר", 1332, 424,"",date,1, "משק יעקבס");
             areasArr[0].Add(createSource);
             areasArr[1].Add(createSource);
             areasArr[2].Add(createSource);
