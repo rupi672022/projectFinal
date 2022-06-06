@@ -153,17 +153,22 @@ namespace Jacobs.Models
                     }
 
                 }
-                if (obj.DistributaionArea == "מרכז"||obj.DistributaionArea == " ")
+                if (obj.DistributaionArea == "מרכז"||obj.DistributaionArea == "")
                 {
+                    //countnorth
                     foreach (FindingPaths ans in center)
                     {
                         if (ans.CompanyNum == obj.IdToCompany )
                         {
                             centerDis.Add(obj);
                         }
+                        //if( obj.IdToCompany==1&&obj.IdFromCompany==1)
+                        //{
+                        //    countnorth++;
+                        //}
                     }
                 }
-                if (obj.DistributaionArea == "דרום" || obj.DistributaionArea == " ")
+                if (obj.DistributaionArea == "דרום" || obj.DistributaionArea == "")
                 {
                     foreach (FindingPaths ans in south)
                     {
@@ -173,7 +178,7 @@ namespace Jacobs.Models
                         }
                     }
                 }
-                if (obj.DistributaionArea == "ירושלים" || obj.DistributaionArea == " ")
+                if (obj.DistributaionArea == "ירושלים" || obj.DistributaionArea == "")
                 {
                     foreach (FindingPaths ans in jerusalem)
                     {
@@ -358,10 +363,8 @@ namespace Jacobs.Models
                             }
                         }
                     }
-                    //הערה בנתיים 
 
 
-                    //count++;
                 }
                 if (sumline < winner || winner == 0)
                 {

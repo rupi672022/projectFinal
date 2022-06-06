@@ -1,5 +1,5 @@
 ﻿{
-    "ApiKey": "AIzaSyCl29T7lqbEKJYXALfhW0H9p4UItpfJdlg",
+    "ApiKey": "AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE",
   "CryptoKey": "",
   "ClientId": "",
   "SearchEngineId": ""
