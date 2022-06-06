@@ -93,7 +93,7 @@ namespace Jacobs.Models
             areasArr[1] = center;
             areasArr[2] = south;
             areasArr[3] = jerusalem;
-            FindingPaths createSource = new FindingPaths("גשר העץ 27, עמק חפר", 1332, 424,"",date,1, "משק יעקבס");
+            FindingPaths createSource = new FindingPaths("גשר העץ 27,עמק חפר", 34.895175832114731, 32.405410127264439, "",date,1, "משק יעקבס");
             areasArr[0].Add(createSource);
             areasArr[1].Add(createSource);
             areasArr[2].Add(createSource);
@@ -253,11 +253,20 @@ namespace Jacobs.Models
                     //function dic is a Dictionary for all the index in adress array
                     resultDic = func.Dic(addressList);
                     //prnPermut functaion return all the combination of routes 
-                    func.prnPermut(addressToArrN, 0, addressToArrN.Length - 2, result);
-                
+                    // addressToArrN = addressToArrN.Where(val => val != "גשר העץ 27,עמק חפר").ToArray();
+                    int t = 0;
+                    string[] arr=new string[addressToArrN.Length-1];
+
+                    for (int z = 1; z < addressToArrN.Length;  z++)
+                    {
+
+                        arr[t]= addressToArrN[z];
+                        t++;
+                    }
+                    func.prnPermut(arr, 0, addressToArrN.Length - 2, result);
 
 
-                        var listAlgo = func.Dis(resultDic, result, list, arrayDis);
+                    var listAlgo = func.Dis(resultDic, result, list, arrayDis);
                         foreach (FindingPaths ans in listAlgo)
                         {
                             selectedPath.Add(ans);
@@ -406,7 +415,7 @@ namespace Jacobs.Models
         }
         public void prnPermut(string[] list, int k, int m, string[,]  resultComb)
         {
-            list = list.Where(val => val != "גשר העץ 27,עמק חפר").ToArray();
+           
             
             //this function create matrix of combination
             int i;
@@ -453,6 +462,7 @@ namespace Jacobs.Models
                 {
 
                     SwapTwostring(ref list[k], ref list[i]);
+
                     prnPermut(list, k + 1, m, resultComb);
                     SwapTwostring(ref list[k], ref list[i]);
                 }
