@@ -134,6 +134,25 @@
             funcInit();
 
             $("#BTN").click(funcEmploye);
+
+            $(document).on("click", ".deleteBtn", function () {//delete employe
+                id = document.getElementById;
+                console.log(id);
+                swal({ // this will open a dialouge
+                    title: "את/ה בטוח/ה ??",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then(function (willDelete) {
+                        if (willDelete) deleteEmploye(id);
+                        else {
+                            swal("לא נמחק!");
+
+                        };
+                    });
+            });
         });
 
         function funcInit() {
@@ -220,7 +239,7 @@
         }
 
         function getCompanySCB(list) {
-
+            x = 0;
             for (obj in list) {
                 for (item in detailsOrder) {
                     if (list[obj]["CompanyNum"] == detailsOrder[item]["idCompany"]) {
@@ -230,7 +249,8 @@
                     }
                 }
             }
-            ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
+            ajaxCall("GET", "../api/Employes?employeNum=" + x, "", getEmployeSCB, error);
+
         }
 
         function getEmployeSCB(list) {
@@ -441,6 +461,7 @@
                     }
                     str += "<br/><br/>";
 
+                    //str += "<button class='deleteBtn btn btn-info' id='" + detailsOrder[obj]["idOrder"]+"'> <img id='deleteBtn' src='../img/Delete.png' />  </button> ";
                  
                     str += '</div>';
 
@@ -607,7 +628,6 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button class='deleteBtn btn btn-info' > <img id="deleteBtn" src='../img/Delete.png' />  </button> 
                                 <button type="button" id="BTN" class="btn btn-danger" data-dismiss="modal">שמור</button>
                             </div>
                         </div>

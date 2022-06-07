@@ -19,18 +19,18 @@ namespace Jacobs.Controllers
             return employe.Read();
         }
 
-        [HttpGet]
-        [Route("api/Employes")]
-        public List<Employees> GetEmployeDriver()//get all the employes that Active
-        {
-            Employees employe = new Employees();
-            return employe.ReadEmployeDriver();
-        }
-
         public List<Employees> Get(int employeNum)//get the the employe with this number employe
         {
             Employees employe = new Employees();
-            return employe.Read(employeNum);
+
+            if (employeNum > 10000)
+            {
+                return employe.Read(employeNum);
+            }
+            else
+            {
+                return employe.ReadEmployeDriver();
+            }
         }
 
         // POST api/<controller>
