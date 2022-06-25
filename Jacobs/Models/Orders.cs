@@ -138,6 +138,12 @@ namespace Jacobs.Models
             OrderDataServices ds = new OrderDataServices();
             return ds.Delete(id, Norder);
         }
+
+        public List<Orders> Delete(int orderNum)//delete product frop order
+        {
+            OrderDataServices ds = new OrderDataServices();
+            return ds.Delete(orderNum);
+        }
     }
 
 }

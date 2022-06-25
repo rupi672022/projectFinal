@@ -52,17 +52,7 @@ namespace Jacobs.Controllers
         public List<Employees> Delete(int id)//delete this employe - just to update to 0
         {
             Employees employe = new Employees();
-
-            if (id > 10000)
-            {
-               return employe.Delete(id);
-            }
-            else
-            {
-                return employe.Read();
-
-            }
-
+            return employe.Delete(id);
         }
     }
 }
