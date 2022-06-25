@@ -125,14 +125,9 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
 
         SqlCommand CreateInsertCommandArea(DistanceMatrix distanceMatrix, SqlConnection con)
         {
-<<<<<<< Updated upstream
-           string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNumFrom],[companyNumTo],[area]) VALUES (@from,@to,@distance,@companyNumFrom,@companyNumTo,@area)";
-            
-=======
 
             string commandStr = "INSERT INTO DistanceMatrix ([from],[to],[distance],[companyNumFrom],[companyNumTo],[area]) VALUES (@from,@to,@distance,@companyNumFrom,@companyNumTo,@area)";
 
->>>>>>> Stashed changes
             SqlCommand cmd = createCommand(con, commandStr);
 
             cmd.Parameters.Add("@from", SqlDbType.Char);
