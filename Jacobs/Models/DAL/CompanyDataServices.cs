@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using GoogleApi.Test.Maps.DistanceMatrix;
+using GeoCoding_Art;
 
 namespace Jacobs.Models.DAL
 {
@@ -14,6 +15,7 @@ namespace Jacobs.Models.DAL
         
         public int Insert(Company company) //insert new company
         {
+            
             SqlConnection con = null;
             int numEffected = 0;
 
@@ -51,7 +53,7 @@ namespace Jacobs.Models.DAL
         }
         public List<Company> Read()//get the all company
         {
-
+            
             SqlConnection con = null;
 
             try
@@ -212,6 +214,11 @@ namespace Jacobs.Models.DAL
 
         SqlCommand CreateInsertCommand(Company company, SqlConnection con)//insert new company
         {
+            Program PM = new Program();
+            string LatLng=PM.GeoCoding(company.Address);
+             float []location = LatLng.Split(',').Select(float.Parse).ToArray();
+
+
             string commandStr = "INSERT INTO Company ([companyName],[address],[openHour],[closeHour],[nameContact],[phoneContact],[lat],[lng],[distributaionArea]) VALUES (@companyName,@address,@openHour,@closeHour,@nameContact,@phoneContact,@lat,@lng,@distributaionArea)";
 
             SqlCommand cmd = createCommand(con, commandStr);
@@ -235,10 +242,10 @@ namespace Jacobs.Models.DAL
             cmd.Parameters["@phoneContact"].Value = company.PhoneContact;
 
             cmd.Parameters.Add("@lat", SqlDbType.Float);
-            cmd.Parameters["@lat"].Value = company.Lat;
+            cmd.Parameters["@lat"].Value = location[0];
 
             cmd.Parameters.Add("@lng", SqlDbType.Float);
-            cmd.Parameters["@lng"].Value = company.Lng;
+            cmd.Parameters["@lng"].Value = location[1];
 
             cmd.Parameters.Add("@distributaionArea", SqlDbType.Char);
             cmd.Parameters["@distributaionArea"].Value = company.DistributaionArea;

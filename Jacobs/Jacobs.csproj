@@ -190,9 +190,11 @@
     <Compile Include="Models\DistanceMatrix.cs" />
     <Compile Include="Models\Employees.cs" />
     <Compile Include="Models\FindingPaths.cs" />
+    <Compile Include="Models\GeoResult.cs" />
     <Compile Include="Models\Orders.cs" />
     <Compile Include="Models\Path.cs" />
     <Compile Include="Models\Products.cs" />
+    <Compile Include="Models\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

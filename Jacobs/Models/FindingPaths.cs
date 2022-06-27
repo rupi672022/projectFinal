@@ -319,8 +319,15 @@ namespace Jacobs.Models
             int indexWinner = 0;
             double winner = 0;
 
+            if(list.Exists(x => x.CompanyNum == 1))
+            {
 
-            list.Add(new FindingPaths(result[0, 0], 0, 0, "", "", 0, ""));
+            }
+            else
+            {
+                list.Add(new FindingPaths(result[0, 0], 34.895175832114731, 32.405410127264439, "", "", 1, ""));
+
+            }
             double sumline = 0;
 
             List<int> termsList = new List<int>();

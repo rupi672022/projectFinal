@@ -6,12 +6,14 @@ using System.Net.Http;
 using System.Web.Http;
 using Jacobs.Models;
 using GoogleApi.Test.Maps.DistanceMatrix;
+using GeoCoding_Art;
 
 
 namespace Jacobs.Controllers
 {
     public class CompaniesController : ApiController
     {
+        
        
         // GET api/<controller>
         public List<Company> Get()//get all the company
@@ -30,8 +32,8 @@ namespace Jacobs.Controllers
         // POST api/<controller>
         public HttpResponseMessage Post([FromBody] Company company) //insert new company
         {
-            
-        
+
+           
         int id = company.Insert();
 
         DistanceMatrixController dM = new DistanceMatrixController();

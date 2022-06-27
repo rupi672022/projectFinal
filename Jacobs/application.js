@@ -4,3 +4,6 @@
   "ClientId": "",
   "SearchEngineId": ""
 }
+{
+    "type": "module"
+}
