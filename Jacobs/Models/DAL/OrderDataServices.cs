@@ -382,6 +382,43 @@ namespace Jacobs.Models.DAL
 
         }
 
+        public List<Orders> Delete(int orderNum) //delepe product from table
+        {
+
+            SqlConnection con = null;
+
+
+            try
+            {
+                //C - Connect to the Database 
+                con = Connect("ProjDB");
+
+                SqlCommand deletecommand = createDeleteCommandOrder(con, orderNum);
+
+
+                // Execute the command
+                SqlDataReader dataReader = deletecommand.ExecuteReader();
+
+                List<Orders> listOrder = new List<Orders>();
+                dataReader.Close();
+
+                return listOrder;
+            }
+
+            catch (Exception ex)
+            {
+                // this code needs to write the error to a log file
+                throw new Exception("Failed to update a order", ex);
+            }
+
+            finally
+            {
+                // close the db connection
+                con.Close();
+            }
+
+        }
+
         SqlConnection Connect(string connectionStringName)
         {
 
@@ -557,6 +594,16 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
+        SqlCommand createDeleteCommandOrder(SqlConnection con, int orderNum)
+        {
+            string commandStr = "DELETE from [ProductOnOrder] WHERE orderNum='" + orderNum + "' ";
+            commandStr += " DELETE from [CompanyOnOrder] WHERE orderNum = '" + orderNum + "'";
+            commandStr += " DELETE from [EmployeeOnOrder] WHERE orderNum = '" + orderNum + "'";
+            commandStr += " DELETE from [Order] WHERE orderNum = '" + orderNum + "'";
+            SqlCommand cmd = createCommand(con, commandStr);
+
+            return cmd;
+        }
         SqlCommand createCommand(SqlConnection con, string CommandSTR)
         {
 

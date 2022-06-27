@@ -134,6 +134,26 @@
             funcInit();
 
             $("#BTN").click(funcEmploye);
+
+            $(document).on("click", ".deleteBtn", function () {//delete employe
+                id = document.getElementsByClassName('deleteBtn');
+                id = id[0].id;
+                console.log(id);
+                swal({ // this will open a dialouge
+                    title: "את/ה בטוח/ה ??",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                })
+                    .then(function (willDelete) {
+                        if (willDelete) deleteOrder(id);
+                        else {
+                            swal("לא נמחק!");
+
+                        };
+                    });
+            });
         });
 
         function funcInit() {
@@ -206,7 +226,9 @@
                     statusOrder: list[obj]["Status"],
                     collercotrArr:[],
                     preparationDate: preparationDate,
-                    driverArr:[]
+                    driverArr: [],
+                    chooseEmploye: 0,
+                    chooseDriver:0
                 }
                 count++;
 
@@ -231,29 +253,11 @@
                 }
             }
             ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
+
         }
+
 
         function getEmployeSCB(list) {
-
-
-            for (obj in list) {
-                for (item in detailsOrder) {
-                    if (list[obj]["OrderNum"] == detailsOrder[item]["idOrder"]) {
-                        if (list[obj]["EmployeNum"] != 0)
-                            detailsOrder[item]["collercotrArr"][0] = list[obj]["EmployeNum"];
-                        if (list[obj]["DriverNum"] !=0)
-                            detailsOrder[item]["driverArr"][0] = list[obj]["DriverNum"]
-                    }
-                }
-            }
-
-            x = 0;
-
-            ajaxCall("DELETE", "../api/Employes/" + x, "", getEmploye, error);
-
-        }
-
-        function getEmploye(list) {
 
             x = 0;
             y = 0;
@@ -270,42 +274,67 @@
             }
 
             for (x in detailsOrder) {
-
-                if (detailsOrder[x]["collercotrArr"] == 0) {
-                    detailsOrder[x]["collercotrArr"] = collectors;
-                }
-
-                if (detailsOrder[x]["driverArr"] == 0) {
-                    detailsOrder[x]["driverArr"] = drivers;
-                }
-
+                detailsOrder[x]["collercotrArr"] = collectors;
+                detailsOrder[x]["driverArr"] = drivers;
             }
 
-            console.log(detailsOrder)
-
-            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
+            ans = 0;
+            ajaxCall("GET", "../api/Employes?employeNum="+ans, "", getEmploye, error);
         }
-        function getOrderProductSCB(list) {
- 
-            next = 0;
+
+        function getEmploye(list) {
+
             y = 0;
-            for (let i = 0; i < list.length; i=y+1) {
-                x = list[i]["OrderNum"];
-                array = [];
-                count = 0;
-                for (obj in list) {
-                    if (x == list[obj]["OrderNum"]) {
-                        array[count] = list[obj];
-                        count++
-                        y = parseInt(obj);
+            for (item in list) {
+                if (list[item]["OrderNum"] == detailsOrder[y]["idOrder"]) {
+                    if (list[item]["EmployeNum"] != 0) {
+                        for (obj in collectors) {
+                            if (list[item]["EmployeNum"] == collectors[obj]["EmployeNum"]) {
+                                detailsOrder[y]["chooseEmploye"] = list[item]["EmployeNum"];
+                            }
+                        }
+
+                        for (obj in drivers) {
+                            if (list[item]["DriverNum"] == drivers[obj]["EmployeNum"]) {
+                                detailsOrder[y]["chooseDriver"] = list[item]["DriverNum"];
+                            }
+                        }
                     }
 
-
+                    y++;
                 }
-                productArr[next] = array;
-                next++;
             }
 
+
+            x = 0;
+            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
+
+        }
+
+        function getOrderProductSCB(list) {
+            
+            next = 0;
+
+            array = []; //רשימה של כל מספרי הזמנות
+            for (obj in list) {
+                array.push(list[obj].OrderNum)
+            }
+            array = [...new Set(array)];//הסרת כפילויות
+
+
+            for (obj in array) {
+                listProduct = [];
+                count = 0;
+                for (let i = 0; i < list.length; i++) {
+                    if (array[obj]==list[i]["OrderNum"] ) {
+                        listProduct[count] = list[i];
+                        count++
+                    }
+                }
+
+                productArr[next] = listProduct;
+                next++;
+            }
 
             for (ans in productArr) {
                 for (item in detailsOrder) {
@@ -314,6 +343,7 @@
                     }
                 }
             }
+
 
         }
 
@@ -364,7 +394,7 @@
 
             IdOrder = id;
             answer = '';
-
+            console.log(detailsOrder)
             for (obj in detailsOrder) {
 
                 if (detailsOrder[obj]["idOrder"] == id) {
@@ -408,39 +438,46 @@
 
                     }
 
-                    str += "<br/><br/>";
+                    str += "<br/>";
 
-                    if (detailsOrder[obj]["collercotrArr"].length ==1) {
-                        str += "<p> מלקט ההזמנה : " + detailsOrder[obj]["collercotrArr"] + "</p>";
-                    }
-                    else {
-                        str += "<select id='collect' class='form - control' >";
-                        str += "<option>בחר מלקט להזמנה</option>";
-                        detailsOrder[obj]["collercotrArr"].forEach(function (value) {
+
+                    str += "<select id='collect' class='form - control' >";
+                    str += "<option>בחר מלקט להזמנה</option>";
+                    detailsOrder[obj]["collercotrArr"].forEach(function (value) {
+                        if (value["EmployeNum"] == detailsOrder[obj]["chooseEmploye"]) {
+                            str += "<option selected>";
+                            str += value["EmployeNum"] + " - " + value["Name"] ;
+                            str += "</option>";
+                        }
+                        else {
                             str += "<option>";
                             str += value["EmployeNum"] + " - " + value["Name"];
                             str += "</option>";
-                        })
-                        str += "</select>";
-                    }
+                        }
+                    })
+                    str += "</select>";
                     str += "<br/><br/>";
 
 
-                    if (detailsOrder[obj]["driverArr"].length == 1) {
-                        str += "<p> נהג ההזמנה : " + detailsOrder[obj]["driverArr"] + "</p>";
-                    }
-                    else {
-                        str += "<select id='driver' class='form - control' >";
-                        str += "<option>בחר נהג להזמנה</option>";
-                        detailsOrder[obj]["driverArr"].forEach(function (value) {
+                    str += "<select id='driver' class='form - control' >";
+                    str += "<option>בחר נהג להזמנה</option>";
+                    detailsOrder[obj]["driverArr"].forEach(function (value) {
+                        if (value["EmployeNum"] == detailsOrder[obj]["chooseDriver"]) {
+                            str += "<option selected>";
+                            str += value["EmployeNum"] + " - " + value["Name"] + "  אזור חלוקה - " + value["DistributaionArea"];
+                            str += "</option>";
+                        }
+                        else {
                             str += "<option>";
                             str += value["EmployeNum"] + " - " + value["Name"] + "  אזור חלוקה - " + value["DistributaionArea"];
                             str += "</option>";
-                        })
-                        str += "</select>";
-                    }
+                        }
+
+                    })
+                    str += "</select>";
                     str += "<br/><br/>";
 
+                    str += "<button class='deleteBtn btn btn-info' id='" + detailsOrder[obj]["idOrder"] + "' data-dismiss='modal'> <img id='deleteBtn' src='../img/Delete.png' />  </button> ";
                  
                     str += '</div>';
 
@@ -452,22 +489,29 @@
         }
 
         function funcEmploye() {
-            console.log(IdOrder)
+
             collect = document.getElementById("collect").value.split('-');
             driver = document.getElementById("driver").value.split(' ');
 
             idcollect = collect[0];
             iddriver = driver[0];
 
-            if (idcollect == 'בחר' || $("#dateCollect").val() == null || iddriver == 'בחר' ) {
+            if (document.getElementById("dateCollect").innerHTML != '') {
+                date = document.getElementById("dateCollect").innerHTML.split(' ')[5];
+            }
+            else {
+                date = $("#dateCollect").val();
+
+                if (date != '') {
+                    date = date.split('-');
+                    date = date[2] + "/" + date[1] + "/" + date[0];
+                }
+            }
+
+            if (idcollect == 'בחר' || date == '' || iddriver == 'בחר') {
                 swal("יש למלא תאריך ליקוט , עובד להכנת ההזמנה ונהג להוצאת ההזמנה ")
             }
             else {
-
-                date = $("#dateCollect").val();
-                date = date.split('-');
-                date = date[2] + "/" + date[1] + "/" + date[0];
-                console.log(date);
                 EmployeOrder = {
                     OrderNum: IdOrder,
                     EmployeeNum: idcollect,
@@ -477,6 +521,12 @@
                 ajaxCall("PUT", "../api/Orders", JSON.stringify(EmployeOrder), succsess, error);
             }
           
+        }
+
+        function deleteOrder(orderNum) {//update status to 0 - delete the employe
+            console.log(orderNum)
+
+            ajaxCall("DELETE", "../api/Orders?orderNum=" + orderNum, "", succsess, error);
         }
 
         function succsess() {
@@ -607,7 +657,6 @@
                             </div>
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                                <button class='deleteBtn btn btn-info' > <img id="deleteBtn" src='../img/Delete.png' />  </button> 
                                 <button type="button" id="BTN" class="btn btn-danger" data-dismiss="modal">שמור</button>
                             </div>
                         </div>

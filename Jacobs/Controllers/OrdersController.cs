@@ -58,5 +58,11 @@ namespace Jacobs.Controllers
             Orders order = new Orders();
             return order.Delete(id, Norder);
         }
+
+        public List<Orders> Delete(int orderNum)//delete product from order 
+        {
+            Orders order = new Orders();
+            return order.Delete(orderNum);
+        }
     }
 }
