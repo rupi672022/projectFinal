@@ -162,10 +162,7 @@ namespace Jacobs.Models
                         {
                             centerDis.Add(obj);
                         }
-                        //if( obj.IdToCompany==1&&obj.IdFromCompany==1)
-                        //{
-                        //    countnorth++;
-                        //}
+                       
                     }
                 }
                 if (obj.DistributaionArea == "דרום" || obj.DistributaionArea == "")
@@ -258,7 +255,6 @@ namespace Jacobs.Models
                     //function dic is a Dictionary for all the index in adress array
                     resultDic = func.Dic(addressList);
                     //prnPermut functaion return all the combination of routes 
-                    // addressToArrN = addressToArrN.Where(val => val != "גשר העץ 27,עמק חפר").ToArray();
                     int t = 0;
                     string[] arr=new string[addressToArrN.Length-1];
 

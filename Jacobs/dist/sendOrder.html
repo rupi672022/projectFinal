@@ -2,6 +2,17 @@
 <html lang="he">
 
 <head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- playground-hide -->
+    <script>
+        const process = { env: {} };
+        process.env.GOOGLE_MAPS_API_KEY =
+            "AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE";
+    </script>
+    <!-- playground-hide-end -->
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
     <meta charset="utf-8" />
     <title>משק יעקבס</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +50,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
-        
+
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
@@ -150,7 +161,7 @@
 
         //create map with distrbution area
         function initMap(list) {
-            const map = new google.maps.Map(document.getElementById("map"), {
+            const map = new google.maps.Map(document.getElementById("map") ,  {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
                 mapTypeId: "terrain",
@@ -239,15 +250,67 @@
 
             });
 
+             labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+             NlabelIndex = 0;
+             SlabelIndex = 0;
+             ClabelIndex = 0;
+             JlabelIndex = 0;
+
+
+
+
             var markers = [];
             //we need to add spasific lat and lng to show it on the map
             for (let i = 1; i < list.length; i++) {
-                var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
-                markers[i] = new google.maps.Marker({
-                    position: pos,
-                    map: map,
-                    title: list[i]["Address"]
-                });
+
+                if (list[i].DistributaionArea == "צפון") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        fontWeight: "bold",
+                        label: labels[NlabelIndex++ % labels.length]
+                    });
+                }
+                if (list[i].DistributaionArea == "דרום") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        label: labels[SlabelIndex++ % labels.length]
+                    });
+                }
+                if (list[i].DistributaionArea == "ירושלים") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        label: labels[JlabelIndex++ % labels.length],
+                    });
+                }
+                if (list[i].DistributaionArea == "מרכז") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        label: labels[ClabelIndex++ % labels.length],
+                    });
+                }
+                
+              
+                
             }
             const image = {
                 url:
@@ -272,19 +335,11 @@
                 lng: 34.895175832114731
 
             };
-            
-            for (let i = 0; i < algoNorth.length; i++) {
-                //axios.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + algoNorth[i].Address + "&key=AIzaSyDf2uzM7Zqj26c-j3jxJLTH0UWG_8vtbk0").then(response => {
-                //    if (response.data.error_message) {
-                //        GeolocationCoordinates()
-                //        console.log(response.data.error_message);
-                //    }
-                //    else {
-                //        console.log(response.data.result[0]);
-                //    }
-                //})
 
-               
+            for (let i = 0; i < algoNorth.length; i++) {
+
+
+
                 routeNorth[i + 1] =
                 {
 

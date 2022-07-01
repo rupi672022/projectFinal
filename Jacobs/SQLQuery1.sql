@@ -1,1 +1,1 @@
-﻿Drop table DistanceMatrix
+﻿DELETE  FROM Company WHERE companyNum=122

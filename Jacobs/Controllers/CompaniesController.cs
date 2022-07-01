@@ -38,9 +38,12 @@ namespace Jacobs.Controllers
 
         DistanceMatrixController dM = new DistanceMatrixController();
             //new distance matrix
+
             List<DistanceMatrix> final=dM.Get(company.DistributaionArea);
             DistanceMatrix dm = new DistanceMatrix();
-          
+
+
+
 
             dM.Post(dm, final);
             

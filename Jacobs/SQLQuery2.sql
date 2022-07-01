@@ -1,0 +1,9 @@
+﻿UPDATE Company
+SET lat = 31.79531520863862
+
+
+, lng =  35.21751570292009
+
+
+
+WHERE companyNum=121;

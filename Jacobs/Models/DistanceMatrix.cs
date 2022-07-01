@@ -114,12 +114,16 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
           
                 for (int j = 0; j < firstLagC.rows.Length; j++)
                 {
+                    int newAdress=0;
                     int countFrom = 0;
                     int idFrom = 0;
                     int countTo = 0;
                     int idTo = 0;
+                    newAdress = list.ElementAt(list.Count - 2).Key;
+
                     foreach (KeyValuePair<int, string> ele1 in list)
                     {
+                        
 
                         if (countFrom == i )
                         {
@@ -133,14 +137,13 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
                         }
                         countTo++;
 
-                        if (idFrom != 0 && idTo != 0)
+                        if ((idFrom != 0 && idTo != 0&&idTo!= idFrom) &&(idFrom == newAdress|| idTo == newAdress))
                         {
                             int distance = firstLagC.rows[i].elements[j].distance.value;
 
                             alldistanceMatrixArea.Add(new DistanceMatrix(firstLagC.destination_addresses[i], firstLagC.destination_addresses[j], distance, idFrom,idTo,area));
 
                             int duration = firstLagC.rows[i].elements[j].duration.value;
-                            //pathList.Add(companies[i], new Path(distance, duration))
 
                             idFrom = 0;
                             idTo = 0;

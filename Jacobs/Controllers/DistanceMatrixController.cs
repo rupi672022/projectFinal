@@ -40,11 +40,7 @@ namespace Jacobs.Controllers
         }
 
         // GET api/<controller>/5
-        //public List<DistanceMatrix> Get(string addressMatrix)
-        //{
-        //    DistanceMatrix distanceMatrixTests = new DistanceMatrix();
-        //    return distanceMatrixTests.Read(addressMatrix);
-        //}
+       
 
         // POST api/<controller>
         public HttpResponseMessage Post([FromBody] DistanceMatrix distanceMatrix, List<DistanceMatrix> final)
