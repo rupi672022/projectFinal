@@ -59,14 +59,38 @@
             $("#center").hide();
             $("#jerusalem").hide();
 
+            ajaxCall("GET", "../api/Employes", "", successEmploye, error);
+
+
         });
+
+        function successEmploye(list) {  
+            listDriver = [];
+            for (obj in list) {
+                if (list[obj].Role == 'נהג')
+                    listDriver.push(list[obj]);
+            }
+
+            strD = "<select class='form-control' id = 'driverJob' required>";
+            strD += "<option>בחר נהג</option>";
+            listDriver.forEach(function (value) {
+                strD += "<option>";
+                strD += value["EmployeNum"] + " - " + value["Name"];
+                strD += "</option>";
+            })
+            strD += "</select>";
+
+            document.getElementById("selectDriver").innerHTML = strD;
+        }
 
         function textOfAlgo() {
             date = new Date($("#dateJob").val());
             date = date.toLocaleDateString();
 
+            nameDriver = $("#driverJob").val().split(' ');
+            console.log(nameDriver[0]);
 
-            ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+            ajaxCall("GET", "../api/FindingPaths?date=" + date + "&DriverName=" + nameDriver[0], "", success, error);
 
             $("#north").hide();
             $("#south").hide();
@@ -596,8 +620,11 @@
                             <div class="card-box" style="background-color:#ffff;margin-left:0px;">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="col-lg-6" style=" margin-left: 40%">
-                                            <label for="dateJob">בחר תאריך להוצאת תוכנית עבודה לנהג </label>
+                                        <div class="col-lg-6">
+                                          <div id="selectDriver" style = "width:150px;margin-top:25px"></div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <label for="dateJob">בחר יום עבודה </label>
                                             <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
                                         </div>
                                         <div>

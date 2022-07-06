@@ -1,6 +1,6 @@
 let calendar = document.querySelector('.calendar')
 
-const month_names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+const month_names = ['éğåàø', 'ôáøåàø', 'îøõ', 'àôøéì', 'îàé', 'éåğé', 'éåìé', 'àåâåñè', 'ñôèîáø', 'àå÷èåáø', 'ğåáîáø', 'ãöîáø']
 
 isLeapYear = (year) => {
     return (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) || (year % 100 === 0 && year % 400 ===0)

@@ -68,10 +68,10 @@ namespace Jacobs.Models
         public int IdFromCompany { get => idFromCompany; set => idFromCompany = value; }
         public int IdToCompany { get => idToCompany; set => idToCompany = value; }
 
-        public List<FindingPaths> Read(string date)
+        public List<FindingPaths> Read(string date, int DriverName)
         {
             FindingPathDataServices ds = new FindingPathDataServices();
-              FindingPathslist = ds.Read(date);
+              FindingPathslist = ds.Read(date, DriverName);
             DistanceList = ds.ReadDistance(date);
             return Algo(FindingPathslist, DistanceList, date);
         }

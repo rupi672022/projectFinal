@@ -34,6 +34,7 @@
 
     <link href="../CSS/newOrder.css" rel="stylesheet" />
  
+
     <script>
 
         $(document).ready(function () {
@@ -92,7 +93,7 @@
 
         function submitToCom() {//add new company
 
-            newCompany = {
+           let newCompany = {
                 CompanyName: $("#Cname").val(),
                 Address: $("#Caddress").val(),
                 OpenHour: $("#CopenHour").val(),
@@ -102,13 +103,45 @@
                 DistributaionArea: $("#CdisArrea").val()
             }
             console.log(newCompany);
+         
 
-            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsses, error);
+
+            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsss, error);
+            
+
+
+            ajaxCall("GET", "../api/Companies", "", getCompany, error);
 
             return false;
 
         }
+        function getSCB(answer) {
+            console.log("yes");
+            
+         ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(answer), postDistance, error);
 
+        }
+        function postSucsss(answer) {
+            console.log("succsess");
+        }
+
+        function getECB(err) {
+            console.log("No");
+
+            console.log(err);
+        }
+        function getCompany(list) {
+            console.log(list);
+           // let area = $("#CdisArrea").val();
+          //  ajaxCall("GET", "../api/DistanceMatrix?area=" + area, "", getSCB, getECB);
+
+
+            
+        }
+
+        function postDistance() {
+            console.log("wow");
+        }
         function submitToPro() {//add new product
 
             if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram
@@ -167,6 +200,7 @@
 
             name_company = document.getElementById("companyName").value;//the series choose
             console.log(name_company);
+
             if (name_company != "בחר בית עסק")
                 ajaxCall("GET", "../api/Companies?name=" + name_company, "", getNCSCB, error);
         }
@@ -286,7 +320,9 @@
 
         function postSucsses() {
             console.log("sucsses");
+
             renderCompany();
+
         }
 
         function postProductSucsses() {//fget all the product in this order

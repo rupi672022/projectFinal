@@ -25,6 +25,7 @@ namespace Jacobs.Models
         int driverNum;
         string preprationDate;
         string image;
+        int boxes;//count of boxes in the order
         int status = 1;
 
 
@@ -89,6 +90,7 @@ namespace Jacobs.Models
         public string DistributaionArea { get => distributaionArea; set => distributaionArea = value; }
         public string ProductName { get => productName; set => productName = value; }
         public int DriverNum { get => driverNum; set => driverNum = value; }
+        public int Boxes { get => boxes; set => boxes = value; }
 
         public int Insert()//insert new order
         {

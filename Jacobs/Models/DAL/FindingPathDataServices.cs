@@ -16,7 +16,7 @@ namespace Jacobs.Models.DAL
     {
         
         //string[] addressArr;
-        public List<FindingPaths> Read(string date)//get the all the employee 
+        public List<FindingPaths> Read(string date, int DriverName)//get the all the employee 
         {
             
             
@@ -28,7 +28,7 @@ namespace Jacobs.Models.DAL
                 con = Connect("ProjDB");
 
                 // Create the insert command
-                SqlCommand selectCommand = createSelectCommandFindingFath(con, date);
+                SqlCommand selectCommand = createSelectCommandFindingFath(con, date, DriverName);
 
                 // Execute the command
                 SqlDataReader dataReader = selectCommand.ExecuteReader();
@@ -143,9 +143,12 @@ namespace Jacobs.Models.DAL
             con.Open(); // סטטוס - פתוח 
             return con;
         }
-        private SqlCommand createSelectCommandFindingFath(SqlConnection con,string date)
+        private SqlCommand createSelectCommandFindingFath(SqlConnection con,string date, int DriverName)
         {
-            string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng from Company INNER JOIN CompanyOnOrder ON Company.companyNum=CompanyOnOrder.companyNum WHERE CompanyOnOrder.dateArrivel LIKE @date ";
+            string commandStr = "select Company.companyNum,Company.companyName,Company.address,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.lat,Company.lng";
+            commandStr += " from Company INNER JOIN CompanyOnOrder ON Company.companyNum = CompanyOnOrder.companyNum";
+            commandStr += " right join EmployeeOnOrder On EmployeeOnOrder.orderNum = CompanyOnOrder.orderNum";
+            commandStr+=" WHERE CompanyOnOrder.dateArrivel Like @date And EmployeeOnOrder.driverNum ="+ DriverName;
             
             SqlCommand cmd = createCommand(con, commandStr);
             cmd.Parameters.AddWithValue("@date", "%" + date + "%");

@@ -294,6 +294,7 @@ namespace Jacobs.Models.DAL
                 if (order.EmployeeNum == 0 && order.DriverNum==0)
                 {
                     updatecommand = CreateUpdateCommandStatusOrder(con, order);
+                    numEffected = updatecommand.ExecuteNonQuery();
                 }
 
     
@@ -539,7 +540,7 @@ namespace Jacobs.Models.DAL
 
         SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image - app
         {
-            string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "' WHERE orderNum='" + order.OrderNum + "' ";
+            string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "',boxes='"+order.Boxes+"' WHERE orderNum='" + order.OrderNum + "' ";
             
             SqlCommand cmd = createCommand(con, commandStr);
 

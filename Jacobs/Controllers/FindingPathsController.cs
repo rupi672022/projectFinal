@@ -13,10 +13,10 @@ namespace Jacobs.Controllers
     {
         
         // GET api/<controller>
-        public List<FindingPaths> Get(string date)
+        public List<FindingPaths> Get(string date, int DriverName)
         {
             FindingPaths findingPath = new FindingPaths();
-            return findingPath.Read(date);
+            return findingPath.Read(date, DriverName);
         }
        
         

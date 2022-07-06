@@ -2,13 +2,23 @@
 <html lang="he">
 
 <head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- playground-hide -->
+    <script>
+        const process = { env: {} };
+        process.env.GOOGLE_MAPS_API_KEY =
+            "AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE";
+    </script>
+    <!-- playground-hide-end -->
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
     <meta charset="utf-8" />
     <title>משק יעקבס</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Responsive bootstrap 4 admin template" name="description" />
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/LOGO.ico">
 
@@ -16,7 +26,6 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -35,8 +44,10 @@
     <link href="../CSS/sendOrder.css" rel="stylesheet" />
 
 
+
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdwIqGFYZ6J2bZS8WzG-In3F_jWaMLM08&callback=initMap&v=weekly"async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE&callback=initMap&v=weekly" async></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
 
@@ -54,7 +65,13 @@
             date = new Date($("#dateJob").val());
             date = date.toLocaleDateString();
 
-         ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+
+            ajaxCall("GET", "../api/FindingPaths?date=" + date, "", success, error);
+
+            $("#north").hide();
+            $("#south").hide();
+            $("#center").hide();
+            $("#jerusalem").hide();
 
 
 
@@ -62,14 +79,11 @@
 
 
         function success(list) {
-            
 
-           
             algoNorth = [];
             algoSouth = [];
             algoCenter = [];
             algoJerusalem = [];
-
 
             for (obj in list) {
                 if (list[obj]["Address"] != "גשר העץ 27,עמק חפר") {
@@ -86,69 +100,68 @@
 
                     if (list[obj]["DistributaionArea"] == "ירושלים")
                         algoJerusalem[algoJerusalem.length] = list[obj]
-                    initMap(algoNorth, algoSouth, algoCenter, algoJerusalem);
+
                 }
 
             }
+            initMap(list);
 
 
-            //console.log(algoNorth)
-            //console.log(algoSouth)
-            //console.log(algoCenter)
-            //console.log(algoJerusalem)
+
+
 
             strNorth = "";
             strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
             for (obj in algoNorth) {
-                strNorth += "<p>" + algoNorth[obj]["CompanyName"]+" - "+ algoNorth[obj]["Address"] + "</p>";
+                strNorth += "<p>" + algoNorth[obj]["CompanyName"] + " - " + algoNorth[obj]["Address"] + "</p>";
             }
 
             strSouth = "";
             strSouth += "<h5>מסלול נסיעה - אזור דרום : </h5>";
             for (obj in algoSouth) {
-                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - "+ algoSouth[obj]["Address"] + "</p>";
+                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - " + algoSouth[obj]["Address"] + "</p>";
             }
 
             strCenter = "";
             strCenter += "<h5>מסלול נסיעה - אזור מרכז : </h5>";
             for (obj in algoCenter) {
-                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - "+algoCenter[obj]["Address"] + "</p>";
+                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - " + algoCenter[obj]["Address"] + "</p>";
             }
 
             strJerusalem = "";
             strJerusalem += "<h5>מסלול נסיעה - אזור ירושלים : </h5>";
             for (obj in algoJerusalem) {
-                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - "+ algoJerusalem[obj]["Address"] + "</p>";
+                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - " + algoJerusalem[obj]["Address"] + "</p>";
             }
 
             if (algoNorth.length != 0)
                 $("#north").show();
-            if (algoSouth.length!=0)
+            if (algoSouth.length != 0)
                 $("#south").show();
-            if (algoCenter.length!=0)
+            if (algoCenter.length != 0)
                 $("#center").show();
-            if (algoJerusalem.length!=0)
+            if (algoJerusalem.length != 0)
                 $("#jerusalem").show();
 
 
-            
+
             document.getElementById("north").innerHTML = strNorth;
             document.getElementById("south").innerHTML = strSouth;
             document.getElementById("center").innerHTML = strCenter;
             document.getElementById("jerusalem").innerHTML = strJerusalem;
 
 
+
+
         }
-        //function successMatrix() {
-        //    console.log("you got it")
-        //}
 
         function error(error) {
             console.log(error);
         }
+
         //create map with distrbution area
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById("map"), {
+        function initMap(list) {
+            const map = new google.maps.Map(document.getElementById("map") ,  {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
                 mapTypeId: "terrain",
@@ -197,7 +210,7 @@
                 strokeWeight: 2,
                 fillColor: "#FF0000",
                 fillOpacity: 0.35,
-                draggable: true,
+
 
             });
 
@@ -209,7 +222,7 @@
                 strokeWeight: 2,
                 fillColor: "#0000FF",
                 fillOpacity: 0.35,
-                draggable: true,
+
 
             });
 
@@ -221,7 +234,7 @@
                 strokeWeight: 2,
                 fillColor: "#00FF00",
                 fillOpacity: 0.35,
-                draggable: true,
+
 
             });
 
@@ -233,17 +246,271 @@
                 strokeWeight: 2,
                 fillColor: "#FF00FF",
                 fillOpacity: 0.35,
-                draggable: true,
+
 
             });
-        
-           
 
-            
+             labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+             NlabelIndex = 0;
+             SlabelIndex = 0;
+             ClabelIndex = 0;
+             JlabelIndex = 0;
+
+
+
+
+            var markers = [];
+            //we need to add spasific lat and lng to show it on the map
+            for (let i = 1; i < list.length; i++) {
+
+                if (list[i].DistributaionArea == "צפון") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        fontWeight: "bold",
+                        label: labels[NlabelIndex++ % labels.length]
+                    });
+                }
+                if (list[i].DistributaionArea == "דרום") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        label: labels[SlabelIndex++ % labels.length]
+                    });
+                }
+                if (list[i].DistributaionArea == "ירושלים") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        label: labels[JlabelIndex++ % labels.length],
+                    });
+                }
+                if (list[i].DistributaionArea == "מרכז") {
+                    labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    var pos = new google.maps.LatLng(list[i].Lat, list[i].Lng);
+
+                    markers[i] = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        title: list[i]["Address"],
+                        label: labels[ClabelIndex++ % labels.length],
+                    });
+                }
+                
+              
+                
+            }
+            const image = {
+                url:
+                    "../img/LOGO.png",
+                scaledSize: new google.maps.Size(45, 45), // scaled size
+
+            };
+
+
+
+            const beachMarker = new google.maps.Marker({
+                position: { lat: 32.405410127264439, lng: 34.895175832114731 },
+                map,
+                icon: image,
+            });
+
+            //polyline for north
+            routeNorth = {};
+            var routeNorth = new Array();
+            routeNorth[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+            for (let i = 0; i < algoNorth.length; i++) {
+
+
+
+                routeNorth[i + 1] =
+                {
+
+                    lat: algoNorth[i].Lat,
+
+                    lng: algoNorth[i].Lng
+                };
+
+            }
+
+            routeNorth[algoNorth.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeNorth,
+                geodesic: true,
+                strokeColor: "#00FF00",
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
+
+            //route poliyline for center
+            routeCenter = {};
+            var routeCenter = new Array();
+            routeCenter[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+            for (let i = 0; i < algoCenter.length; i++) {
+
+                routeCenter[i + 1] =
+                {
+                    lat: algoCenter[i].Lat,
+
+                    lng: algoCenter[i].Lng
+                };
+
+            }
+
+            routeCenter[algoCenter.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeCenter,
+                geodesic: true,
+
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
+            //route poliyline for South
+            routeSouth = {};
+            var routeSouth = new Array();
+            routeSouth[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+            for (let i = 0; i < algoSouth.length; i++) {
+
+                routeSouth[i + 1] =
+                {
+                    lat: algoSouth[i].Lat,
+
+                    lng: algoSouth[i].Lng
+                };
+
+            }
+
+            routeSouth[algoSouth.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeSouth,
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
+            //route poliyline for jerusalem
+            routeJerusalem = {};
+            var routeJerusalem = new Array();
+            routeJerusalem[0] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+            for (let i = 0; i < algoJerusalem.length; i++) {
+
+                routeJerusalem[i + 1] =
+                {
+                    lat: algoJerusalem[i].Lat,
+
+                    lng: algoJerusalem[i].Lng
+                };
+
+            }
+
+            routeJerusalem[algoJerusalem.length + 1] = {
+                lat: 32.405410127264439,
+                lng: 34.895175832114731
+
+            };
+
+
+
+
+            var polygons = new google.maps.Polyline({
+                path: routeJerusalem,
+                geodesic: true,
+                strokeColor: "#00FF00",
+                strokeOpacity: 1.0,
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
+
+                strokeWeight: 2,
+
+                map: map
+
+            });
+            polygons.setMap(map);
         }
-      
-        
-        
+
+
     </script>
 
 </head>

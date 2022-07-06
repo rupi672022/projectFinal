@@ -58,8 +58,9 @@ export default function Boxes(props) {
 
     const btnBoxes = () => {//update the image in server
         if (boxesNum != '0' && picUri!=undefined) {
-            let updateOrder = [{ OrderNum: props.route.params.num, Image: picUri }];
+            let updateOrder = [{ OrderNum: props.route.params.num, Image: picUri,Boxes:parseInt(boxesNum) }];
             updateOrder = updateOrder[0];
+            console.log(updateOrder);
             fetch(apiUrlPut, {
                 method: 'PUT',
                 body: JSON.stringify(updateOrder),
