@@ -26,13 +26,14 @@ namespace Jacobs.Models
         int distanceCompany;
         int idFromCompany;
         int idToCompany;
+        double total_distance;
       
         public List<FindingPaths> FindingPathslist;
         public List<FindingPaths> DistanceList;
 
         public FindingPaths() { }
 
-        public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum, string companyName)
+        public FindingPaths(string address, double lng, double lat, string distributaionArea, string dateArrivel, int companyNum, string companyName, double total_distance)
         {
             this.address = address;
             this.lng = lng;
@@ -41,6 +42,7 @@ namespace Jacobs.Models
             this.dateArrivel = dateArrivel;
             this.companyNum = companyNum;
             this.companyName = companyName;
+            this.total_distance = total_distance;
 
 
         }
@@ -67,6 +69,7 @@ namespace Jacobs.Models
         public int DistanceCompany { get => distanceCompany; set => distanceCompany = value; }
         public int IdFromCompany { get => idFromCompany; set => idFromCompany = value; }
         public int IdToCompany { get => idToCompany; set => idToCompany = value; }
+        public double Total_distance { get => total_distance; set => total_distance = value; }
 
         public List<FindingPaths> Read(string date, int DriverName)
         {
@@ -93,7 +96,7 @@ namespace Jacobs.Models
             areasArr[1] = center;
             areasArr[2] = south;
             areasArr[3] = jerusalem;
-            FindingPaths createSource = new FindingPaths("גשר העץ 27,עמק חפר", 34.895175832114731, 32.405410127264439, "",date,1, "משק יעקבס");
+            FindingPaths createSource = new FindingPaths("גשר העץ 27,עמק חפר", 34.895175832114731, 32.405410127264439, "",date,1, "משק יעקבס",0);
             areasArr[0].Add(createSource);
             areasArr[1].Add(createSource);
             areasArr[2].Add(createSource);
@@ -321,7 +324,7 @@ namespace Jacobs.Models
             }
             else
             {
-                list.Add(new FindingPaths(result[0, 0], 34.895175832114731, 32.405410127264439, "", "", 1, ""));
+                list.Add(new FindingPaths(result[0, 0], 34.895175832114731, 32.405410127264439, "", "", 1, "",0));
 
             }
             double sumline = 0;
@@ -393,7 +396,7 @@ namespace Jacobs.Models
                 {
                     if (result[indexWinner, j] == list[x].Address)
                         //save the shortes combination in list object
-                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum, list[x].CompanyName));
+                        selectedCombintion.Add(new FindingPaths(result[indexWinner, j], list[x].Lng, list[x].Lat, list[x].DistributaionArea, list[x].DateArrivel, list[x].CompanyNum, list[x].CompanyName, winner/ 1000));
                 }
 
 

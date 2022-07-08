@@ -101,7 +101,6 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
             Parent firstLagC = JsonConvert.DeserializeObject<Parent>(firstLag.RawJson);
 
 
-            //Dictionary<string, Path> pathList = new Dictionary<string, Path>();
            
          
             List<DistanceMatrix> alldistanceMatrixArea = new List<DistanceMatrix>();
