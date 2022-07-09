@@ -230,7 +230,7 @@ namespace Jacobs.Models
 
                     var resultDic = new Dictionary<string, int>();
                    
-                        if (northDis.Count > 4&&northbool!=true)
+                        if (northDis.Count > 1&&northbool!=true)
                         {
                             arrayDis = northDis;
                         northbool = true;
@@ -238,7 +238,7 @@ namespace Jacobs.Models
                     
                     //whichare include the number of select area
                     
-                    else  if (centerDis.Count > 4&&centerbool != true )
+                    else  if (centerDis.Count > 1&&centerbool != true )
                         {
                         
                         
@@ -246,7 +246,7 @@ namespace Jacobs.Models
                         centerbool = true;
                         }
                     
-                    else  if (southDis.Count > 4&&southbool!=true)
+                    else  if (southDis.Count > 1&&southbool!=true)
                         {
                             arrayDis = southDis;
 
@@ -254,7 +254,7 @@ namespace Jacobs.Models
 
 
                     }
-                    else if (jerusalemDis.Count > 4&&jerusalembool!=true)
+                    else if (jerusalemDis.Count > 1&&jerusalembool!=true)
                     {
                       
                         

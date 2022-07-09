@@ -159,27 +159,16 @@ namespace Jacobs.Models.DAL
 
         SqlCommand createSelectCommandFindingFathDistance(SqlConnection con, string date)
         {
-            //string commandStr = "select DISTINCT Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address, DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo,DistanceMatrix.area";
-            //commandStr += " from CompanyOnOrder inner join Company on Company.companyNum = CompanyOnOrder.companyNum";
-            //commandStr += " left join DistanceMatrix on  DistanceMatrix.companyNumFrom = Company.companyNum";
-            //commandStr += " WHERE CompanyOnOrder.dateArrivel like @date ";
-            //commandStr += " union ";
-            //commandStr += " select DISTINCT Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address,DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo,DistanceMatrix.area";
-            //commandStr += " from CompanyOnOrder inner join Company on Company.companyNum = 1";
-            //commandStr += " left join DistanceMatrix on  DistanceMatrix.companyNumFrom = Company.companyNum";
-            //commandStr += " WHERE Company.distributaionArea = '' and CompanyOnOrder.dateArrivel like @date";
-            string commandStr = "select  Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address, DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo,DistanceMatrix.area";
+            string commandStr = "select DISTINCT Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address, DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo,DistanceMatrix.area";
             commandStr += " from CompanyOnOrder inner join Company on Company.companyNum = CompanyOnOrder.companyNum";
             commandStr += " left join DistanceMatrix on  DistanceMatrix.companyNumFrom = Company.companyNum";
-            commandStr += " WHERE CompanyOnOrder.dateArrivel = '"+date+"'";
-             commandStr += " union";
-
-            commandStr += " select  Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address, DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo,DistanceMatrix.area";
-
-            commandStr += " from CompanyOnOrder inner join Company on Company.companyNum = CompanyOnOrder.companyNum";
-            commandStr += " left join DistanceMatrix on  DistanceMatrix.companyNumTo = Company.companyNum";
             commandStr += " WHERE CompanyOnOrder.dateArrivel = '" + date + "'";
-
+            commandStr += " union ";
+            commandStr += " select DISTINCT Company.companyName,CompanyOnOrder.dateArrivel,Company.distributaionArea,Company.address,DistanceMatrix.[from],DistanceMatrix.[to],DistanceMatrix.distance,DistanceMatrix.companyNumFrom,DistanceMatrix.companyNumTo,DistanceMatrix.area";
+            commandStr += " from CompanyOnOrder inner join Company on Company.companyNum = 1";
+            commandStr += " left join DistanceMatrix on  DistanceMatrix.companyNumFrom = Company.companyNum";
+            commandStr += " WHERE Company.distributaionArea = '' and CompanyOnOrder.dateArrivel = '" + date + "'";
+           
 
             SqlCommand cmd = createCommand(con, commandStr);
             cmd.Parameters.AddWithValue("@date", "%" + date + "%");
