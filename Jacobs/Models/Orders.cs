@@ -54,13 +54,14 @@ namespace Jacobs.Models
             this.productName = productName;
         }
 
-        public Orders(int orderNum, int employeeNum, string preprationDate,int status,int driverNum)
+        public Orders(int orderNum, int employeeNum, string preprationDate,int status,int driverNum,int boxes)
         {
             this.orderNum = orderNum;
             this.employeeNum = employeeNum;
             this.driverNum = driverNum;
             this.preprationDate = preprationDate;
             this.status = status;
+            this.boxes = boxes;
         }
 
         public Orders(int orderNum, string dateArrival, int companynum, string companyName, string openHour, string distributaionArea)
@@ -119,7 +120,12 @@ namespace Jacobs.Models
             List<Orders> listOrder = ds.ReadgetImage(idOrder);
             return listOrder;
         }
-
+        public List<Orders> ReadBox(string date) 
+        {
+            OrderDataServices ds = new OrderDataServices();
+            List<Orders> listOrder = ds.ReadBox(date);
+            return listOrder;
+        }
         public List<Orders> Read(string preparationDate,int id)//get order with the date  - APP
         {
             OrderDataServices ds = new OrderDataServices();

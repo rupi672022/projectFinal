@@ -71,6 +71,66 @@ namespace Jacobs.Models.DAL
 
 
         }
+        public List<Orders> ReadBox(string date)//get the all orders
+        {
+
+            SqlConnection con = null;
+
+            try
+            {
+                // Connect
+                con = Connect("ProjDB");
+
+                // Create the insert command
+                SqlCommand selectCommand = CreateSelectCommandAllbox(con,date);
+
+                // Execute the command
+                SqlDataReader dataReader = selectCommand.ExecuteReader();
+
+                List<Orders> listOrder = new List<Orders>();
+
+                while (dataReader.Read())//if user on table
+                {
+                    Orders order = new Orders();
+                    order.OrderNum = Convert.ToInt32(dataReader["orderNum"]);
+                    order.Companynum = Convert.ToInt32(dataReader["companyNum"]);
+                    order.CompanyName = (string)dataReader["companyName"];
+                    order.StartDate = (string)dataReader["startDate"];
+                    order.DateArrival = (string)dataReader["dateArrivel"];
+                    order.OpenHour = (string)dataReader["openHour"];
+                    order.DistributaionArea = (string)dataReader["distributaionArea"];
+                    order.Boxes = Convert.ToInt32(dataReader["boxes"]);
+                    if (dataReader.IsDBNull(7))
+                        order.PreprationDate = null;
+                    else
+                        order.PreprationDate = (string)dataReader["preparationDate"];
+
+
+                    if (dataReader.IsDBNull(8))
+                        order.Status = 1;
+                    else
+                        order.Status = Convert.ToInt32(dataReader["status"]);
+
+                    listOrder.Add(order);
+                }
+
+                dataReader.Close();
+
+                return listOrder;
+            }
+            catch (Exception ex)
+            {
+                // write the error to log
+                throw new Exception("failed in reading of order", ex);
+            }
+            finally
+            {
+                // Close the connection
+                if (con != null)
+                    con.Close();
+            }
+
+        }
 
         public List<Orders> Read()//get the all orders
         {
@@ -100,7 +160,6 @@ namespace Jacobs.Models.DAL
                     order.DateArrival = (string)dataReader["dateArrivel"];
                     order.OpenHour = (string)dataReader["openHour"];
                     order.DistributaionArea = (string)dataReader["distributaionArea"];
-
                     if (dataReader.IsDBNull(7))
                         order.PreprationDate = null;
                     else
@@ -231,6 +290,7 @@ namespace Jacobs.Models.DAL
 
         }
 
+
         public List<Orders> Read(string preparationDate,int id)//get the order with this date - app
         {
 
@@ -256,6 +316,7 @@ namespace Jacobs.Models.DAL
                     order.EmployeeNum = Convert.ToInt32(dataReader["employNum"]);
                     order.PreprationDate =(string)dataReader["preparationDate"];
                     order.Status = Convert.ToInt32(dataReader["status"]);
+
 
                     listOrder.Add(order);
                 }
@@ -428,12 +489,21 @@ namespace Jacobs.Models.DAL
             con.Open(); // סטטוס - פתוח 
             return con;
         }
+        SqlCommand CreateSelectCommandAllbox(SqlConnection con,string date)
+        {
+            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea,EmployeeOnOrder.preparationDate,EmployeeOnOrder.status,EmployeeOnOrder.boxes";
+            str += " FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum =[Order].orderNum INNER JOIN Company ON Company.companyNum = CompanyOnOrder.companyNum ";
+            str += " left join EmployeeOnOrder on EmployeeOnOrder.orderNum =[Order].orderNum";
+            str += " where dateArrivel = '" + date + "'";
+            SqlCommand cmd = createCommand(con, str);
 
+            return cmd;
+        }
         SqlCommand CreateSelectCommandAllOrders(SqlConnection con)
         {
-            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea,EmployeeOnOrder.preparationDate,EmployeeOnOrder.status ";
-                str += "FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum =[Order].orderNum INNER JOIN Company ON Company.companyNum = CompanyOnOrder.companyNum ";
-                str+="left join EmployeeOnOrder on EmployeeOnOrder.orderNum =[Order].orderNum";
+            string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea,EmployeeOnOrder.preparationDate,EmployeeOnOrder.status";
+                str += " FROM [Order] INNER JOIN CompanyOnOrder ON CompanyOnOrder.orderNum =[Order].orderNum INNER JOIN Company ON Company.companyNum = CompanyOnOrder.companyNum ";
+                str+=" left join EmployeeOnOrder on EmployeeOnOrder.orderNum =[Order].orderNum";
             
             SqlCommand cmd = createCommand(con, str);
 

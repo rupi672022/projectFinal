@@ -325,7 +325,7 @@
 
         }
 
-        function postProductSucsses() {//fget all the product in this order
+        function postProductSucsses() {//get all the product in this order
             console.log("sucsses");
             ajaxCall("GET", "../api/Orders?idOrder=" + $("#orderNum").val(), "", getProdcut, error);
         }

@@ -17,6 +17,13 @@ namespace Jacobs.Controllers
             Orders order = new Orders();
             return order.Read();
         }
+        [HttpGet]
+        [Route("api/Orders/{date}")]
+        public List<Orders> GetBox(string date)//get the product on order
+        {
+            Orders order = new Orders();
+            return order.ReadBox(date);
+        }
 
         public List<Orders> Get(int idOrder)//get the product on order
         {
