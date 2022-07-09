@@ -416,7 +416,6 @@
     <Content Include="dist\assets\libs\toastr\toastr.min.js" />
     <Content Include="dist\assets\libs\x-editable\bootstrap-editable.css" />
     <Content Include="dist\assets\libs\x-editable\bootstrap-editable.min.js" />
-    <Content Include="dist\test.html" />
     <Content Include="dist\main.html" />
     <Content Include="dist\newOrder.html" />
     <Content Include="dist\pages-blank.html" />

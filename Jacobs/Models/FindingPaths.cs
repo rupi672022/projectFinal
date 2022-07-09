@@ -13,7 +13,6 @@ namespace Jacobs.Models
        
       
         //array of distances
-        int whichArea = 0;//help us to know which area selected
         string address;
         double lng;
         double lat;
@@ -150,30 +149,36 @@ namespace Jacobs.Models
                     {
                         if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             northDis.Add(obj);
 
                         }
                     }
 
+
                 }
                 if (obj.DistributaionArea == "מרכז"||obj.DistributaionArea == "")
                 {
-                    //countnorth
                     foreach (FindingPaths ans in center)
                     {
-                        if (ans.CompanyNum == obj.IdToCompany )
+                        if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             centerDis.Add(obj);
                         }
-                       
                     }
+
+                    
+              
                 }
                 if (obj.DistributaionArea == "דרום" || obj.DistributaionArea == "")
                 {
+
                     foreach (FindingPaths ans in south)
                     {
-                        if (ans.CompanyNum == obj.IdToCompany )
+                        if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             southDis.Add(obj);
                         }
                     }
@@ -184,7 +189,9 @@ namespace Jacobs.Models
                     {
                         if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             jerusalemDis.Add(obj);
+
                         }
                     }
                 }
@@ -223,7 +230,7 @@ namespace Jacobs.Models
 
                     var resultDic = new Dictionary<string, int>();
                    
-                        if (northDis.Count > 4&&northbool!=true)
+                        if (northDis.Count > 1&&northbool!=true)
                         {
                             arrayDis = northDis;
                         northbool = true;
@@ -231,7 +238,7 @@ namespace Jacobs.Models
                     
                     //whichare include the number of select area
                     
-                    else  if (centerDis.Count > 4&&centerbool != true )
+                    else  if (centerDis.Count > 1&&centerbool != true )
                         {
                         
                         
@@ -239,7 +246,7 @@ namespace Jacobs.Models
                         centerbool = true;
                         }
                     
-                    else  if (southDis.Count > 4&&southbool!=true)
+                    else  if (southDis.Count > 1&&southbool!=true)
                         {
                             arrayDis = southDis;
 
@@ -247,7 +254,7 @@ namespace Jacobs.Models
 
 
                     }
-                    else if (jerusalemDis.Count > 4&&jerusalembool!=true)
+                    else if (jerusalemDis.Count > 1&&jerusalembool!=true)
                     {
                       
                         
@@ -356,7 +363,7 @@ namespace Jacobs.Models
             //from distance array sum every row(every combination)
             for (int i = 0; i < combMatrixRow; i++)
             {
-                for (int j = 0; j < combMatrixCol; j++)
+                for (int j = 0; j < combMatrixCol;j++)
                 {
                     if (j + 1 != combMatrixCol)
                     {

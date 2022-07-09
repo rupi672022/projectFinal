@@ -359,7 +359,9 @@
 
 
 
+            if (routeNorth.length != 2) {
 
+<<<<<<< HEAD
             var polygons = new google.maps.Polyline({
                 path: routeNorth,
                 geodesic: true,
@@ -369,13 +371,26 @@
                     icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
                     offset: '100%'
                 }],
+=======
+>>>>>>> 4137737a84a67b8a3cd835b8e46e9fdd1f499e17
 
-                strokeWeight: 2,
+                var polygons = new google.maps.Polyline({
+                    path: routeNorth,
+                    geodesic: true,
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1.0,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%'
+                    }],
 
-                map: map
+                    strokeWeight: 2,
 
-            });
-            polygons.setMap(map);
+                    map: map
+
+                });
+                polygons.setMap(map);
+            }
 
             //route poliyline for center
             routeCenter = {};
@@ -404,23 +419,32 @@
 
 
 
+            if (routeCenter.length != 2) {
+                var polygons = new google.maps.Polyline({
+                    path: routeCenter,
+                    geodesic: true,
 
-            var polygons = new google.maps.Polyline({
-                path: routeCenter,
-                geodesic: true,
+                    strokeOpacity: 1.0,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%'
+                    }],
 
+<<<<<<< HEAD
                 strokeOpacity: 1.0,
                 icons: [{
                     icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
                     offset: '100%'
                 }],
+=======
+                    strokeWeight: 2,
+>>>>>>> 4137737a84a67b8a3cd835b8e46e9fdd1f499e17
 
-                strokeWeight: 2,
+                    map: map
 
-                map: map
-
-            });
-            polygons.setMap(map);
+                });
+                polygons.setMap(map);
+            }
             //route poliyline for South
             routeSouth = {};
             var routeSouth = new Array();
@@ -448,7 +472,9 @@
 
 
 
+            if (routeSouth.length!=2) {
 
+<<<<<<< HEAD
             var polygons = new google.maps.Polyline({
                 path: routeSouth,
                 geodesic: true,
@@ -458,13 +484,26 @@
                     icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
                     offset: '100%'
                 }],
+=======
+>>>>>>> 4137737a84a67b8a3cd835b8e46e9fdd1f499e17
 
-                strokeWeight: 2,
+                var polygons = new google.maps.Polyline({
+                    path: routeSouth,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
 
-                map: map
+                    strokeWeight: 2,
+
+                    map: map
 
             });
             polygons.setMap(map);
+        }
             //route poliyline for jerusalem
             routeJerusalem = {};
             var routeJerusalem = new Array();
@@ -492,7 +531,9 @@
 
 
 
+            if (routeJerusalem.length != 2) {
 
+<<<<<<< HEAD
             var polygons = new google.maps.Polyline({
                 path: routeJerusalem,
                 geodesic: true,
@@ -502,13 +543,26 @@
                     icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
                     offset: '100%'
                 }],
+=======
+>>>>>>> 4137737a84a67b8a3cd835b8e46e9fdd1f499e17
 
-                strokeWeight: 2,
+                var polygons = new google.maps.Polyline({
+                    path: routeJerusalem,
+                    geodesic: true,
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1.0,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%'
+                    }],
 
-                map: map
+                    strokeWeight: 2,
 
-            });
-            polygons.setMap(map);
+                    map: map
+
+                });
+                polygons.setMap(map);
+            }
         }
 
 
@@ -617,6 +671,23 @@
 
                                         </div>
 
+<<<<<<< HEAD
+=======
+                                        </div>
+                                  
+                                        <div class="card" id="center">
+
+                                        </div>
+                                 
+                                        <div class="card" id="jerusalem">
+
+                                        </div>
+                                        <div id="distance">
+                                        </div>
+                                        <div>
+                                          <h1>ffmlfmflmfl</h1>
+                                        </div>
+>>>>>>> 4137737a84a67b8a3cd835b8e46e9fdd1f499e17
                                     </div>
                                 </div>
                             </div>
