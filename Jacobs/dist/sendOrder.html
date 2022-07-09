@@ -10,8 +10,7 @@
             "AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE";
     </script>
     <!-- playground-hide-end -->
-
-  
+    <!--<script type="module" src="./index.js"></script>-->
     <meta charset="utf-8" />
     <title>משק יעקבס</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,27 +42,26 @@
     <link href="../CSS/sendOrder.css" rel="stylesheet" />
 
 
-
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE&callback=initMap&v=weekly" async></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
     <script>
 
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
-            $("#north").hide();
-            $("#south").hide();
-            $("#center").hide();
-            $("#jerusalem").hide();
+            $("#route").hide();
 
             ajaxCall("GET", "../api/Employes", "", successEmploye, error);
 
 
         });
 
-        function successEmploye(list) {  
+        function successEmploye(list) {
             listDriver = [];
             for (obj in list) {
                 if (list[obj].Role == 'נהג')
@@ -74,7 +72,7 @@
             strD += "<option>בחר נהג</option>";
             listDriver.forEach(function (value) {
                 strD += "<option>";
-                strD += value["EmployeNum"] + " - " + value["Name"];
+                strD += value["EmployeNum"] + " - " + value["Name"] + " אזור חלוקה : " + value["DistributaionArea"];
                 strD += "</option>";
             })
             strD += "</select>";
@@ -87,7 +85,6 @@
             date = date.toLocaleDateString();
 
             nameDriver = $("#driverJob").val().split(' ');
-            console.log(nameDriver[0]);
 
             ajaxCall("GET", "../api/FindingPaths?date=" + date + "&DriverName=" + nameDriver[0], "", success, error);
 
@@ -95,13 +92,12 @@
             $("#south").hide();
             $("#center").hide();
             $("#jerusalem").hide();
-
-
-
         }
 
 
         function success(list) {
+
+            algoRoute = [];
 
             algoNorth = [];
             algoSouth = [];
@@ -111,6 +107,7 @@
             for (obj in list) {
                 if (list[obj]["Address"] != "גשר העץ 27,עמק חפר") {
 
+                    algoRoute[algoRoute.length] = list[obj]
 
                     if (list[obj]["DistributaionArea"] == "צפון")
                         algoNorth[algoNorth.length] = list[obj]
@@ -130,59 +127,20 @@
             initMap(list);
 
 
-            strdistance = "";
-            count = 0;
-            for (obj in list) {
-                if (count == 0) {
-                    strdistance += "<h3> המרחק הכולל:" + list[obj]["Total_distance"] + " קילומטר</h3>";
-                    count++;
-                }
+
+
+
+            strRoute = "";
+            strRoute += "<h5>מסלול נסיעה  : </h5>";
+            for (obj in algoRoute) {
+                strRoute += "<p>" + algoRoute[obj]["CompanyName"] + " - " + algoRoute[obj]["Address"] + "</p>";
             }
 
+            if (algoRoute.length != 0)
+                $("#route").show();
+      
 
-            strNorth = "";
-            strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
-            for (obj in algoNorth) {
-                strNorth += "<p>" + algoNorth[obj]["CompanyName"] + " - " + algoNorth[obj]["Address"] + "</p>";
-            }
-
-            strSouth = "";
-            strSouth += "<h5>מסלול נסיעה - אזור דרום : </h5>";
-            for (obj in algoSouth) {
-                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - " + algoSouth[obj]["Address"] + "</p>";
-            }
-
-            strCenter = "";
-            strCenter += "<h5>מסלול נסיעה - אזור מרכז : </h5>";
-            for (obj in algoCenter) {
-                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - " + algoCenter[obj]["Address"] + "</p>";
-            }
-
-            strJerusalem = "";
-            strJerusalem += "<h5>מסלול נסיעה - אזור ירושלים : </h5>";
-            for (obj in algoJerusalem) {
-                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - " + algoJerusalem[obj]["Address"] + "</p>";
-            }
-
-            if (algoNorth.length != 0)
-                $("#north").show();
-            if (algoSouth.length != 0)
-                $("#south").show();
-            if (algoCenter.length != 0)
-                $("#center").show();
-            if (algoJerusalem.length != 0)
-                $("#jerusalem").show();
-
-
-
-            document.getElementById("north").innerHTML = strNorth;
-            document.getElementById("south").innerHTML = strSouth;
-            document.getElementById("center").innerHTML = strCenter;
-            document.getElementById("jerusalem").innerHTML = strJerusalem;
-            document.getElementById("distance").innerHTML = strdistance;
-
-
-
+            document.getElementById("route").innerHTML = strRoute;
 
         }
 
@@ -190,9 +148,21 @@
             console.log(error);
         }
 
+        function createPDF() {
+            var pdf = document.getElementById("route");
+            var opt = {
+                margin: 1,
+                filename: 'סידור_עבודה.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(pdf).save();
+        }
+
         //create map with distrbution area
         function initMap(list) {
-            const map = new google.maps.Map(document.getElementById("map") ,  {
+            const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
                 mapTypeId: "terrain",
@@ -281,11 +251,11 @@
 
             });
 
-             labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-             NlabelIndex = 0;
-             SlabelIndex = 0;
-             ClabelIndex = 0;
-             JlabelIndex = 0;
+            labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            NlabelIndex = 0;
+            SlabelIndex = 0;
+            ClabelIndex = 0;
+            JlabelIndex = 0;
 
 
 
@@ -339,9 +309,9 @@
                         label: labels[ClabelIndex++ % labels.length],
                     });
                 }
-                
-              
-                
+
+
+
             }
             const image = {
                 url:
@@ -352,7 +322,7 @@
 
 
 
-             new google.maps.Marker({
+            const beachMarker = new google.maps.Marker({
                 position: { lat: 32.405410127264439, lng: 34.895175832114731 },
                 map,
                 icon: image,
@@ -395,10 +365,10 @@
                 geodesic: true,
                 strokeColor: "#00FF00",
                 strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
 
                 strokeWeight: 2,
 
@@ -440,10 +410,10 @@
                 geodesic: true,
 
                 strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
 
                 strokeWeight: 2,
 
@@ -484,10 +454,10 @@
                 geodesic: true,
                 strokeColor: "#FF0000",
                 strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
 
                 strokeWeight: 2,
 
@@ -528,10 +498,10 @@
                 geodesic: true,
                 strokeColor: "#00FF00",
                 strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
+                icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
 
                 strokeWeight: 2,
 
@@ -635,7 +605,7 @@
                                             <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
                                         </div>
                                         <div>
-                                            <button id="BTN">אישור</button>
+                                            <button id="BTN" onclick="createPDF()">הפקת דו"ח</button>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -643,23 +613,10 @@
                                         <div id="map"></div>
                                     </div>
                                     <div class="col-lg-12" id="algo">
-                                        <div class="card" id="north">
+                                        <div class="card" id="route">
 
                                         </div>
-                                    
-                                        <div class="card" id="south">
 
-                                        </div>
-                                  
-                                        <div class="card" id="center">
-
-                                        </div>
-                                 
-                                        <div class="card" id="jerusalem">
-
-                                        </div>
-                                        <div id="distance">
-                                        </div>
                                     </div>
                                 </div>
                             </div>
