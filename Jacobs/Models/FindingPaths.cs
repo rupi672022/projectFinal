@@ -13,7 +13,6 @@ namespace Jacobs.Models
        
       
         //array of distances
-        int whichArea = 0;//help us to know which area selected
         string address;
         double lng;
         double lat;
@@ -150,30 +149,36 @@ namespace Jacobs.Models
                     {
                         if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             northDis.Add(obj);
 
                         }
                     }
 
+
                 }
                 if (obj.DistributaionArea == "מרכז"||obj.DistributaionArea == "")
                 {
-                    //countnorth
                     foreach (FindingPaths ans in center)
                     {
-                        if (ans.CompanyNum == obj.IdToCompany )
+                        if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             centerDis.Add(obj);
                         }
-                       
                     }
+
+                    
+              
                 }
                 if (obj.DistributaionArea == "דרום" || obj.DistributaionArea == "")
                 {
+
                     foreach (FindingPaths ans in south)
                     {
-                        if (ans.CompanyNum == obj.IdToCompany )
+                        if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             southDis.Add(obj);
                         }
                     }
@@ -184,7 +189,9 @@ namespace Jacobs.Models
                     {
                         if (ans.CompanyNum == obj.IdToCompany)
                         {
+
                             jerusalemDis.Add(obj);
+
                         }
                     }
                 }
@@ -356,7 +363,7 @@ namespace Jacobs.Models
             //from distance array sum every row(every combination)
             for (int i = 0; i < combMatrixRow; i++)
             {
-                for (int j = 0; j < combMatrixCol; j++)
+                for (int j = 0; j < combMatrixCol;j++)
                 {
                     if (j + 1 != combMatrixCol)
                     {

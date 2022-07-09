@@ -192,7 +192,7 @@
 
         //create map with distrbution area
         function initMap(list) {
-            const map = new google.maps.Map(document.getElementById("map") ,  {
+            const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 7.5,
                 center: { lat: 32.063930, lng: 35.045252 },
                 mapTypeId: "terrain",
@@ -281,11 +281,11 @@
 
             });
 
-             labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-             NlabelIndex = 0;
-             SlabelIndex = 0;
-             ClabelIndex = 0;
-             JlabelIndex = 0;
+            labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            NlabelIndex = 0;
+            SlabelIndex = 0;
+            ClabelIndex = 0;
+            JlabelIndex = 0;
 
 
 
@@ -339,9 +339,9 @@
                         label: labels[ClabelIndex++ % labels.length],
                     });
                 }
-                
-              
-                
+
+
+
             }
             const image = {
                 url:
@@ -389,23 +389,26 @@
 
 
 
+            if (routeNorth.length != 2) {
 
-            var polygons = new google.maps.Polyline({
-                path: routeNorth,
-                geodesic: true,
-                strokeColor: "#00FF00",
-                strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
 
-                strokeWeight: 2,
+                var polygons = new google.maps.Polyline({
+                    path: routeNorth,
+                    geodesic: true,
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1.0,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%'
+                    }],
 
-                map: map
+                    strokeWeight: 2,
 
-            });
-            polygons.setMap(map);
+                    map: map
+
+                });
+                polygons.setMap(map);
+            }
 
             //route poliyline for center
             routeCenter = {};
@@ -434,23 +437,24 @@
 
 
 
+            if (routeCenter.length != 2) {
+                var polygons = new google.maps.Polyline({
+                    path: routeCenter,
+                    geodesic: true,
 
-            var polygons = new google.maps.Polyline({
-                path: routeCenter,
-                geodesic: true,
+                    strokeOpacity: 1.0,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%'
+                    }],
 
-                strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
+                    strokeWeight: 2,
 
-                strokeWeight: 2,
+                    map: map
 
-                map: map
-
-            });
-            polygons.setMap(map);
+                });
+                polygons.setMap(map);
+            }
             //route poliyline for South
             routeSouth = {};
             var routeSouth = new Array();
@@ -478,23 +482,26 @@
 
 
 
+            if (routeSouth.length!=2) {
 
-            var polygons = new google.maps.Polyline({
-                path: routeSouth,
-                geodesic: true,
-                strokeColor: "#FF0000",
-                strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
 
-                strokeWeight: 2,
+                var polygons = new google.maps.Polyline({
+                    path: routeSouth,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    icons: [{
+                    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                    offset: '100%'
+                }],
 
-                map: map
+                    strokeWeight: 2,
+
+                    map: map
 
             });
             polygons.setMap(map);
+        }
             //route poliyline for jerusalem
             routeJerusalem = {};
             var routeJerusalem = new Array();
@@ -522,23 +529,26 @@
 
 
 
+            if (routeJerusalem.length != 2) {
 
-            var polygons = new google.maps.Polyline({
-                path: routeJerusalem,
-                geodesic: true,
-                strokeColor: "#00FF00",
-                strokeOpacity: 1.0,
-                //icons: [{
-                //    icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
-                //    offset: '100%'
-                //}],
 
-                strokeWeight: 2,
+                var polygons = new google.maps.Polyline({
+                    path: routeJerusalem,
+                    geodesic: true,
+                    strokeColor: "#00FF00",
+                    strokeOpacity: 1.0,
+                    icons: [{
+                        icon: { path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+                        offset: '100%'
+                    }],
 
-                map: map
+                    strokeWeight: 2,
 
-            });
-            polygons.setMap(map);
+                    map: map
+
+                });
+                polygons.setMap(map);
+            }
         }
 
 
@@ -659,6 +669,9 @@
 
                                         </div>
                                         <div id="distance">
+                                        </div>
+                                        <div>
+                                          <h1>ffmlfmflmfl</h1>
                                         </div>
                                     </div>
                                 </div>

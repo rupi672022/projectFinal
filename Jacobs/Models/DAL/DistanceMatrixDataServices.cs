@@ -18,7 +18,6 @@ namespace GoogleApi.Test.Maps.DistanceMatrix
         {
             SqlConnection con = null;
             int numEffected = 0;
-            int count = 0;
 
             try
             {
