@@ -48,6 +48,9 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3dAoCHog8ijriEW-CIDvDvxQ6C5KZuiE&callback=initMap&v=weekly" async></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
     <script>
 
         $(document).ready(function () {
@@ -74,7 +77,7 @@
             strD += "<option>בחר נהג</option>";
             listDriver.forEach(function (value) {
                 strD += "<option>";
-                strD += value["EmployeNum"] + " - " + value["Name"];
+                strD += value["EmployeNum"] + " - " + value["Name"] + " אזור חלוקה : " + value["DistributaionArea"];
                 strD += "</option>";
             })
             strD += "</select>";
@@ -103,6 +106,8 @@
 
         function success(list) {
 
+            algoRoude = [];
+
             algoNorth = [];
             algoSouth = [];
             algoCenter = [];
@@ -111,6 +116,7 @@
             for (obj in list) {
                 if (list[obj]["Address"] != "גשר העץ 27,עמק חפר") {
 
+                    algoRoude[algoRoude.length] = list[obj];
 
                     if (list[obj]["DistributaionArea"] == "צפון")
                         algoNorth[algoNorth.length] = list[obj]
@@ -140,54 +146,32 @@
             }
 
 
-            strNorth = "";
-            strNorth += "<h5>מסלול נסיעה - אזור צפון : </h5>";
-            for (obj in algoNorth) {
-                strNorth += "<p>" + algoNorth[obj]["CompanyName"] + " - " + algoNorth[obj]["Address"] + "</p>";
+            strRoude = "";
+            strRoude += "<h5>מסלול נסיעה : </h5>";
+            for (obj in algoRoude) {
+                strRoude += "<p>" + algoRoude[obj]["CompanyName"] + " - " + algoRoude[obj]["Address"] + "</p>";
             }
 
-            strSouth = "";
-            strSouth += "<h5>מסלול נסיעה - אזור דרום : </h5>";
-            for (obj in algoSouth) {
-                strSouth += "<p>" + algoSouth[obj]["CompanyName"] + " - " + algoSouth[obj]["Address"] + "</p>";
-            }
 
-            strCenter = "";
-            strCenter += "<h5>מסלול נסיעה - אזור מרכז : </h5>";
-            for (obj in algoCenter) {
-                strCenter += "<p>" + algoCenter[obj]["CompanyName"] + " - " + algoCenter[obj]["Address"] + "</p>";
-            }
-
-            strJerusalem = "";
-            strJerusalem += "<h5>מסלול נסיעה - אזור ירושלים : </h5>";
-            for (obj in algoJerusalem) {
-                strJerusalem += "<p>" + algoJerusalem[obj]["CompanyName"] + " - " + algoJerusalem[obj]["Address"] + "</p>";
-            }
-
-            if (algoNorth.length != 0)
-                $("#north").show();
-            if (algoSouth.length != 0)
-                $("#south").show();
-            if (algoCenter.length != 0)
-                $("#center").show();
-            if (algoJerusalem.length != 0)
-                $("#jerusalem").show();
-
-
-
-            document.getElementById("north").innerHTML = strNorth;
-            document.getElementById("south").innerHTML = strSouth;
-            document.getElementById("center").innerHTML = strCenter;
-            document.getElementById("jerusalem").innerHTML = strJerusalem;
-            document.getElementById("distance").innerHTML = strdistance;
-
-
+            document.getElementById("roude").innerHTML = strRoude;
 
 
         }
 
         function error(error) {
             console.log(error);
+        }
+
+        function createPDF() {
+            var pdf = document.getElementById("roude");
+            var opt = {
+                margin: 1,
+                filename: 'סידור_עבודה.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(pdf).save();
         }
 
         //create map with distrbution area
@@ -645,7 +629,7 @@
                                             <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
                                         </div>
                                         <div>
-                                            <button id="BTN">אישור</button>
+                                            <button id="BTN" onclick="createPDF()">הפק דו"ח</button>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -653,21 +637,8 @@
                                         <div id="map"></div>
                                     </div>
                                     <div class="col-lg-12" id="algo">
-                                        <div class="card" id="north">
+                                        <div class="card" id="roude"> </div>
 
-                                        </div>
-
-                                        <div class="card" id="south">
-
-                                        </div>
-
-                                        <div class="card" id="center">
-
-                                        </div>
-
-                                        <div class="card" id="jerusalem">
-
-                                        </div>
                                         <div id="distance">
                                         </div>
 
