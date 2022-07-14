@@ -148,10 +148,12 @@
 
             strRoude = "";
             strRoude += "<h5>מסלול נסיעה : </h5>";
+            sumOfAllBoxes=0
             for (obj in algoRoude) {
-                strRoude += "<p>" + algoRoude[obj]["CompanyName"] + " - " + algoRoude[obj]["Address"] + "</p>";
+                strRoude += "<p>" + algoRoude[obj]["CompanyName"] + " - " + algoRoude[obj]["Address"] +" , "+ list[obj]["Boxes"] + " ארגזים  "+ "</p>";
+                sumOfAllBoxes += list[obj]["Boxes"];
             }
-
+            strRoude += "<p> סך הכל כמות ארגזים: " + sumOfAllBoxes+ "<p>";
 
             document.getElementById("roude").innerHTML = strRoude;
 
@@ -276,7 +278,7 @@
 
             var markers = [];
             //we need to add spasific lat and lng to show it on the map
-            for (let i = 1; i < list.length; i++) {
+            for (let i = 0; i < list.length; i++) {
 
                 if (list[i].DistributaionArea == "צפון") {
                     labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

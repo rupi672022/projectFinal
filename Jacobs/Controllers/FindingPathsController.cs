@@ -20,9 +20,9 @@ namespace Jacobs.Controllers
             OrdersController oC = new OrdersController();
             //new distance matrix
 
-            List<Orders> final = oC.GetBox(date);
+            List<Orders> allorders = oC.GetBox(date);
            
-            return findingPath.Read(date, DriverName);
+            return findingPath.Read(date, DriverName, allorders);
         }
        
         
