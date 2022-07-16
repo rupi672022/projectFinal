@@ -216,7 +216,7 @@ namespace Jacobs.Models
                     //add +2 to save place to origin and destnation
                     string[,] result = new string[factRes, (areasArr[i].Count) + 1];
                  
-                    List<String> listIncludeJacobs = new List<string>();
+                    //List<String> listIncludeJacobs = new List<string>();
                     Dictionary<string,int> addressList = new Dictionary<string, int>();
 
                     List<string> addressToArr=new List<string>();
