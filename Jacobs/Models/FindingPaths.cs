@@ -80,7 +80,7 @@ namespace Jacobs.Models
             return Algo(FindingPathslist, DistanceList, date, allorders);
         }
 
-
+        //הערה
         
         public List<FindingPaths> Algo(List<FindingPaths> list,List<FindingPaths> DistanceList, string date,List<Orders> allorders)
             //alogrithm of optimal path base on tsp
