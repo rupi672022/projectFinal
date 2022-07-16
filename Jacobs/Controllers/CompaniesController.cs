@@ -47,10 +47,7 @@ namespace Jacobs.Controllers
 
             dM.Post(dm, final);
             
-            //}
-            //call to distance matrix that create
-            //send cooridnation
-            //here to call to calcuate distancematrix and post to db
+            // call to calcuate distancematrix and insert to db
             return Request.CreateResponse(HttpStatusCode.OK,"success");
         }
       

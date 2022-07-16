@@ -176,7 +176,7 @@
             html2pdf().set(opt).from(pdf).save();
         }
 
-        //create map with distrbution area
+        //create map with distrbution area limits
         function initMap(list) {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 7.5,
@@ -279,6 +279,7 @@
             var markers = [];
             //we need to add spasific lat and lng to show it on the map
             for (let i = 0; i < list.length; i++) {
+                //markers with letters on them
 
                 if (list[i].DistributaionArea == "צפון") {
                     labels = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -516,7 +517,6 @@
 
 
             if (routeJerusalem.length != 2) {
-
 
                 var polygons = new google.maps.Polyline({
                     path: routeJerusalem,

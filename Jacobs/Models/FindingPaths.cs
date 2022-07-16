@@ -93,10 +93,13 @@ namespace Jacobs.Models
             List<FindingPaths> jerusalem = new List<FindingPaths>();
             
             List<FindingPaths>[] areasArr = new List<FindingPaths>[4];
+            //areaArr-array of 4 list of disrbiutaion area
             areasArr[0] = north;
             areasArr[1] = center;
             areasArr[2] = south;
             areasArr[3] = jerusalem;
+            //createSource=contain address of mashak jacobs with her Coordinates
+
             FindingPaths createSource = new FindingPaths("גשר העץ 27,עמק חפר", 34.895175832114731, 32.405410127264439, "",date,1, "משק יעקבס",0,0);
             areasArr[0].Add(createSource);
             areasArr[1].Add(createSource);
@@ -124,7 +127,7 @@ namespace Jacobs.Models
                     areasArr[2].Add(obj);
                 }
 
-                else //optin in jerusalem
+                else //option in jerusalem
                 {
                     areasArr[3].Add(obj);
 
@@ -142,7 +145,8 @@ namespace Jacobs.Models
 
             bool jerusalembool = false;
 
-
+            //Distancelist =contain distances Without reference to Distributaion Area 
+            //northDis,centerDis,jerusalemDis,southDis are distance lists of Distributaion Area
             foreach (FindingPaths obj in DistanceList)
             {
                 if (obj.DistributaionArea == "צפון"|| obj.DistributaionArea =="")
@@ -216,7 +220,6 @@ namespace Jacobs.Models
                     //add +2 to save place to origin and destnation
                     string[,] result = new string[factRes, (areasArr[i].Count) + 1];
                  
-                    //List<String> listIncludeJacobs = new List<string>();
                     Dictionary<string,int> addressList = new Dictionary<string, int>();
 
                     List<string> addressToArr=new List<string>();
@@ -231,14 +234,13 @@ namespace Jacobs.Models
 
 
                     var resultDic = new Dictionary<string, int>();
-                   
+                   //check if the area selected in the first time and contain address Apart from mashak jacobs
                         if (northDis.Count > 1&&northbool!=true)
                         {
                             arrayDis = northDis;
                         northbool = true;
                         }
                     
-                    //whichare include the number of select area
                     
                     else  if (centerDis.Count > 1&&centerbool != true )
                         {
@@ -375,6 +377,7 @@ namespace Jacobs.Models
                             if(combonationMatrix[i, j]==obj.IdFromCompany&& combonationMatrix[i, j+1]== obj.IdToCompany)
                             {
                                 sumline+=  obj.DistanceCompany;
+                                //sum distance of combination
                             }
                         }
                     }
