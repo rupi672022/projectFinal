@@ -56,10 +56,7 @@
         $(document).ready(function () {
 
             $("#BTN").click(textOfAlgo);
-            $("#north").hide();
-            $("#south").hide();
-            $("#center").hide();
-            $("#jerusalem").hide();
+            $("#roude").hide();
 
             ajaxCall("GET", "../api/Employes", "", successEmploye, error);
 
@@ -90,14 +87,10 @@
             date = date.toLocaleDateString();
 
             nameDriver = $("#driverJob").val().split(' ');
-            console.log(nameDriver[0]);
 
             ajaxCall("GET", "../api/FindingPaths?date=" + date + "&DriverName=" + nameDriver[0], "", success, error);
 
-            $("#north").hide();
-            $("#south").hide();
-            $("#center").hide();
-            $("#jerusalem").hide();
+            $("#roude").hide();
 
 
 
@@ -134,28 +127,29 @@
 
             }
             initMap(list);
-
-
             strdistance = "";
             count = 0;
             for (obj in list) {
                 if (count == 0) {
-                    strdistance += "<h3> המרחק הכולל:" + list[obj]["Total_distance"] + " קילומטר</h3>";
+                    strdistance += "<h3> המרחק נסיעה כולל : " + list[obj]["Total_distance"] + " קילומטר</h3>";
                     count++;
                 }
             }
 
+            document.getElementById("distance").innerHTML = strdistance;
 
             strRoude = "";
-            strRoude += "<h5>מסלול נסיעה : </h5>";
+            strRoude += "<h5>מסלול נסיעה  </h5>";
             sumOfAllBoxes=0
             for (obj in algoRoude) {
-                strRoude += "<p>" + algoRoude[obj]["CompanyName"] + " - " + algoRoude[obj]["Address"] +" , "+ list[obj]["Boxes"] + " ארגזים  "+ "</p>";
+                strRoude += "<p>" + algoRoude[obj]["CompanyName"] + " - " + algoRoude[obj]["Address"] +" -  "+ list[obj]["Boxes"]+ "   ארגזים  "+ "</p>";
                 sumOfAllBoxes += list[obj]["Boxes"];
             }
-            strRoude += "<p> סך הכל כמות ארגזים: " + sumOfAllBoxes+ "<p>";
+            strRoude += "<p> סך הכל כמות ארגזים "+"  -  " + sumOfAllBoxes+ "<p>";
 
             document.getElementById("roude").innerHTML = strRoude;
+
+            $("#roude").show();
 
 
         }
@@ -631,6 +625,7 @@
                                             <input type="date" class="form-control" id="dateJob" placeholder=" הכנס תאריך ההזמנה " required>
                                         </div>
                                         <div>
+                                            <button id="BTN">אישור</button>
                                             <button id="BTN" onclick="createPDF()">הפק דו"ח</button>
                                         </div>
                                     </div>

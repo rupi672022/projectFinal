@@ -99,7 +99,7 @@ namespace Jacobs.Models.DAL
                     order.DateArrival = (string)dataReader["dateArrivel"];
                     order.OpenHour = (string)dataReader["openHour"];
                     order.DistributaionArea = (string)dataReader["distributaionArea"];
-                    order.Boxes = Convert.ToInt32(dataReader["boxes"]);
+                  
                     if (dataReader.IsDBNull(7))
                         order.PreprationDate = null;
                     else
@@ -110,6 +110,11 @@ namespace Jacobs.Models.DAL
                         order.Status = 1;
                     else
                         order.Status = Convert.ToInt32(dataReader["status"]);
+
+                    if (dataReader.IsDBNull(9))
+                        order.Boxes = 0;
+                    else
+                        order.Boxes = Convert.ToInt32(dataReader["boxes"]);
 
                     listOrder.Add(order);
                 }
@@ -607,7 +612,6 @@ namespace Jacobs.Models.DAL
 
         }
 
-
         SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image - app
         {
             string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "',boxes='"+order.Boxes+"' WHERE orderNum='" + order.OrderNum + "' ";
@@ -628,10 +632,9 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
-
         SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)
         {
-            string commandStr = "UPDATE EmployeeOnOrder SET employNum = '"+order.EmployeeNum + "',driverNum='"+order.DriverNum+"',preparationDate ='" + order.PreprationDate + "'";
+            string commandStr = "UPDATE EmployeeOnOrder SET employNum = '"+order.EmployeeNum + "',driverNum='"+order.DriverNum+"',preparationDate ='" + order.PreprationDate + "' WHERE orderNum='"+order.OrderNum+"'";
 
             SqlCommand cmd = createCommand(con, commandStr);
 
