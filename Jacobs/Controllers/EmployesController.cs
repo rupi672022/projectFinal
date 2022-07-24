@@ -23,11 +23,11 @@ namespace Jacobs.Controllers
         {
             Employees employe = new Employees();
 
-            if (employeNum > 10000)
+            if (employeNum > 10000)//give employe
             {
                 return employe.Read(employeNum);
             }
-            else
+            else//get the employe to the order
             {
                 return employe.ReadEmployeDriver();
             }

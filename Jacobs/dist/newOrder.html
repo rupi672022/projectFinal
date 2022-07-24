@@ -63,8 +63,12 @@
                     PhoneContact: $("#phoneContact").val()
                 }
 
-                ajaxCall("PUT", "../api/Companies", JSON.stringify(newContact), getPSCB, error)
+                ajaxCall("PUT", "../api/Companies", JSON.stringify(newContact), getCC, error)//update contact on company
             });
+
+            function getCC(list) {
+                console.log("OK");
+            }
 
             $(document).on("click", ".deleteBtn", function () {//delete product frop order
                 id = this.id;
@@ -106,37 +110,25 @@
          
 
 
-            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsss, error);
+            ajaxCall("POST", "../api/Companies", JSON.stringify(newCompany), postSucsss, error); //add new company
             
 
 
-            ajaxCall("GET", "../api/Companies", "", getCompany, error);
+            ajaxCall("GET", "../api/Companies", "", getCompany, error);//get all company
 
             return false;
 
         }
-        function getSCB(answer) {
-            console.log("yes");
-            
-         ajaxCall("POST", "../api/DistanceMatrix", JSON.stringify(answer), postDistance, error);
 
-        }
         function postSucsss() {
             console.log("succsess");
         }
 
-        function getECB(err) {
-            console.log("No");
-
-            console.log(err);
-        }
         function getCompany(list) {
-            console.log(list);           
+            console.log("yes");           
         }
 
-        function postDistance() {
-            console.log("wow");
-        }
+
         function submitToPro() {//add new product
 
             if ($("downfromTotal").checked == true)//if need to decrese from product 100 gram
@@ -151,9 +143,8 @@
                 WeightperOne: $("weightperOne").val(),
                 DownfromTotal: downfromTotal
             }
-            console.log(newProduct);
 
-            ajaxCall("POST", "../api/Products", JSON.stringify(newProduct), postSucsses, error);
+            ajaxCall("POST", "../api/Products", JSON.stringify(newProduct), postSucsses, error);//add new product
 
             $("#barcod").val('')
             $("#type").val('');
@@ -165,7 +156,6 @@
         }
 
         function getCSCB(list) {//render the name of the companies in server
-            console.log(list);
 
             listname = [];
             for (obj in list) {
@@ -191,13 +181,13 @@
 
         }
 
-        function renderCompany() {//get the info about this company
+        function renderCompany() {
 
             name_company = document.getElementById("companyName").value;//the series choose
             console.log(name_company);
 
             if (name_company != "בחר בית עסק")
-                ajaxCall("GET", "../api/Companies?name=" + name_company, "", getNCSCB, error);
+                ajaxCall("GET", "../api/Companies?name=" + name_company, "", getNCSCB, error);//get the info about this company
         }
 
         function getNCSCB(list) {//insert the unfo to input
@@ -229,12 +219,12 @@
                 DateArrival: date.toLocaleDateString(),
                 Companynum: $("#num").val()
             }
-            ajaxCall("POST", "../api/Orders", JSON.stringify(newOrder), postSaveSucsses, errorOrder);
+            ajaxCall("POST", "../api/Orders", JSON.stringify(newOrder), postSaveSucsses, errorOrder); //add new order
             return false;
         }
 
         function getPSCB(list) {//get all the product
-            console.log(list);
+
 
             listname = [];
             for (obj in list) {
@@ -256,12 +246,11 @@
             document.getElementById("selectProduct").innerHTML = str;
         }
 
-        function renderProduct() {//get the info about the product
+        function renderProduct() {
 
             name_product = document.getElementById("productName").value;//the series choose
-            console.log(name_product);
             if (name_product != "בחר מוצר")
-                ajaxCall("GET", "../api/Products?name=" + name_product, "", getNPSCB, error);
+                ajaxCall("GET", "../api/Products?name=" + name_product, "", getNPSCB, error);//get the info about the product
         }
 
         function getNPSCB(list) {//insert the info to the input
@@ -294,7 +283,7 @@
                 Quantity: $("#Pquantity").val()
             }
 
-            ajaxCall("POST", "../api/Orders", JSON.stringify(addProduct), postProductSucsses, error);
+            ajaxCall("POST", "../api/Orders", JSON.stringify(addProduct), postProductSucsses, error);//add product to order
 
 
             $("#Pbarcod").val('')
@@ -307,10 +296,10 @@
 
         }
 
-        function deleteProduct(id) {//delete product from order
+        function deleteProduct(id) {
             console.log(id);
             Norder = $("#orderNum").val();
-            ajaxCall("DELETE", "../api/Orders?id=" + id + "&Norder=" + Norder, "", deleteSuccess, error);
+            ajaxCall("DELETE", "../api/Orders?id=" + id + "&Norder=" + Norder, "", deleteSuccess, error);//delete product from order
         }
 
         function postSucsses() {
@@ -326,7 +315,6 @@
         }
 
         function getProdcut(list) {//render the product
-            console.log(list);
 
             str = "<ul>";
 

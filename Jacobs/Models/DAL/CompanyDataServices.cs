@@ -51,6 +51,7 @@ namespace Jacobs.Models.DAL
 
 
         }
+
         public List<Company> Read()//get the all company
         {
             
