@@ -201,7 +201,7 @@ namespace Jacobs.Models.DAL
                     con.Close();
             }
 
-        }
+        } //get the employe chooses
         public bool Update(Employees employe) //update the employe
         {
 
@@ -305,10 +305,10 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
-        SqlCommand createSelectCommand(SqlConnection con,int employeNum)//get this employe
+        SqlCommand createSelectCommand(SqlConnection con,int employeNum)//get this employe, check that aviaable
         {
 
-            string commandStr = "SELECT * FROM Employes WHERE employeNum ="+employeNum;
+            string commandStr = "SELECT * FROM Employes WHERE employeNum ='"+employeNum+ "' and Employes.status=1";
 
             SqlCommand cmd = createCommand(con, commandStr);
 

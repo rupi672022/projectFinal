@@ -71,6 +71,7 @@ namespace Jacobs.Models.DAL
 
 
         }
+
         public List<Orders> ReadBox(string date)//get the all orders
         {
 
@@ -295,7 +296,6 @@ namespace Jacobs.Models.DAL
 
         }
 
-
         public List<Orders> Read(string preparationDate,int id)//get the order with this date - app
         {
 
@@ -503,7 +503,7 @@ namespace Jacobs.Models.DAL
             SqlCommand cmd = createCommand(con, str);
 
             return cmd;
-        }
+        }//get the inpo on the boxes to the order
         SqlCommand CreateSelectCommandAllOrders(SqlConnection con)
         {
             string str = "SELECT Company.companyNum,[Order].orderNum,Company.companyName,CompanyOnOrder.startDate,CompanyOnOrder.dateArrivel,Company.openHour,Company.distributaionArea,EmployeeOnOrder.preparationDate,EmployeeOnOrder.status";
@@ -513,7 +513,7 @@ namespace Jacobs.Models.DAL
             SqlCommand cmd = createCommand(con, str);
 
             return cmd;
-        }
+        }//get the all the order
         SqlCommand CreateInsertCommandCheck(Orders order, SqlConnection con)//check if this order in the table
         {
             string artstr = "SELECT * FROM [Order] WHERE orderNum = '" + order.OrderNum + "'";
@@ -612,7 +612,7 @@ namespace Jacobs.Models.DAL
 
         }
 
-        SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image - app
+        SqlCommand CreateUpdateCommandStatusOrder(SqlConnection con, Orders order)//update order - status + image+box - app
         {
             string commandStr = "UPDATE EmployeeOnOrder SET status = 0,image ='" + order.Image + "',boxes='"+order.Boxes+"' WHERE orderNum='" + order.OrderNum + "' ";
             
@@ -622,7 +622,7 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
-        SqlCommand CreateCheckCommand( Orders order, SqlConnection con)
+        SqlCommand CreateCheckCommand( Orders order, SqlConnection con)//check if the order axis in the table employ on order
         {
             string artstr = "SELECT * FROM EmployeeOnOrder WHERE orderNum = '" + order.OrderNum + "'";
 
@@ -632,7 +632,7 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
-        SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)
+        SqlCommand CreateUpdateCommandEmployeOrder(SqlConnection con, Orders order)//update the employe on order
         {
             string commandStr = "UPDATE EmployeeOnOrder SET employNum = '"+order.EmployeeNum + "',driverNum='"+order.DriverNum+"',preparationDate ='" + order.PreprationDate + "' WHERE orderNum='"+order.OrderNum+"'";
 
@@ -668,7 +668,7 @@ namespace Jacobs.Models.DAL
             return cmd;
         }
 
-        SqlCommand createDeleteCommandOrder(SqlConnection con, int orderNum)
+        SqlCommand createDeleteCommandOrder(SqlConnection con, int orderNum)//delete the order from calender, from system
         {
             string commandStr = "DELETE from [ProductOnOrder] WHERE orderNum='" + orderNum + "' ";
             commandStr += " DELETE from [CompanyOnOrder] WHERE orderNum = '" + orderNum + "'";

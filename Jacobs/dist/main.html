@@ -45,88 +45,6 @@
     <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.0.3/fullcalendar.min.js'></script>-->
 
 
-
-    <style>
-
-        #eventDiv{
-            text-align:center;
-        }
-        .fc .fc-non-business {
-            background: rgba(215, 215, 215, 0.3);
-            background: var(--fc-non-business-color, rgba(215, 215, 215, 0.3));
-        }
-
-        .fc-daygrid-dot-event .fc-event-title {
-            flex-grow: 1;
-            flex-shrink: 1;
-            min-width: 0; /* important for allowing to shrink all the way */
-            overflow: hidden;
-            font-size: 13px;
-            padding:0px;
-        }
-        .fc-event {
-            border-radius: 2px;
-            border: none;
-            cursor: move;
-            font-size: .8125rem;
-            margin: 1px 1px;
-            padding: 0px;
-            text-align: center;
-        }
-
-        .fc-v-event .fc-event-title {
-        top: 0;
-        bottom: 0;
-        max-height: 100%;
-        overflow: hidden;
-        font-size: 7px;
-        }
-
-        .fc .fc-list-event-title a {
-            color: inherit;
-            text-decoration: none;
-            font-size: 15px;
-        }
-        #BTN {
-            width: 200px;
-            background-color: #FFE587;
-            color: black;
-            border: hidden;
-            padding: 5px;
-            margin-top: 20px;
-            font-size: 18px;
-            line-height: 1.3333333;
-            border-radius: 6px;
-        }
-        .fc-event {
-            background-color: #fff;
-            border:0
-        }
-        .deleteBtn{
-            background-color: #FFE587;
-            border: hidden;
-            padding: 5px;
-            margin-top: 20px
-        }
-        img {
-            width: 60px;
-            height: 50px;
-        }
-        #deleteBtn {
-            width: 20px;
-            height: 25px;
-        }
-        #idorder {
-            background-color: #ffe587;
-            padding: 5px;
-        }
-        select {
-            text-align:center
-        }
-        label{
-            padding:3px;
-        }
-    </style>
     <script>
 
         $(document).ready(function () {
@@ -163,10 +81,20 @@
             collectors = [];//כל המלקטים
             drivers = [];//כל הנהגים 
 
-            ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);
+            ajaxCall("GET", "../api/Orders", "", getOrderSCB, error);//get all the order to the calender
         }
 
         function getOrderSCB(list) {
+
+            //מערך של הזמנות 
+            //בכל הזמנה יהיה : 
+            //מספר הזמנה, מספר חברה, שם חברה, תאריך פתיחת הזמנה, תאריך יעד ההזמנה, שעות פתיחה וסגירה של העסק, פרטי איש קשר
+            //מערך של מוצרים בהזמנה
+            //סטטוס ההזמנה
+            //תאריך הכנת ההזמנה 
+            //מלקטים ונהגים שיכולים לבצע את ההזמנה 
+            //מלקט ונהג שנבחרו לבצע את ההזמנה
+
             count = 0;
 
             for (obj in list) {
@@ -235,7 +163,7 @@
 
             }
 
-            ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);
+            ajaxCall("GET", "../api/Companies", "", getCompanySCB, error);//get the info the company on the order
 
 
             render();
@@ -252,7 +180,7 @@
                     }
                 }
             }
-            ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);
+            ajaxCall("GET", "../api/Employes", "", getEmployeSCB, error);//get the all employe to the order
 
         }
 
@@ -274,12 +202,12 @@
             }
 
             for (x in detailsOrder) {
-                detailsOrder[x]["collercotrArr"] = collectors;
-                detailsOrder[x]["driverArr"] = drivers;
+                detailsOrder[x]["collercotrArr"] = collectors;//arr to collect
+                detailsOrder[x]["driverArr"] = drivers;//arr to driver
             }
 
             ans = 0;
-            ajaxCall("GET", "../api/Employes?employeNum="+ans, "", getEmploye, error);
+            ajaxCall("GET", "../api/Employes?employeNum="+ans, "", getEmploye, error);//get the collect and the driver that chooses
         }
 
         function getEmploye(list) {
@@ -307,7 +235,7 @@
 
 
             x = 0;
-            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);
+            ajaxCall("GET", "../api/Product", "", getOrderProductSCB, error);//get the product to the order
 
         }
 
@@ -390,7 +318,7 @@
         };
 
 
-        function renderOrder(id) {
+        function renderOrder(id) {//render the info to the order
 
             IdOrder = id;
             answer = '';
@@ -518,12 +446,12 @@
                     PreprationDate: date,
                     DriverNum: iddriver,
                 }
-                ajaxCall("PUT", "../api/Orders", JSON.stringify(EmployeOrder), succsess, error);
+                ajaxCall("PUT", "../api/Orders", JSON.stringify(EmployeOrder), succsess, error);//update the date to collect the order, collect and driver
             }
           
         }
 
-        function deleteOrder(orderNum) {//update status to 0 - delete the employe
+        function deleteOrder(orderNum) {//update status to 0 - delete the order
             console.log(orderNum)
 
             ajaxCall("DELETE", "../api/Orders?orderNum=" + orderNum, "", succsess, error);
