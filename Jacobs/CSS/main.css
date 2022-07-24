@@ -137,3 +137,27 @@ select {
 label {
     padding: 3px;
 }
+
+#northC {
+   background-color: #bce3fe;
+   border-radius: 25px; 
+   text-align: center;
+}
+
+#centerC {
+   background-color: #f9abab; 
+   border-radius: 25px; 
+   text-align:center;
+}
+
+#southC {
+    background-color: #9cf3cd; 
+    border-radius: 25px;
+    text-align: center;
+}
+
+#jersulamC {
+    background-color: #f5e8aa; 
+    border-radius: 25px;      
+    text-align: center;
+}
